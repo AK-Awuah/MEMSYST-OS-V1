@@ -4,14 +4,33 @@ import { useState } from "react";
 import { consultationContent } from "@/data/content";
 import { Button } from "@/components/ui/button";
 import { Search, Map, Lightbulb, CalendarCheck, Check } from "lucide-react";
+import { getFormsService } from "@/lib/services";
 
 export default function ConsultationPage() {
   const { hero, benefits, form, trustSignals } = consultationContent;
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState("");
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    setSubmitted(true);
+    setIsSubmitting(true);
+    setError("");
+    try {
+      const fd = new FormData(e.currentTarget as HTMLFormElement);
+      const svc = await getFormsService();
+      await svc.createSubmission({
+        type: "consultation",
+        data: Object.fromEntries(fd.entries()),
+        status: "new",
+        sourcePage: "/consultation",
+        notes: [],
+      });
+      setSubmitted(true);
+    } catch {
+      setError("Something went wrong. Please try again.");
+      setIsSubmitting(false);
+    }
   }
 
   return (
@@ -104,29 +123,29 @@ export default function ConsultationPage() {
                     <div className="grid grid-cols-2 gap-4">
                       <div>
                         <label className="form-label">{form.fields.firstName.label}</label>
-                        <input type="text" className="form-input" placeholder={form.fields.firstName.placeholder} required />
+                        <input type="text" name="firstName" className="form-input" placeholder={form.fields.firstName.placeholder} required />
                       </div>
                       <div>
                         <label className="form-label">{form.fields.lastName.label}</label>
-                        <input type="text" className="form-input" placeholder={form.fields.lastName.placeholder} required />
+                        <input type="text" name="lastName" className="form-input" placeholder={form.fields.lastName.placeholder} required />
                       </div>
                     </div>
 
                     {/* Title */}
                     <div>
                       <label className="form-label">{form.fields.title.label}</label>
-                      <input type="text" className="form-input" placeholder={form.fields.title.placeholder} required />
+                      <input type="text" name="title" className="form-input" placeholder={form.fields.title.placeholder} required />
                     </div>
 
                     {/* Organization + Type Row */}
                     <div className="grid grid-cols-2 gap-4">
                       <div>
                         <label className="form-label">{form.fields.organization.label}</label>
-                        <input type="text" className="form-input" placeholder={form.fields.organization.placeholder} required />
+                        <input type="text" name="organization" className="form-input" placeholder={form.fields.organization.placeholder} required />
                       </div>
                       <div>
                         <label className="form-label">{form.fields.organizationType.label}</label>
-                        <select className="form-input" required defaultValue="">
+                        <select name="organizationType" className="form-input" required defaultValue="">
                           {form.fields.organizationType.options.map((opt, i) => (
                             <option key={i} value={i === 0 ? "" : opt} disabled={i === 0}>{opt}</option>
                           ))}
@@ -137,7 +156,7 @@ export default function ConsultationPage() {
                     {/* Member Count */}
                     <div>
                       <label className="form-label">{form.fields.memberCount.label}</label>
-                      <select className="form-input" defaultValue="">
+                      <select name="memberCount" className="form-input" defaultValue="">
                         {form.fields.memberCount.options.map((opt, i) => (
                           <option key={i} value={i === 0 ? "" : opt} disabled={i === 0}>{opt}</option>
                         ))}
@@ -148,24 +167,24 @@ export default function ConsultationPage() {
                     <div className="grid grid-cols-2 gap-4">
                       <div>
                         <label className="form-label">{form.fields.email.label}</label>
-                        <input type="email" className="form-input" placeholder={form.fields.email.placeholder} required />
+                        <input type="email" name="email" className="form-input" placeholder={form.fields.email.placeholder} required />
                       </div>
                       <div>
                         <label className="form-label">{form.fields.phone.label}</label>
-                        <input type="tel" className="form-input" placeholder={form.fields.phone.placeholder} />
+                        <input type="tel" name="phone" className="form-input" placeholder={form.fields.phone.placeholder} />
                       </div>
                     </div>
 
                     {/* Challenge */}
                     <div>
                       <label className="form-label">{form.fields.challenge.label}</label>
-                      <textarea rows={4} className="form-input resize-none" placeholder={form.fields.challenge.placeholder} required />
+                      <textarea name="challenge" rows={4} className="form-input resize-none" placeholder={form.fields.challenge.placeholder} required />
                     </div>
 
                     {/* Preferred Contact */}
                     <div>
                       <label className="form-label">{form.fields.preferredContact.label}</label>
-                      <select className="form-input" defaultValue="">
+                      <select name="preferredContact" className="form-input" defaultValue="">
                         {form.fields.preferredContact.options.map((opt, i) => (
                           <option key={i} value={i === 0 ? "" : opt} disabled={i === 0}>{opt}</option>
                         ))}
@@ -173,8 +192,9 @@ export default function ConsultationPage() {
                     </div>
 
                     <div className="pt-2">
-                      <Button type="submit" size="lg" className="w-full text-base shadow-[0_0_20px_rgba(60,164,249,0.3)] glow-pulse">
-                        {form.submitLabel}
+                      {error && <p className="mb-3 text-sm text-red-400">{error}</p>}
+                      <Button type="submit" size="lg" className="w-full text-base shadow-[0_0_20px_rgba(60,164,249,0.3)] glow-pulse" disabled={isSubmitting}>
+                        {isSubmitting ? "Sending..." : form.submitLabel}
                       </Button>
                       <p className="text-xs text-gray-500 text-center mt-3">{form.disclaimer}</p>
                     </div>

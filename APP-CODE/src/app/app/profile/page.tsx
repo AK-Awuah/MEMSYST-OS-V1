@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 import { useAuth } from "@/features/auth/AuthContext"
 import { PageHeader } from "@/components/admin/PageHeader"
-import { Mail, Phone, Shield, Calendar } from "lucide-react"
+import { Mail, Phone, Shield, Calendar, BadgeCheck, AlertTriangle } from "lucide-react"
 
 export default function ProfilePage() {
   const { user } = useAuth()
@@ -67,6 +67,32 @@ export default function ProfilePage() {
             <dd className="text-sm text-white">{new Date(user.createdAt).toLocaleDateString()}</dd>
           </div>
         </dl>
+      </div>
+
+      <div className="mb-6 rounded-xl border border-[#1e3a5f] bg-[#012a42] p-6">
+        <h3 className="mb-4 text-lg font-semibold text-white">Email Verification</h3>
+        {user.emailVerified ? (
+          <div className="flex items-center gap-3 rounded-lg border border-green-500/30 bg-green-500/10 px-4 py-3">
+            <BadgeCheck className="h-5 w-5 text-green-400" />
+            <div>
+              <p className="text-sm font-medium text-green-400">Email Verified</p>
+              <p className="text-xs text-gray-400">{user.email}</p>
+            </div>
+          </div>
+        ) : (
+          <div className="flex items-center justify-between rounded-lg border border-yellow-500/30 bg-yellow-500/10 px-4 py-3">
+            <div className="flex items-center gap-3">
+              <AlertTriangle className="h-5 w-5 text-yellow-400" />
+              <div>
+                <p className="text-sm font-medium text-yellow-400">Email Not Verified</p>
+                <p className="text-xs text-gray-400">{user.email}</p>
+              </div>
+            </div>
+            <button className="rounded-lg bg-[#3CA4F9] px-4 py-2 text-xs font-medium text-white hover:bg-[#3594e0]">
+              Resend Verification
+            </button>
+          </div>
+        )}
       </div>
 
       <div className="rounded-xl border border-[#1e3a5f] bg-[#012a42] p-6">

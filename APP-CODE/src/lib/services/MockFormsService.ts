@@ -1,6 +1,7 @@
 import type { IFormsService } from "./IFormsService"
 import type { FormSubmission, Note, Lead } from "@/types"
 import { mockSubmissions, generateMockForm, mockLeads } from "./mock-data"
+import { pushAuditLog } from "./shared-store"
 
 let submissions = [...mockSubmissions]
 
@@ -15,16 +16,37 @@ export class MockFormsService implements IFormsService {
     return submissions.find((s) => s.id === id) || null
   }
 
+  async createSubmission(data: Omit<FormSubmission, "id" | "createdAt" | "updatedAt">): Promise<FormSubmission> {
+    await delay(300)
+    const now = new Date().toISOString()
+    const submission: FormSubmission = {
+      ...data,
+      id: `form-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
+      createdAt: now,
+      updatedAt: now,
+    }
+    submissions.unshift(submission)
+    pushAuditLog({ actor: "System", role: "system", action: "create", module: "forms", recordType: "FormSubmission", recordId: submission.id, ipAddress: (data.data?.ipAddress as string) || "", newValue: `${submission.type} submission from ${submission.sourcePage}` })
+    return submission
+  }
+
   async updateStatus(id: string, status: FormSubmission["status"]): Promise<void> {
     await delay(300)
     const sub = submissions.find((s) => s.id === id)
-    if (sub) sub.status = status
+    if (sub) {
+      const prev = sub.status
+      sub.status = status
+      pushAuditLog({ actor: "System", role: "system", action: "update_status", module: "forms", recordType: "FormSubmission", recordId: id, ipAddress: "", previousValue: prev, newValue: status })
+    }
   }
 
   async assignSubmission(id: string, userId: string): Promise<void> {
     await delay(300)
     const sub = submissions.find((s) => s.id === id)
-    if (sub) sub.assignedTo = userId
+    if (sub) {
+      sub.assignedTo = userId
+      pushAuditLog({ actor: "System", role: "system", action: "assign", module: "forms", recordType: "FormSubmission", recordId: id, ipAddress: "", previousValue: "unassigned", newValue: userId })
+    }
   }
 
   async addNote(id: string, note: Omit<Note, "id" | "createdAt">): Promise<void> {
@@ -61,6 +83,7 @@ export class MockFormsService implements IFormsService {
       updatedAt: new Date().toISOString(),
     }
     mockLeads.push(lead)
+    pushAuditLog({ actor: "System", role: "system", action: "convert", module: "forms", recordType: "FormSubmission", recordId: id, ipAddress: "", previousValue: sub.type, newValue: `Converted to lead ${lead.id}` })
     return lead.id
   }
 

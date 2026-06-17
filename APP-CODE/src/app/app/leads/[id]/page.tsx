@@ -2,10 +2,10 @@
 
 import { useState, useEffect } from "react"
 import { useParams, useRouter } from "next/navigation"
-import { getLeadsService, getAuditService } from "@/lib/services"
+import { getLeadsService, getAuthService } from "@/lib/services"
 import { StatusBadge } from "@/components/admin/StatusBadge"
-import type { Lead, LeadStatus } from "@/types"
-import { ArrowLeft, Send, Phone, Mail, Calendar, FileText } from "lucide-react"
+import type { Lead, LeadStatus, MemsystUser } from "@/types"
+import { ArrowLeft, Send, Phone, Mail, Calendar, FileText, UserCog } from "lucide-react"
 
 export default function LeadDetailPage() {
   const params = useParams()
@@ -15,6 +15,8 @@ export default function LeadDetailPage() {
   const [noteContent, setNoteContent] = useState("")
   const [activityType, setActivityType] = useState<"note" | "call" | "email" | "meeting">("note")
   const [updating, setUpdating] = useState(false)
+  const [users, setUsers] = useState<MemsystUser[]>([])
+  const [assignUserId, setAssignUserId] = useState("")
 
   useEffect(() => {
     getLeadsService().then((svc) => {
@@ -23,6 +25,7 @@ export default function LeadDetailPage() {
         setLoading(false)
       })
     })
+    getAuthService().then((svc) => svc.listUsers().then(setUsers))
   }, [params.id])
 
   async function handleStatusChange(status: LeadStatus) {
@@ -90,6 +93,34 @@ export default function LeadDetailPage() {
             <div><dt className="text-xs text-gray-500">Email</dt><dd className="text-sm text-white">{lead.email}</dd></div>
             <div><dt className="text-xs text-gray-500">Phone</dt><dd className="text-sm text-white">{lead.phone}</dd></div>
             <div><dt className="text-xs text-gray-500">Website</dt><dd className="text-sm text-white">{lead.website || "-"}</dd></div>
+            <div>
+              <dt className="text-xs text-gray-500">Assigned To</dt>
+              <dd className="mt-1 flex items-center gap-2">
+                <select
+                  value={assignUserId || lead.assignedTo || ""}
+                  onChange={(e) => setAssignUserId(e.target.value)}
+                  className="flex-1 rounded-lg border border-[#1e3a5f] bg-[#011B2B] px-2 py-1.5 text-sm text-white"
+                >
+                  <option value="">Unassigned</option>
+                  {users.map((u) => (
+                    <option key={u.id} value={u.id}>{u.firstName} {u.lastName}</option>
+                  ))}
+                </select>
+                <button
+                  onClick={async () => {
+                    if (!assignUserId && !lead.assignedTo) return
+                    const svc = await getLeadsService()
+                    await svc.assignLead(lead.id, assignUserId || "")
+                    setLead({ ...lead, assignedTo: assignUserId || "" })
+                    setAssignUserId("")
+                  }}
+                  disabled={updating || (!assignUserId && !lead.assignedTo)}
+                  className="flex items-center gap-1 rounded-lg bg-[#3CA4F9] px-3 py-1.5 text-xs font-medium text-white hover:bg-[#3594e0] disabled:opacity-50"
+                >
+                  <UserCog className="h-3.5 w-3.5" /> Assign
+                </button>
+              </dd>
+            </div>
           </dl>
         </div>
 

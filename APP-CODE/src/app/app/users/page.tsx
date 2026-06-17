@@ -1,22 +1,28 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useMemo } from "react"
 import { PageHeader } from "@/components/admin/PageHeader"
 import { DataTable, type Column } from "@/components/admin/DataTable"
 import { StatusBadge } from "@/components/admin/StatusBadge"
 import { getAuthService } from "@/lib/services"
-import type { MemsystUser, UserRole } from "@/types"
-import { UserCog, X } from "lucide-react"
+import type { MemsystUser, UserRole, UserStatus } from "@/types"
+import { UserCog, X, Search, Filter } from "lucide-react"
 
 export default function UsersPage() {
   const [users, setUsers] = useState<MemsystUser[]>([])
   const [loading, setLoading] = useState(true)
+  const [search, setSearch] = useState("")
+  const [roleFilter, setRoleFilter] = useState<UserRole | "all">("all")
+  const [statusFilter, setStatusFilter] = useState<UserStatus | "all">("all")
   const [showCreate, setShowCreate] = useState(false)
   const [editUser, setEditUser] = useState<MemsystUser | null>(null)
   const [resetUserId, setResetUserId] = useState<string | null>(null)
   const [resetPassword, setResetPassword] = useState("")
   const [form, setForm] = useState<{ email: string; password: string; name: string; role: UserRole }>({ email: "", password: "", name: "", role: "support_admin" })
   const [editForm, setEditForm] = useState<{ firstName: string; lastName: string; email: string; role: UserRole }>({ firstName: "", lastName: "", email: "", role: "support_admin" })
+
+  const allRoles: UserRole[] = ["super_admin", "operations_admin", "sales_admin", "support_admin"]
+  const allStatuses: UserStatus[] = ["active", "inactive", "suspended", "archived", "pending_verification"]
 
   async function loadUsers() {
     const svc = await getAuthService()
@@ -26,6 +32,24 @@ export default function UsersPage() {
   }
 
   useEffect(() => { loadUsers() }, [])
+
+  const filtered = useMemo(() => {
+    let result = [...users]
+    if (search) {
+      const q = search.toLowerCase()
+      result = result.filter(
+        (u) =>
+          u.firstName.toLowerCase().includes(q) ||
+          u.lastName.toLowerCase().includes(q) ||
+          u.email.toLowerCase().includes(q) ||
+          u.role.toLowerCase().includes(q) ||
+          (u.username || "").toLowerCase().includes(q)
+      )
+    }
+    if (roleFilter !== "all") result = result.filter((u) => u.role === roleFilter)
+    if (statusFilter !== "all") result = result.filter((u) => u.status === statusFilter)
+    return result
+  }, [users, search, roleFilter, statusFilter])
 
   async function handleCreate() {
     const svc = await getAuthService()
@@ -48,7 +72,7 @@ export default function UsersPage() {
     loadUsers()
   }
 
-  async function handleStatusChange(userId: string, status: "active" | "inactive" | "suspended") {
+  async function handleStatusChange(userId: string, status: UserStatus) {
     const svc = await getAuthService()
     await svc.updateUser(userId, { status } as Partial<MemsystUser>)
     loadUsers()
@@ -65,16 +89,23 @@ export default function UsersPage() {
   const columns: Column<MemsystUser>[] = [
     { key: "name", header: "Name", render: (u) => <span className="font-medium text-white">{u.firstName} {u.lastName}</span> },
     { key: "email", header: "Email" },
+    { key: "username", header: "Username", render: (u) => <span className="text-gray-500 text-sm">{u.username || "—"}</span> },
     { key: "role", header: "Role", render: (u) => <span className="capitalize text-gray-400">{u.role.replace(/_/g, " ")}</span> },
     { key: "status", header: "Status", render: (u) => <StatusBadge status={u.status} /> },
+    { key: "lastLogin", header: "Last Login", render: (u) => <span className="text-sm text-gray-500">{u.lastLogin ? new Date(u.lastLogin).toLocaleDateString() : "Never"}</span> },
     {
       key: "actions", header: "", render: (u) => (
         <div className="flex gap-2">
           <button onClick={() => openEdit(u)} className="rounded border border-[#1e3a5f] px-2 py-1 text-xs text-gray-400 hover:border-[#3CA4F9]/50 hover:text-white">Edit</button>
           {u.status === "active" ? (
             <button onClick={() => handleStatusChange(u.id, "inactive")} className="rounded border border-yellow-500/30 px-2 py-1 text-xs text-yellow-400 hover:bg-yellow-500/10">Deactivate</button>
+          ) : u.status === "inactive" ? (
+            <>
+              <button onClick={() => handleStatusChange(u.id, "active")} className="rounded border border-green-500/30 px-2 py-1 text-xs text-green-400 hover:bg-green-500/10">Activate</button>
+              <button onClick={() => handleStatusChange(u.id, "suspended")} className="rounded border border-red-500/30 px-2 py-1 text-xs text-red-400 hover:bg-red-500/10">Suspend</button>
+            </>
           ) : (
-            <button onClick={() => handleStatusChange(u.id, "active")} className="rounded border border-green-500/30 px-2 py-1 text-xs text-green-400 hover:bg-green-500/10">Activate</button>
+            <button onClick={() => handleStatusChange(u.id, "active")} className="rounded border border-green-500/30 px-2 py-1 text-xs text-green-400 hover:bg-green-500/10">Reactivate</button>
           )}
           <button onClick={() => { setResetUserId(u.id); setResetPassword("") }} className="rounded border border-[#1e3a5f] px-2 py-1 text-xs text-gray-400 hover:border-[#3CA4F9]/50 hover:text-white">Reset Pwd</button>
         </div>
@@ -85,14 +116,51 @@ export default function UsersPage() {
   return (
     <div>
       <PageHeader
-        title="User Management"
-        description="Manage internal platform users"
+        title="User Directory"
+        description="Manage platform users — search, filter, create, and manage accounts"
         actions={
           <button onClick={() => setShowCreate(true)} className="rounded-lg bg-[#3CA4F9] px-4 py-2 text-sm font-medium text-white hover:bg-[#3594e0]">
             + Create User
           </button>
         }
       />
+
+      <div className="mb-4 flex flex-wrap items-center gap-3">
+        <div className="relative flex-1 min-w-[200px] max-w-sm">
+          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-500" />
+          <input
+            type="text"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Search by name, email, username..."
+            className="w-full rounded-lg border border-[#1e3a5f] bg-[#011B2B] py-2 pl-9 pr-3 text-sm text-white placeholder-gray-500 focus:border-[#3CA4F9]/50 focus:outline-none"
+          />
+        </div>
+        <div className="flex items-center gap-2">
+          <Filter className="h-4 w-4 text-gray-500" />
+          <select
+            value={roleFilter}
+            onChange={(e) => setRoleFilter(e.target.value as UserRole | "all")}
+            className="rounded-lg border border-[#1e3a5f] bg-[#011B2B] px-3 py-2 text-sm text-gray-300 focus:border-[#3CA4F9]/50 focus:outline-none"
+          >
+            <option value="all">All Roles</option>
+            {allRoles.map((r) => (
+              <option key={r} value={r}>{r.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase())}</option>
+            ))}
+          </select>
+          <select
+            value={statusFilter}
+            onChange={(e) => setStatusFilter(e.target.value as UserStatus | "all")}
+            className="rounded-lg border border-[#1e3a5f] bg-[#011B2B] px-3 py-2 text-sm text-gray-300 focus:border-[#3CA4F9]/50 focus:outline-none"
+          >
+            <option value="all">All Statuses</option>
+            {allStatuses.map((s) => (
+              <option key={s} value={s}>{s.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase())}</option>
+            ))}
+          </select>
+        </div>
+        <span className="text-sm text-gray-500">{filtered.length} of {users.length} users</span>
+      </div>
 
       {showCreate && (
         <div className="mb-6 rounded-xl border border-[#1e3a5f] bg-[#012a42] p-6">
@@ -103,10 +171,9 @@ export default function UsersPage() {
             <div><label className="form-label">Password</label><input type="password" className="form-input" value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} /></div>
             <div><label className="form-label">Role</label>
               <select className="form-input" value={form.role} onChange={(e) => setForm({ ...form, role: e.target.value as UserRole })}>
-                <option value="super_admin">Super Admin</option>
-                <option value="operations_admin">Operations Admin</option>
-                <option value="sales_admin">Sales Admin</option>
-                <option value="support_admin">Support Admin</option>
+                {allRoles.map((r) => (
+                  <option key={r} value={r}>{r.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase())}</option>
+                ))}
               </select>
             </div>
           </div>
@@ -129,10 +196,9 @@ export default function UsersPage() {
             <div><label className="form-label">Email</label><input type="email" className="form-input" value={editForm.email} onChange={(e) => setEditForm({ ...editForm, email: e.target.value })} /></div>
             <div><label className="form-label">Role</label>
               <select className="form-input" value={editForm.role} onChange={(e) => setEditForm({ ...editForm, role: e.target.value as UserRole })}>
-                <option value="super_admin">Super Admin</option>
-                <option value="operations_admin">Operations Admin</option>
-                <option value="sales_admin">Sales Admin</option>
-                <option value="support_admin">Support Admin</option>
+                {allRoles.map((r) => (
+                  <option key={r} value={r}>{r.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase())}</option>
+                ))}
               </select>
             </div>
           </div>
@@ -163,9 +229,9 @@ export default function UsersPage() {
 
       <DataTable
         columns={columns}
-        data={users}
+        data={filtered}
         isLoading={loading}
-        emptyMessage="No users found."
+        emptyMessage="No users match your search criteria."
       />
     </div>
   )

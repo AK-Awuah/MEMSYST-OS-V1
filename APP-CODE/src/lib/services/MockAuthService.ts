@@ -1,6 +1,7 @@
 import type { IAuthService, AuthState } from "./IAuthService"
 import type { MemsystUser, UserRole } from "@/types"
 import { mockUsers } from "./mock-data"
+import { pushAuditLog } from "./shared-store"
 
 let currentUser: MemsystUser | null = null
 let authListeners: Array<(user: MemsystUser | null) => void> = []
@@ -53,16 +54,21 @@ export class MockAuthService implements IAuthService {
     const [firstName, lastName] = name.split(" ")
     const newUser: MemsystUser = {
       id: `user-${Date.now()}`,
+      tenantId: "memsyst",
       email,
+      emailVerified: false,
       firstName: firstName || name,
       lastName: lastName || "",
       phone: "",
+      username: `${(firstName || name).toLowerCase()}.${(lastName || "user").toLowerCase()}`,
       role,
       permissions: getDefaultPermissions(role),
       status: "active",
       createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
     }
     mockUsers.push(newUser)
+    pushAuditLog({ actor: currentUser?.firstName || "System", role: currentUser?.role || "system", action: "create", module: "users", recordType: "User", recordId: newUser.id, ipAddress: "", newValue: `Created user ${email}` })
     return newUser
   }
 
@@ -70,20 +76,26 @@ export class MockAuthService implements IAuthService {
     await delay(400)
     const user = mockUsers.find((u) => u.id === userId)
     if (!user) throw new Error("User not found")
+    const prev = { ...user }
     Object.assign(user, data)
+    pushAuditLog({ actor: currentUser?.firstName || "System", role: currentUser?.role || "system", action: "update", module: "users", recordType: "User", recordId: userId, ipAddress: "", previousValue: `Role: ${prev.role}, Status: ${prev.status}`, newValue: `Role: ${user.role}, Status: ${user.status}` })
     return { ...user }
   }
 
   async deactivateUser(userId: string): Promise<void> {
     await delay(400)
     const user = mockUsers.find((u) => u.id === userId)
-    if (user) user.status = "inactive"
+    if (user) {
+      user.status = "inactive"
+      pushAuditLog({ actor: currentUser?.firstName || "System", role: currentUser?.role || "system", action: "deactivate", module: "users", recordType: "User", recordId: userId, ipAddress: "", previousValue: "active", newValue: "inactive" })
+    }
   }
 
   async adminResetPassword(userId: string, _newPassword: string): Promise<void> {
     await delay(300)
     const user = mockUsers.find((u) => u.id === userId)
     if (!user) throw new Error("User not found")
+    pushAuditLog({ actor: currentUser?.firstName || "System", role: currentUser?.role || "system", action: "reset_password", module: "users", recordType: "User", recordId: userId, ipAddress: "", newValue: "Password reset by admin" })
   }
 
   async listUsers(): Promise<MemsystUser[]> {

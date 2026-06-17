@@ -76,6 +76,28 @@ export default function SettingsPage() {
         </section>
 
         <section className="rounded-xl border border-[#1e3a5f] bg-[#012a42] p-6">
+          <h3 className="mb-4 text-lg font-semibold text-white">Notifications</h3>
+          <div className="space-y-3">
+            <div className="flex items-center gap-3">
+              <input type="checkbox" id="emailNotifs" defaultChecked className="rounded border-gray-600 bg-[#011B2B]" />
+              <label htmlFor="emailNotifs" className="text-sm text-gray-400">Email notifications for new submissions</label>
+            </div>
+            <div className="flex items-center gap-3">
+              <input type="checkbox" id="leadNotifs" defaultChecked className="rounded border-gray-600 bg-[#011B2B]" />
+              <label htmlFor="leadNotifs" className="text-sm text-gray-400">Notify when leads are assigned</label>
+            </div>
+            <div className="flex items-center gap-3">
+              <input type="checkbox" id="crmNotifs" defaultChecked className="rounded border-gray-600 bg-[#011B2B]" />
+              <label htmlFor="crmNotifs" className="text-sm text-gray-400">CRM opportunity stage changes</label>
+            </div>
+            <div className="flex items-center gap-3">
+              <input type="checkbox" id="auditNotifs" className="rounded border-gray-600 bg-[#011B2B]" />
+              <label htmlFor="auditNotifs" className="text-sm text-gray-400">Daily audit summary digest</label>
+            </div>
+          </div>
+        </section>
+
+        <section className="rounded-xl border border-[#1e3a5f] bg-[#012a42] p-6">
           <h3 className="mb-4 text-lg font-semibold text-white">Tenant & Audit</h3>
           <div className="grid gap-4 sm:grid-cols-2">
             <div className="flex items-center gap-3 pt-2">

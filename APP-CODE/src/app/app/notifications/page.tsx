@@ -11,6 +11,7 @@ export default function NotificationsPage() {
   const { user } = useAuth()
   const [notifications, setNotifications] = useState<Notification[]>([])
   const [loading, setLoading] = useState(true)
+  const [filter, setFilter] = useState<"all" | "unread" | "read" | "archived">("all")
 
   useEffect(() => {
     if (!user) return
@@ -21,6 +22,8 @@ export default function NotificationsPage() {
       })
     })
   }, [user])
+
+  const filtered = filter === "all" ? notifications : notifications.filter((n) => n.status === filter)
 
   async function handleMarkRead(id: string) {
     const svc = await getNotificationService()
@@ -51,14 +54,30 @@ export default function NotificationsPage() {
         }
       />
 
+      <div className="mb-4 flex gap-2">
+        {(["all", "unread", "read", "archived"] as const).map((f) => (
+          <button
+            key={f}
+            onClick={() => setFilter(f)}
+            className={`rounded-lg border px-3 py-1.5 text-xs font-medium transition-colors ${
+              filter === f
+                ? "border-[#3CA4F9] bg-[#3CA4F9]/15 text-[#3CA4F9]"
+                : "border-[#1e3a5f] text-gray-400 hover:text-white"
+            }`}
+          >
+            {f === "all" ? "All" : f.charAt(0).toUpperCase() + f.slice(1)}
+          </button>
+        ))}
+      </div>
+
       <div className="space-y-2">
-        {notifications.length === 0 && (
+        {filtered.length === 0 && (
           <div className="flex flex-col items-center justify-center py-20 text-gray-500">
             <Bell className="mb-2 h-8 w-8" />
-            <p className="text-sm">No notifications</p>
+            <p className="text-sm">No {filter === "all" ? "" : filter} notifications</p>
           </div>
         )}
-        {notifications.map((n) => (
+        {filtered.map((n) => (
           <div
             key={n.id}
             className={`flex items-start gap-4 rounded-xl border p-4 transition-colors ${
@@ -77,6 +96,18 @@ export default function NotificationsPage() {
               {n.status === "unread" && (
                 <button onClick={() => handleMarkRead(n.id)} className="rounded-lg p-2 text-gray-500 hover:bg-[#1e3a5f] hover:text-white">
                   <CheckCheck className="h-4 w-4" />
+                </button>
+              )}
+              {n.status !== "archived" && (
+                <button
+                  onClick={async () => {
+                    const svc = await getNotificationService()
+                    await svc.archive(n.id)
+                    setNotifications((prev) => prev.map((x) => x.id === n.id ? { ...x, status: "archived" as const } : x))
+                  }}
+                  className="rounded-lg p-2 text-gray-500 hover:bg-[#1e3a5f] hover:text-white"
+                >
+                  <Archive className="h-4 w-4" />
                 </button>
               )}
             </div>

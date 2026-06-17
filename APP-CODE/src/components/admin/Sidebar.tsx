@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation"
 import { useAuth } from "@/features/auth/AuthContext"
 import {
   LayoutDashboard, FileText, Users, TrendingUp, Bell, Building2,
-  UserPlus, Settings, Shield, UserCog, ChevronLeft,
+  UserPlus, Settings, Shield, ShieldAlert, UserCog, ChevronLeft, Key, Globe,
 } from "lucide-react"
 
 const navItems = [
@@ -16,7 +16,10 @@ const navItems = [
   { href: "/app/notifications", label: "Notifications", icon: Bell, permission: null },
   { href: "/app/organizations", label: "Organizations", icon: Building2, permission: "organizations:read" },
   { href: "/app/onboarding", label: "Tenant Onboarding", icon: UserPlus, permission: null },
-  { href: "/app/users", label: "User Management", icon: UserCog, permission: null },
+  { href: "/app/users", label: "User Management", icon: UserCog, permission: "users:read" },
+  { href: "/app/roles", label: "Role Management", icon: Key, permission: "roles:read" },
+  { href: "/app/sessions", label: "Sessions", icon: Globe, permission: null },
+  { href: "/app/security", label: "Security", icon: ShieldAlert, permission: null },
   { href: "/app/settings", label: "Settings", icon: Settings, permission: null },
   { href: "/app/audit-logs", label: "Audit Logs", icon: Shield, permission: null },
 ]

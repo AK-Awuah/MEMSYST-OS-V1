@@ -6,6 +6,12 @@ import type { ICRMService } from "./ICRMService"
 import type { INotificationService } from "./INotificationService"
 import type { IAuditService } from "./IAuditService"
 import type { IOrganizationService } from "./IOrganizationService"
+import type { IRoleService } from "./IRoleService"
+import type { IPermissionService } from "./IPermissionService"
+import type { ISessionService } from "./ISessionService"
+import type { ISecurityAuditService } from "./ISecurityAuditService"
+import type { IAccessControlService } from "./IAccessControlService"
+import type { ITenantProvisioningService } from "./ITenantProvisioningService"
 
 type ServiceInstance =
   | IAuthService
@@ -15,6 +21,12 @@ type ServiceInstance =
   | INotificationService
   | IAuditService
   | IOrganizationService
+  | IRoleService
+  | IPermissionService
+  | ISessionService
+  | ISecurityAuditService
+  | IAccessControlService
+  | ITenantProvisioningService
 
 const instances = new Map<string, ServiceInstance>()
 
@@ -88,6 +100,60 @@ export async function getOrganizationService(): Promise<IOrganizationService> {
   return createInstance("organizations", new FirebaseOrganizationService())
 }
 
+export async function getRoleService(): Promise<IRoleService> {
+  if (USE_MOCK_SERVICES) {
+    const { MockRoleService } = await import("./MockRoleService")
+    return createInstance("roles", new MockRoleService())
+  }
+  const { FirebaseRoleService } = await import("./FirebaseRoleService")
+  return createInstance("roles", new FirebaseRoleService())
+}
+
+export async function getPermissionService(): Promise<IPermissionService> {
+  if (USE_MOCK_SERVICES) {
+    const { MockPermissionService } = await import("./MockPermissionService")
+    return createInstance("permissions", new MockPermissionService())
+  }
+  const { FirebasePermissionService } = await import("./FirebasePermissionService")
+  return createInstance("permissions", new FirebasePermissionService())
+}
+
+export async function getSessionService(): Promise<ISessionService> {
+  if (USE_MOCK_SERVICES) {
+    const { MockSessionService } = await import("./MockSessionService")
+    return createInstance("sessions", new MockSessionService())
+  }
+  const { FirebaseSessionService } = await import("./FirebaseSessionService")
+  return createInstance("sessions", new FirebaseSessionService())
+}
+
+export async function getSecurityAuditService(): Promise<ISecurityAuditService> {
+  if (USE_MOCK_SERVICES) {
+    const { MockSecurityAuditService } = await import("./MockSecurityAuditService")
+    return createInstance("securityAudit", new MockSecurityAuditService())
+  }
+  const { FirebaseSecurityAuditService } = await import("./FirebaseSecurityAuditService")
+  return createInstance("securityAudit", new FirebaseSecurityAuditService())
+}
+
+export async function getAccessControlService(): Promise<IAccessControlService> {
+  if (USE_MOCK_SERVICES) {
+    const { MockAccessControlService } = await import("./MockAccessControlService")
+    return createInstance("accessControl", new MockAccessControlService())
+  }
+  const { FirebaseAccessControlService } = await import("./FirebaseAccessControlService")
+  return createInstance("accessControl", new FirebaseAccessControlService())
+}
+
+export async function getTenantProvisioningService(): Promise<ITenantProvisioningService> {
+  if (USE_MOCK_SERVICES) {
+    const { MockTenantProvisioningService } = await import("./MockTenantProvisioningService")
+    return createInstance("tenantProvisioning", new MockTenantProvisioningService())
+  }
+  const { FirebaseTenantProvisioningService } = await import("./FirebaseTenantProvisioningService")
+  return createInstance("tenantProvisioning", new FirebaseTenantProvisioningService())
+}
+
 export type {
   IAuthService,
   IFormsService,
@@ -96,5 +162,11 @@ export type {
   INotificationService,
   IAuditService,
   IOrganizationService,
+  IRoleService,
+  IPermissionService,
+  ISessionService,
+  ISecurityAuditService,
+  IAccessControlService,
+  ITenantProvisioningService,
 }
 export type { AuthState } from "./IAuthService"

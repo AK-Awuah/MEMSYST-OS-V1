@@ -1,6 +1,7 @@
 import type { ICRMService } from "./ICRMService"
 import type { CRMOpportunity, CRMStage, Activity } from "@/types"
 import { mockOpportunities } from "./mock-data"
+import { pushAuditLog } from "./shared-store"
 
 let opportunities = [...mockOpportunities]
 
@@ -25,6 +26,7 @@ export class MockCRMService implements ICRMService {
       updatedAt: new Date().toISOString(),
     }
     opportunities.push(opp)
+    pushAuditLog({ actor: "System", role: "system", action: "create", module: "crm", recordType: "CRMOpportunity", recordId: opp.id, ipAddress: "", newValue: `Created opportunity value ${opp.value}` })
     return opp
   }
 
@@ -32,8 +34,10 @@ export class MockCRMService implements ICRMService {
     await delay(300)
     const opp = opportunities.find((o) => o.id === id)
     if (opp) {
+      const prev = opp.currentStage
       opp.currentStage = stage
       opp.updatedAt = new Date().toISOString()
+      pushAuditLog({ actor: "System", role: "system", action: "update_stage", module: "crm", recordType: "CRMOpportunity", recordId: id, ipAddress: "", previousValue: prev, newValue: stage })
     }
   }
 
@@ -42,6 +46,7 @@ export class MockCRMService implements ICRMService {
     const opp = opportunities.find((o) => o.id === id)
     if (opp) {
       Object.assign(opp, data, { updatedAt: new Date().toISOString() })
+      pushAuditLog({ actor: "System", role: "system", action: "update", module: "crm", recordType: "CRMOpportunity", recordId: id, ipAddress: "", newValue: `Updated opportunity ${id}` })
     }
   }
 

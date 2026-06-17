@@ -4,14 +4,33 @@ import { useState } from "react";
 import { contactContent } from "@/data/content";
 import { Button } from "@/components/ui/button";
 import { Mail, Phone, MapPin } from "lucide-react";
+import { getFormsService } from "@/lib/services";
 
 export default function ContactPage() {
   const { hero, methods, form } = contactContent;
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState("");
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    setSubmitted(true);
+    setIsSubmitting(true);
+    setError("");
+    try {
+      const fd = new FormData(e.currentTarget as HTMLFormElement);
+      const svc = await getFormsService();
+      await svc.createSubmission({
+        type: "contact",
+        data: Object.fromEntries(fd.entries()),
+        status: "new",
+        sourcePage: "/contact",
+        notes: [],
+      });
+      setSubmitted(true);
+    } catch {
+      setError("Something went wrong. Please try again.");
+      setIsSubmitting(false);
+    }
   }
 
   return (
@@ -82,32 +101,34 @@ export default function ContactPage() {
                   <div className="grid grid-cols-2 gap-4">
                     <div>
                       <label className="form-label">Full Name</label>
-                      <input type="text" className="form-input" placeholder="John Doe" required />
+                      <input type="text" name="fullName" className="form-input" placeholder="John Doe" required />
                     </div>
                     <div>
                       <label className="form-label">Email Address</label>
-                      <input type="email" className="form-input" placeholder="john@org.com" required />
+                      <input type="email" name="email" className="form-input" placeholder="john@org.com" required />
                     </div>
                   </div>
                   <div>
                     <label className="form-label">Organization</label>
-                    <input type="text" className="form-input" placeholder="Your organization name" />
+                    <input type="text" name="organization" className="form-input" placeholder="Your organization name" />
                   </div>
                   <div>
                     <label className="form-label">Subject</label>
-                    <input type="text" className="form-input" placeholder="How can we help?" required />
+                    <input type="text" name="subject" className="form-input" placeholder="How can we help?" required />
                   </div>
                   <div>
                     <label className="form-label">Message</label>
                     <textarea
+                      name="message"
                       rows={5}
                       className="form-input resize-none"
                       placeholder="Tell us more about your inquiry..."
                       required
                     />
                   </div>
-                  <Button type="submit" size="lg" className="w-full text-base shadow-[0_0_15px_rgba(60,164,249,0.25)]">
-                    {form.submitLabel}
+                  {error && <p className="text-sm text-red-400">{error}</p>}
+                  <Button type="submit" size="lg" className="w-full text-base shadow-[0_0_15px_rgba(60,164,249,0.25)]" disabled={isSubmitting}>
+                    {isSubmitting ? "Sending..." : form.submitLabel}
                   </Button>
                 </form>
               </div>

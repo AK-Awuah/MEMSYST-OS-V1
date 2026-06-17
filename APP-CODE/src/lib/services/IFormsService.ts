@@ -7,6 +7,7 @@ export interface IFormsService {
     assignedTo?: string
   }): Promise<FormSubmission[]>
   getSubmission(id: string): Promise<FormSubmission | null>
+  createSubmission(data: Omit<FormSubmission, "id" | "createdAt" | "updatedAt">): Promise<FormSubmission>
   updateStatus(id: string, status: FormSubmission["status"]): Promise<void>
   assignSubmission(id: string, userId: string): Promise<void>
   addNote(id: string, note: Omit<Note, "id" | "createdAt">): Promise<void>

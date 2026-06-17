@@ -2,14 +2,17 @@
 
 import { useState, useEffect, useRef } from "react"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 import { useAuth } from "@/features/auth/AuthContext"
 import { getNotificationService } from "@/lib/services"
 import { Bell, LogOut, Settings, Search, User, KeyRound } from "lucide-react"
 
 export function TopNav() {
+  const router = useRouter()
   const { user, logout } = useAuth()
   const [unreadCount, setUnreadCount] = useState(0)
   const [showProfile, setShowProfile] = useState(false)
+  const [searchQuery, setSearchQuery] = useState("")
   const profileRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -38,7 +41,15 @@ export function TopNav() {
           <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-500" />
           <input
             type="text"
-            placeholder="Search..."
+            placeholder="Search leads..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && searchQuery.trim()) {
+                router.push(`/app/leads?search=${encodeURIComponent(searchQuery.trim())}`)
+                setSearchQuery("")
+              }
+            }}
             className="w-64 rounded-lg border border-[#1e3a5f] bg-[#012a42] py-2 pl-10 pr-4 text-sm text-white placeholder-gray-500 focus:border-[#3CA4F9]/50 focus:outline-none"
           />
         </div>

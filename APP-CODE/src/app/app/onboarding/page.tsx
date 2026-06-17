@@ -50,6 +50,8 @@ export default function OnboardingPage() {
       await svc.onboardTenant({
         ...data,
         status: "setup",
+        tenantId: "",
+        commercialStatus: "onboarding",
       })
       setSuccess(true)
     } catch (err) {

@@ -1,6 +1,7 @@
 import type { IOrganizationService } from "./IOrganizationService"
 import type { OrganizationProspect, Tenant } from "@/types"
 import { mockProspects, mockTenants } from "./mock-data"
+import { pushAuditLog } from "./shared-store"
 
 let prospects = [...mockProspects]
 let tenants = [...mockTenants]
@@ -25,6 +26,7 @@ export class MockOrganizationService implements IOrganizationService {
       updatedAt: new Date().toISOString(),
     }
     prospects.push(prospect)
+    pushAuditLog({ actor: "System", role: "system", action: "create", module: "organizations", recordType: "OrganizationProspect", recordId: prospect.id, ipAddress: "", newValue: `Created prospect ${prospect.organizationName}` })
     return prospect
   }
 
@@ -33,6 +35,7 @@ export class MockOrganizationService implements IOrganizationService {
     const prospect = prospects.find((p) => p.id === id)
     if (prospect) {
       Object.assign(prospect, data, { updatedAt: new Date().toISOString() })
+      pushAuditLog({ actor: "System", role: "system", action: "update", module: "organizations", recordType: "OrganizationProspect", recordId: id, ipAddress: "", newValue: `Updated prospect ${prospect.organizationName}` })
     }
   }
 
@@ -40,8 +43,10 @@ export class MockOrganizationService implements IOrganizationService {
     await delay(300)
     const prospect = prospects.find((p) => p.id === id)
     if (prospect) {
+      const prev = prospect.status
       prospect.status = status
       prospect.updatedAt = new Date().toISOString()
+      pushAuditLog({ actor: "System", role: "system", action: "update_status", module: "organizations", recordType: "OrganizationProspect", recordId: id, ipAddress: "", previousValue: prev, newValue: status })
     }
   }
 
@@ -54,6 +59,7 @@ export class MockOrganizationService implements IOrganizationService {
       updatedAt: new Date().toISOString(),
     }
     tenants.push(tenant)
+    pushAuditLog({ actor: "System", role: "system", action: "create", module: "tenants", recordType: "Tenant", recordId: tenant.id, ipAddress: "", newValue: `Onboarded tenant ${tenant.organizationName}` })
     return tenant
   }
 

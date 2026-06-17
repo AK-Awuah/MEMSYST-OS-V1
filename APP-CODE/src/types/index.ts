@@ -1,18 +1,87 @@
 export type UserRole = "super_admin" | "operations_admin" | "sales_admin" | "support_admin"
 
+export type UserStatus = "pending_verification" | "active" | "inactive" | "suspended" | "archived"
+
 export interface MemsystUser {
   id: string
+  tenantId: string
   email: string
+  emailVerified: boolean
   firstName: string
   lastName: string
   phone: string
+  username: string
   role: UserRole
   permissions: string[]
-  status: "active" | "inactive" | "suspended"
+  status: UserStatus
   photoURL?: string
   createdAt: string
   lastLogin?: string
+  updatedAt: string
 }
+
+export interface Role {
+  id: string
+  tenantId: string
+  name: string
+  description: string
+  isSystem: boolean
+  permissions: string[]
+  userCount?: number
+  createdAt: string
+  updatedAt: string
+}
+
+export interface Permission {
+  key: string
+  label: string
+  group: string
+  description: string
+}
+
+export interface Session {
+  id: string
+  userId: string
+  tenantId: string
+  device: string
+  ipAddress: string
+  userAgent: string
+  lastActiveAt: string
+  expiresAt: string
+  createdAt: string
+  isActive: boolean
+}
+
+export interface SecurityEvent {
+  id: string
+  actorId: string
+  actorName: string
+  action: SecurityAction
+  resource: string
+  tenantId: string
+  ipAddress: string
+  device: string
+  result: "success" | "failure"
+  details?: string
+  createdAt: string
+}
+
+export type SecurityAction =
+  | "login"
+  | "logout"
+  | "failed_login"
+  | "password_reset"
+  | "password_changed"
+  | "role_changed"
+  | "permission_changed"
+  | "user_created"
+  | "user_suspended"
+  | "user_activated"
+  | "user_archived"
+  | "session_terminated"
+  | "account_locked"
+  | "mfa_enabled"
+  | "mfa_disabled"
 
 export interface FormSubmission {
   id: string
@@ -123,6 +192,7 @@ export type ProspectStatus =
 
 export interface Tenant {
   id: string
+  tenantId: string
   organizationName: string
   shortName: string
   subdomain: string
@@ -139,6 +209,7 @@ export interface Tenant {
   adminEmail: string
   adminPhone: string
   status: TenantStatus
+  commercialStatus: "prospect" | "onboarding" | "active" | "trial" | "past_due" | "inactive" | "suspended" | "archived" | "cancelled"
   createdAt: string
   updatedAt: string
 }
@@ -185,6 +256,17 @@ export interface AuditLog {
   previousValue?: string
   newValue?: string
   createdAt: string
+}
+
+export interface SecurityDashboardMetrics {
+  totalUsers: number
+  activeUsers: number
+  failedLogins24h: number
+  lockedAccounts: number
+  activeSessions: number
+  recentEvents: SecurityEvent[]
+  recentLogins: SecurityEvent[]
+  recentRoleChanges: SecurityEvent[]
 }
 
 export interface DashboardMetrics {

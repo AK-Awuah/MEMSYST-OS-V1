@@ -1,6 +1,7 @@
 import type { ILeadsService } from "./ILeadsService"
 import type { Lead, Activity, LeadStatus } from "@/types"
 import { mockLeads, generateMockLead } from "./mock-data"
+import { pushAuditLog } from "./shared-store"
 
 let leads = [...mockLeads]
 
@@ -26,6 +27,7 @@ export class MockLeadsService implements ILeadsService {
       updatedAt: new Date().toISOString(),
     }
     leads.push(lead)
+    pushAuditLog({ actor: "System", role: "system", action: "create", module: "leads", recordType: "Lead", recordId: lead.id, ipAddress: "", newValue: `Created lead ${lead.organizationName}` })
     return lead
   }
 
@@ -34,6 +36,7 @@ export class MockLeadsService implements ILeadsService {
     const lead = leads.find((l) => l.id === id)
     if (lead) {
       Object.assign(lead, data, { updatedAt: new Date().toISOString() })
+      pushAuditLog({ actor: "System", role: "system", action: "update", module: "leads", recordType: "Lead", recordId: id, ipAddress: "", newValue: `Updated lead ${lead.organizationName}` })
     }
   }
 
@@ -41,8 +44,10 @@ export class MockLeadsService implements ILeadsService {
     await delay(300)
     const lead = leads.find((l) => l.id === id)
     if (lead) {
+      const prev = lead.status
       lead.status = status
       lead.updatedAt = new Date().toISOString()
+      pushAuditLog({ actor: "System", role: "system", action: "update_status", module: "leads", recordType: "Lead", recordId: id, ipAddress: "", previousValue: prev, newValue: status })
     }
   }
 
@@ -50,8 +55,10 @@ export class MockLeadsService implements ILeadsService {
     await delay(300)
     const lead = leads.find((l) => l.id === id)
     if (lead) {
+      const prev = lead.assignedTo || "unassigned"
       lead.assignedTo = userId
       lead.updatedAt = new Date().toISOString()
+      pushAuditLog({ actor: "System", role: "system", action: "assign", module: "leads", recordType: "Lead", recordId: id, ipAddress: "", previousValue: prev, newValue: userId })
     }
   }
 

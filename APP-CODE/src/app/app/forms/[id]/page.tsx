@@ -2,10 +2,10 @@
 
 import { useState, useEffect } from "react"
 import { useParams, useRouter } from "next/navigation"
-import { getFormsService } from "@/lib/services"
+import { getFormsService, getAuthService } from "@/lib/services"
 import { StatusBadge } from "@/components/admin/StatusBadge"
-import type { FormSubmission } from "@/types"
-import { ArrowLeft, Send, UserPlus } from "lucide-react"
+import type { FormSubmission, MemsystUser } from "@/types"
+import { ArrowLeft, Send, UserPlus, UserCheck } from "lucide-react"
 
 export default function FormDetailPage() {
   const params = useParams()
@@ -15,6 +15,8 @@ export default function FormDetailPage() {
   const [noteContent, setNoteContent] = useState("")
   const [updating, setUpdating] = useState(false)
   const [converting, setConverting] = useState(false)
+  const [staff, setStaff] = useState<MemsystUser[]>([])
+  const [assigning, setAssigning] = useState(false)
 
   useEffect(() => {
     getFormsService().then((svc) => {
@@ -23,7 +25,20 @@ export default function FormDetailPage() {
         setLoading(false)
       })
     })
+    getAuthService().then((svc) => {
+      svc.listUsers().then((u) => setStaff(u))
+    })
   }, [params.id])
+
+  async function handleAssign(userId: string) {
+    if (!submission) return
+    setAssigning(true)
+    const svc = await getFormsService()
+    await svc.assignSubmission(submission.id, userId)
+    const updated = await svc.getSubmission(submission.id)
+    if (updated) setSubmission(updated)
+    setAssigning(false)
+  }
 
   async function handleStatusChange(status: FormSubmission["status"]) {
     if (!submission) return
@@ -71,11 +86,33 @@ export default function FormDetailPage() {
         <ArrowLeft className="h-4 w-4" /> Back
       </button>
 
-      <div className="mb-6">
-        <h1 className="text-2xl font-bold text-white capitalize">{submission.type} Submission</h1>
-        <p className="mt-1 text-sm text-gray-400">
-          Submitted {new Date(submission.createdAt).toLocaleString()} · From {submission.sourcePage}
-        </p>
+      <div className="mb-6 flex items-start justify-between">
+        <div>
+          <h1 className="text-2xl font-bold text-white capitalize">{submission.type} Submission</h1>
+          <p className="mt-1 text-sm text-gray-400">
+            Submitted {new Date(submission.createdAt).toLocaleString()} · From {submission.sourcePage}
+          </p>
+          {submission.assignedTo && (
+            <p className="mt-1 text-xs text-[#3CA4F9]">
+              <UserCheck className="mr-1 inline h-3.5 w-3.5" />
+              Assigned to {staff.find((s) => s.id === submission.assignedTo)?.firstName ?? submission.assignedTo}
+            </p>
+          )}
+        </div>
+        <div className="flex items-center gap-2">
+          <label className="text-xs text-gray-500">Assign:</label>
+          <select
+            value={submission.assignedTo || ""}
+            onChange={(e) => handleAssign(e.target.value)}
+            disabled={assigning}
+            className="rounded-lg border border-[#1e3a5f] bg-[#011B2B] px-2 py-1.5 text-xs text-white focus:border-[#3CA4F9]/50 focus:outline-none disabled:opacity-50"
+          >
+            <option value="">Unassigned</option>
+            {staff.map((s) => (
+              <option key={s.id} value={s.id}>{s.firstName} {s.lastName}</option>
+            ))}
+          </select>
+        </div>
       </div>
 
       <div className="mb-6 flex flex-wrap items-center gap-2">
