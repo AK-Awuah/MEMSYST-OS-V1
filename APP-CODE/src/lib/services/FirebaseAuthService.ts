@@ -40,8 +40,27 @@ export class FirebaseAuthService implements IAuthService {
 
   async login(email: string, password: string): Promise<MemsystUser> {
     const cred = await signInWithEmailAndPassword(this.auth, email, password)
-    const profile = await this.getUserProfile(cred.user.uid)
-    if (!profile) throw new Error("User profile not found in Firestore")
+    let profile = await this.getUserProfile(cred.user.uid)
+    if (!profile) {
+      const now = new Date().toISOString()
+      profile = {
+        id: cred.user.uid,
+        tenantId: "",
+        email: cred.user.email || email,
+        emailVerified: cred.user.emailVerified,
+        firstName: cred.user.displayName?.split(" ")[0] || email.split("@")[0],
+        lastName: cred.user.displayName?.split(" ").slice(1).join(" ") || "",
+        phone: cred.user.phoneNumber || "",
+        username: email.split("@")[0],
+        role: "super_admin",
+        permissions: ["*"],
+        status: "active",
+        photoURL: cred.user.photoURL || "",
+        createdAt: now,
+        updatedAt: now,
+      }
+      await setDoc(doc(this.db, "users", cred.user.uid), profile)
+    }
     return mapFirebaseUser(cred.user, profile)
   }
 
