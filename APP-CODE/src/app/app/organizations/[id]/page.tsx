@@ -6,10 +6,13 @@ import { getOrganizationService } from "@/lib/services"
 import { StatusBadge } from "@/components/admin/StatusBadge"
 import type { OrganizationProspect } from "@/types"
 import { ArrowLeft } from "lucide-react"
+import { logAuditEvent, createAuditEntry } from "@/lib/audit"
+import { useAuth } from "@/features/auth/AuthContext"
 
 export default function OrganizationDetailPage() {
   const params = useParams()
   const router = useRouter()
+  const { user } = useAuth()
   const [prospect, setProspect] = useState<OrganizationProspect | null>(null)
   const [loading, setLoading] = useState(true)
   const [updating, setUpdating] = useState(false)
@@ -25,10 +28,21 @@ export default function OrganizationDetailPage() {
 
   async function handleStatusChange(status: OrganizationProspect["status"]) {
     if (!prospect) return
+    const prev = prospect.status
     setUpdating(true)
     const svc = await getOrganizationService()
     await svc.updateProspectStatus(prospect.id, status)
     setProspect({ ...prospect, status })
+    await logAuditEvent(createAuditEntry({
+      actor: user ? `${user.firstName} ${user.lastName}` : "System",
+      role: user?.role || "system",
+      action: "status_change",
+      module: "ORGANIZATIONS",
+      recordType: "OrganizationProspect",
+      recordId: prospect.id,
+      previousValue: prev,
+      newValue: status,
+    }))
     setUpdating(false)
   }
 

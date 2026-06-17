@@ -6,10 +6,13 @@ import { getFormsService, getAuthService } from "@/lib/services"
 import { StatusBadge } from "@/components/admin/StatusBadge"
 import type { FormSubmission, MemsystUser } from "@/types"
 import { ArrowLeft, Send, UserPlus, UserCheck } from "lucide-react"
+import { logAuditEvent, createAuditEntry } from "@/lib/audit"
+import { useAuth } from "@/features/auth/AuthContext"
 
 export default function FormDetailPage() {
   const params = useParams()
   const router = useRouter()
+  const { user: currentUser } = useAuth()
   const [submission, setSubmission] = useState<FormSubmission | null>(null)
   const [loading, setLoading] = useState(true)
   const [noteContent, setNoteContent] = useState("")
@@ -32,20 +35,43 @@ export default function FormDetailPage() {
 
   async function handleAssign(userId: string) {
     if (!submission) return
+    const prev = submission.assignedTo || "Unassigned"
     setAssigning(true)
     const svc = await getFormsService()
     await svc.assignSubmission(submission.id, userId)
     const updated = await svc.getSubmission(submission.id)
     if (updated) setSubmission(updated)
+    const assignedName = staff.find((s) => s.id === userId)
+    await logAuditEvent(createAuditEntry({
+      actor: currentUser ? `${currentUser.firstName} ${currentUser.lastName}` : "System",
+      role: currentUser?.role || "system",
+      action: "ASSIGN",
+      module: "FORMS",
+      recordType: "FormSubmission",
+      recordId: submission.id,
+      previousValue: prev,
+      newValue: assignedName ? `${assignedName.firstName} ${assignedName.lastName}` : userId,
+    }))
     setAssigning(false)
   }
 
   async function handleStatusChange(status: FormSubmission["status"]) {
     if (!submission) return
+    const prev = submission.status
     setUpdating(true)
     const svc = await getFormsService()
     await svc.updateStatus(submission.id, status)
     setSubmission({ ...submission, status })
+    await logAuditEvent(createAuditEntry({
+      actor: currentUser ? `${currentUser.firstName} ${currentUser.lastName}` : "System",
+      role: currentUser?.role || "system",
+      action: "STATUS_CHANGE",
+      module: "FORMS",
+      recordType: "FormSubmission",
+      recordId: submission.id,
+      previousValue: prev,
+      newValue: status,
+    }))
     setUpdating(false)
   }
 
@@ -55,6 +81,15 @@ export default function FormDetailPage() {
     try {
       const svc = await getFormsService()
       const leadId = await svc.convertToLead(submission.id)
+      await logAuditEvent(createAuditEntry({
+        actor: currentUser ? `${currentUser.firstName} ${currentUser.lastName}` : "System",
+        role: currentUser?.role || "system",
+        action: "CONVERT",
+        module: "FORMS",
+        recordType: "FormSubmission",
+        recordId: submission.id,
+        newValue: `Converted to Lead: ${leadId}`,
+      }))
       router.push(`/app/leads/${leadId}`)
     } catch {
       setConverting(false)
@@ -65,9 +100,18 @@ export default function FormDetailPage() {
     if (!submission || !noteContent.trim()) return
     setUpdating(true)
     const svc = await getFormsService()
-    await svc.addNote(submission.id, { content: noteContent, author: "Current User" })
+    await svc.addNote(submission.id, { content: noteContent, author: currentUser ? `${currentUser.firstName} ${currentUser.lastName}` : "Current User" })
     const updated = await svc.getSubmission(submission.id)
     if (updated) setSubmission(updated)
+    await logAuditEvent(createAuditEntry({
+      actor: currentUser ? `${currentUser.firstName} ${currentUser.lastName}` : "System",
+      role: currentUser?.role || "system",
+      action: "UPDATE",
+      module: "FORMS",
+      recordType: "FormSubmission",
+      recordId: submission.id,
+      newValue: `Added note: ${noteContent.substring(0, 100)}`,
+    }))
     setNoteContent("")
     setUpdating(false)
   }

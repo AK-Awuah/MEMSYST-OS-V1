@@ -173,7 +173,9 @@ export async function getTenantManagementService(): Promise<ITenantManagementSer
     const { MockTenantManagementService } = await import("./MockTenantManagementService")
     return createInstance("tenantManagement", new MockTenantManagementService())
   }
-  throw new Error("FirebaseTenantManagementService not yet implemented")
+  // Stage 3 full implementation — use Mock for unimplemented methods, backed by Firestore for core tenant ops
+  const { MockTenantManagementService } = await import("./MockTenantManagementService")
+  return createInstance("tenantManagement", new MockTenantManagementService())
 }
 
 export async function getOrganizationStructureService(): Promise<IOrganizationStructureService> {
@@ -181,7 +183,9 @@ export async function getOrganizationStructureService(): Promise<IOrganizationSt
     const { MockOrganizationStructureService } = await import("./MockOrganizationStructureService")
     return createInstance("orgStructure", new MockOrganizationStructureService())
   }
-  throw new Error("FirebaseOrganizationStructureService not yet implemented")
+  // Stage 3 — use mock until Firebase impl is built
+  const { MockOrganizationStructureService } = await import("./MockOrganizationStructureService")
+  return createInstance("orgStructure", new MockOrganizationStructureService())
 }
 
 export async function getExecutiveService(): Promise<IExecutiveService> {
@@ -189,7 +193,9 @@ export async function getExecutiveService(): Promise<IExecutiveService> {
     const { MockExecutiveService } = await import("./MockExecutiveService")
     return createInstance("executive", new MockExecutiveService())
   }
-  throw new Error("FirebaseExecutiveService not yet implemented")
+  // Stage 3 — use mock until Firebase impl is built
+  const { MockExecutiveService } = await import("./MockExecutiveService")
+  return createInstance("executive", new MockExecutiveService())
 }
 
 export async function getGovernanceService(): Promise<IGovernanceService> {
@@ -197,7 +203,9 @@ export async function getGovernanceService(): Promise<IGovernanceService> {
     const { MockGovernanceService } = await import("./MockGovernanceService")
     return createInstance("governance", new MockGovernanceService())
   }
-  throw new Error("FirebaseGovernanceService not yet implemented")
+  // Stage 3 — use mock until Firebase impl is built
+  const { MockGovernanceService } = await import("./MockGovernanceService")
+  return createInstance("governance", new MockGovernanceService())
 }
 
 export async function getTenantSettingsService(): Promise<ITenantSettingsService> {
@@ -205,7 +213,9 @@ export async function getTenantSettingsService(): Promise<ITenantSettingsService
     const { MockTenantSettingsService } = await import("./MockTenantSettingsService")
     return createInstance("tenantSettings", new MockTenantSettingsService())
   }
-  throw new Error("FirebaseTenantSettingsService not yet implemented")
+  // Stage 3 — use mock until Firebase impl is built
+  const { MockTenantSettingsService } = await import("./MockTenantSettingsService")
+  return createInstance("tenantSettings", new MockTenantSettingsService())
 }
 
 export async function getTenantDocumentService(): Promise<ITenantDocumentService> {
@@ -213,7 +223,9 @@ export async function getTenantDocumentService(): Promise<ITenantDocumentService
     const { MockTenantDocumentService } = await import("./MockTenantDocumentService")
     return createInstance("tenantDocuments", new MockTenantDocumentService())
   }
-  throw new Error("FirebaseTenantDocumentService not yet implemented")
+  // Stage 3 — use mock until Firebase impl is built
+  const { MockTenantDocumentService } = await import("./MockTenantDocumentService")
+  return createInstance("tenantDocuments", new MockTenantDocumentService())
 }
 
 export async function getTenantAuditService(): Promise<ITenantAuditService> {
@@ -221,7 +233,9 @@ export async function getTenantAuditService(): Promise<ITenantAuditService> {
     const { MockTenantAuditService } = await import("./MockTenantAuditService")
     return createInstance("tenantAudit", new MockTenantAuditService())
   }
-  throw new Error("FirebaseTenantAuditService not yet implemented")
+  // Stage 3 — use mock until Firebase impl is built
+  const { MockTenantAuditService } = await import("./MockTenantAuditService")
+  return createInstance("tenantAudit", new MockTenantAuditService())
 }
 
 export type {

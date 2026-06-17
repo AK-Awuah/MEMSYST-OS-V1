@@ -3,6 +3,9 @@
 import { useState, type FormEvent } from "react"
 import Link from "next/link"
 import { ArrowLeft } from "lucide-react"
+import { getAuthService } from "@/lib/services"
+import { logAuditEvent, createAuditEntry } from "@/lib/audit"
+import { validateEmail } from "@/lib/validation"
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState("")
@@ -13,9 +16,21 @@ export default function ForgotPasswordPage() {
   async function handleSubmit(e: FormEvent) {
     e.preventDefault()
     setError("")
+    const emailErr = validateEmail(email)
+    if (emailErr) { setError(emailErr); return }
     setIsSubmitting(true)
     try {
-      await new Promise((r) => setTimeout(r, 1000))
+      const svc = await getAuthService()
+      await svc.resetPassword(email)
+      await logAuditEvent(createAuditEntry({
+        actor: email,
+        role: "system",
+        action: "password_reset_requested",
+        module: "AUTH",
+        recordType: "User",
+        recordId: email,
+        newValue: "Password reset email sent",
+      }))
       setSent(true)
     } catch {
       setError("Failed to send reset email")

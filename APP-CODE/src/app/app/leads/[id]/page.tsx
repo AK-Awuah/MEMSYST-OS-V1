@@ -1,15 +1,18 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import { useParams, useRouter } from "next/navigation"
 import { getLeadsService, getAuthService } from "@/lib/services"
 import { StatusBadge } from "@/components/admin/StatusBadge"
 import type { Lead, LeadStatus, MemsystUser } from "@/types"
 import { ArrowLeft, Send, Phone, Mail, Calendar, FileText, UserCog } from "lucide-react"
+import { logAuditEvent, createAuditEntry } from "@/lib/audit"
+import { useAuth } from "@/features/auth/AuthContext"
 
 export default function LeadDetailPage() {
   const params = useParams()
   const router = useRouter()
+  const { user: currentUser } = useAuth()
   const [lead, setLead] = useState<Lead | null>(null)
   const [loading, setLoading] = useState(true)
   const [noteContent, setNoteContent] = useState("")
@@ -28,12 +31,28 @@ export default function LeadDetailPage() {
     getAuthService().then((svc) => svc.listUsers().then(setUsers))
   }, [params.id])
 
+  const audit = useCallback(async (action: string, newVal?: string, prevVal?: string) => {
+    if (!currentUser || !lead) return
+    await logAuditEvent(createAuditEntry({
+      actor: `${currentUser.firstName} ${currentUser.lastName}`,
+      role: currentUser.role,
+      action,
+      module: "LEADS",
+      recordType: "Lead",
+      recordId: lead.id,
+      previousValue: prevVal,
+      newValue: newVal,
+    }))
+  }, [currentUser, lead])
+
   async function handleStatusChange(status: LeadStatus) {
     if (!lead) return
+    const prev = lead.status
     setUpdating(true)
     const svc = await getLeadsService()
     await svc.updateStatus(lead.id, status)
     setLead({ ...lead, status })
+    await audit("STATUS_CHANGE", status, prev)
     setUpdating(false)
   }
 
@@ -41,10 +60,23 @@ export default function LeadDetailPage() {
     if (!lead || !noteContent.trim()) return
     setUpdating(true)
     const svc = await getLeadsService()
-    await svc.addActivity(lead.id, { type: activityType, title: noteContent, performedBy: "Current User" })
+    await svc.addActivity(lead.id, { type: activityType, title: noteContent, performedBy: currentUser ? `${currentUser.firstName} ${currentUser.lastName}` : "Current User" })
     const updated = await svc.getLead(lead.id)
     if (updated) setLead(updated)
+    await audit("UPDATE", `Added ${activityType}: ${noteContent}`)
     setNoteContent("")
+    setUpdating(false)
+  }
+
+  async function handleAssign(userId: string) {
+    if (!lead) return
+    const prev = lead.assignedTo || "Unassigned"
+    setUpdating(true)
+    const svc = await getLeadsService()
+    await svc.assignLead(lead.id, userId)
+    setLead({ ...lead, assignedTo: userId })
+    const assignedUserName = users.find((u) => u.id === userId)
+    await audit("ASSIGN", assignedUserName ? `${assignedUserName.firstName} ${assignedUserName.lastName}` : userId, prev)
     setUpdating(false)
   }
 
@@ -98,7 +130,11 @@ export default function LeadDetailPage() {
               <dd className="mt-1 flex items-center gap-2">
                 <select
                   value={assignUserId || lead.assignedTo || ""}
-                  onChange={(e) => setAssignUserId(e.target.value)}
+                  onChange={(e) => {
+                    const val = e.target.value
+                    setAssignUserId(val)
+                    if (val) handleAssign(val)
+                  }}
                   className="flex-1 rounded-lg border border-[#1e3a5f] bg-[#011B2B] px-2 py-1.5 text-sm text-white"
                 >
                   <option value="">Unassigned</option>
@@ -106,19 +142,6 @@ export default function LeadDetailPage() {
                     <option key={u.id} value={u.id}>{u.firstName} {u.lastName}</option>
                   ))}
                 </select>
-                <button
-                  onClick={async () => {
-                    if (!assignUserId && !lead.assignedTo) return
-                    const svc = await getLeadsService()
-                    await svc.assignLead(lead.id, assignUserId || "")
-                    setLead({ ...lead, assignedTo: assignUserId || "" })
-                    setAssignUserId("")
-                  }}
-                  disabled={updating || (!assignUserId && !lead.assignedTo)}
-                  className="flex items-center gap-1 rounded-lg bg-[#3CA4F9] px-3 py-1.5 text-xs font-medium text-white hover:bg-[#3594e0] disabled:opacity-50"
-                >
-                  <UserCog className="h-3.5 w-3.5" /> Assign
-                </button>
               </dd>
             </div>
           </dl>

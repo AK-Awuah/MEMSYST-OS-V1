@@ -4,50 +4,42 @@ service cloud.firestore {
   match /databases/{database}/documents {
 
     // ============================================
-    // TENANT ISOLATION — every query scoped by tenantId
+    // HELPER FUNCTIONS
     // ============================================
     function isAuthenticated() {
       return request.auth != null;
     }
 
+    function getUserData() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data;
+    }
+
     function isSuperAdmin() {
       return isAuthenticated()
-        && request.auth.token.get('permissions', []).hasAny(['*']);
-    }
-
-    function getTokenField(field) {
-      return request.auth.token.get(field, null);
-    }
-
-    function userTenantId() {
-      return getTokenField('tenantId');
+        && exists(/databases/$(database)/documents/users/$(request.auth.uid))
+        && getUserData().permissions.hasAny(['*']);
     }
 
     function hasPermission(perm) {
       return isAuthenticated()
-        && (getTokenField('permissions', []).hasAny(['*', perm]));
+        && exists(/databases/$(database)/documents/users/$(request.auth.uid))
+        && getUserData().permissions.hasAny(['*', perm]);
     }
 
-    function sameTenant(resourceTenant) {
-      return isAuthenticated() && resourceTenant == userTenantId();
+    function userTenantId() {
+      return (isAuthenticated() && exists(/databases/$(database)/documents/users/$(request.auth.uid)))
+        ? getUserData().tenantId
+        : null;
     }
 
-    function canAccess(requiredPermission, resourceTenant) {
-      return isAuthenticated()
-        && (isSuperAdmin() || (hasPermission(requiredPermission) && sameTenant(resourceTenant)));
+    // Use on reads (resource exists)
+    function sameTenantAsResource() {
+      return isAuthenticated() && resource.data.tenantId == userTenantId();
     }
 
-    // ============================================
-    // Tenant-scoped read access
-    // ============================================
-    function tenantReadAccess(requiredPermission) {
-      return isSuperAdmin()
-        || (hasPermission(requiredPermission) && resource.data.tenantId == userTenantId());
-    }
-
-    function tenantWriteAccess(requiredPermission) {
-      return isSuperAdmin()
-        || (hasPermission(requiredPermission) && resource.data.tenantId == userTenantId());
+    // Use on writes (incoming data)
+    function sameTenantAsRequest() {
+      return isAuthenticated() && request.resource.data.tenantId == userTenantId();
     }
 
     // ============================================
@@ -56,15 +48,15 @@ service cloud.firestore {
     // ============================================
     match /users/{userId} {
       allow read: if isAuthenticated()
-        && (request.auth.uid == userId || isSuperAdmin()
-          || (hasPermission('users:read') && resource.data.tenantId == userTenantId()));
+        && (request.auth.uid == userId
+          || isSuperAdmin()
+          || (hasPermission('users:read') && sameTenantAsResource()));
 
-      allow create: if hasPermission('users:write')
-        && request.resource.data.tenantId == userTenantId();
+      // Allow users to create their own profile on first login (bootstrap)
+      allow create: if isAuthenticated() && request.auth.uid == userId;
 
       allow update: if isAuthenticated()
-        && (request.auth.uid == userId
-          || hasPermission('users:write'))
+        && (request.auth.uid == userId || hasPermission('users:write'))
         && (isSuperAdmin() || request.resource.data.tenantId == userTenantId());
 
       allow delete: if isSuperAdmin();
@@ -75,14 +67,14 @@ service cloud.firestore {
     // /roles/{roleId}
     // ============================================
     match /roles/{roleId} {
-      allow read: if isSuperAdmin()
-        || (hasPermission('roles:read') && resource.data.tenantId == userTenantId());
+      allow read: if isAuthenticated()
+        && (isSuperAdmin() || (hasPermission('roles:read') && sameTenantAsResource()));
 
       allow create: if hasPermission('roles:write')
-        && request.resource.data.tenantId == userTenantId();
+        && (isSuperAdmin() || sameTenantAsRequest());
 
       allow update: if hasPermission('roles:write')
-        && (isSuperAdmin() || resource.data.tenantId == userTenantId());
+        && (isSuperAdmin() || sameTenantAsResource());
 
       allow delete: if isSuperAdmin();
     }
@@ -101,27 +93,33 @@ service cloud.firestore {
     // /sessions/{sessionId}
     // ============================================
     match /sessions/{sessionId} {
-      allow read: if isSuperAdmin()
-        || (request.auth.uid == resource.data.userId)
-        || (hasPermission('sessions:read') && resource.data.tenantId == userTenantId());
+      allow read: if isAuthenticated()
+        && (isSuperAdmin()
+          || request.auth.uid == resource.data.userId
+          || (hasPermission('sessions:read') && sameTenantAsResource()));
 
-      allow create: if request.auth.uid == request.resource.data.userId;
-      allow update: if request.auth.uid == resource.data.userId
-        || hasPermission('sessions:write');
-      allow delete: if isSuperAdmin()
-        || hasPermission('sessions:write')
-        || request.auth.uid == resource.data.userId;
+      allow create: if isAuthenticated()
+        && request.auth.uid == request.resource.data.userId;
+
+      allow update: if isAuthenticated()
+        && (request.auth.uid == resource.data.userId
+          || hasPermission('sessions:write'));
+
+      allow delete: if isAuthenticated()
+        && (isSuperAdmin()
+          || hasPermission('sessions:write')
+          || request.auth.uid == resource.data.userId);
     }
 
     // ============================================
-    // SECURITY EVENTS (immutable audit trail)
+    // SECURITY EVENTS (append-only audit trail)
     // /securityEvents/{eventId}
     // ============================================
     match /securityEvents/{eventId} {
-      allow read: if isSuperAdmin()
-        || (hasPermission('audit:read') && resource.data.tenantId == userTenantId());
+      allow read: if isAuthenticated()
+        && (isSuperAdmin()
+          || (hasPermission('audit:read') && sameTenantAsResource()));
 
-      // Append-only: no updates or deletes
       allow create: if isAuthenticated();
       allow update, delete: if false;
     }
@@ -135,38 +133,11 @@ service cloud.firestore {
         && (isSuperAdmin() || tenantId == userTenantId());
 
       allow create: if hasPermission('tenants:write');
+
       allow update: if hasPermission('tenants:write')
         && (isSuperAdmin() || tenantId == userTenantId());
+
       allow delete: if isSuperAdmin();
-    }
-
-    // ============================================
-    // FORMS / LEADS / CRM / ORGANIZATIONS (Stage 1 entities)
-    // All scoped by tenantId
-    // ============================================
-    match /forms/{docId} {
-      allow read, write: if canAccess('forms:read', resource.data.tenantId);
-    }
-
-    match /leads/{docId} {
-      allow read, write: if canAccess('leads:read', resource.data.tenantId);
-    }
-
-    match /crm_opportunities/{docId} {
-      allow read, write: if canAccess('crm:read', resource.data.tenantId);
-    }
-
-    match /organization_prospects/{docId} {
-      allow read, write: if canAccess('organizations:read', resource.data.tenantId);
-    }
-
-    match /notifications/{docId} {
-      allow read: if isAuthenticated()
-        && (isSuperAdmin() || resource.data.recipientId == request.auth.uid);
-      allow create: if isAuthenticated();
-      allow update: if isAuthenticated()
-        && (isSuperAdmin() || resource.data.recipientId == request.auth.uid);
-      allow delete: if false;
     }
 
     // ============================================
@@ -176,8 +147,102 @@ service cloud.firestore {
     match /tenantSettings/{tenantId} {
       allow read: if isAuthenticated()
         && (isSuperAdmin() || tenantId == userTenantId());
+
       allow write: if hasPermission('settings:write')
         && (isSuperAdmin() || tenantId == userTenantId());
+    }
+
+    // ============================================
+    // FORM SUBMISSIONS
+    // /formSubmissions/{docId}
+    // ============================================
+    match /formSubmissions/{docId} {
+      // Public can create (from marketing website)
+      allow create: if true;
+
+      allow read: if isAuthenticated()
+        && (isSuperAdmin() || hasPermission('forms:read'));
+
+      allow update: if isAuthenticated()
+        && (isSuperAdmin() || hasPermission('forms:write'));
+
+      allow delete: if isSuperAdmin();
+    }
+
+    // ============================================
+    // LEADS
+    // /leads/{docId}
+    // ============================================
+    match /leads/{docId} {
+      allow read: if isAuthenticated()
+        && (isSuperAdmin() || hasPermission('leads:read'));
+
+      allow create: if isAuthenticated()
+        && (isSuperAdmin() || hasPermission('leads:write'));
+
+      allow update: if isAuthenticated()
+        && (isSuperAdmin() || hasPermission('leads:write'));
+
+      allow delete: if isSuperAdmin();
+
+      // Lead activities subcollection
+      match /activities/{activityId} {
+        allow read: if isAuthenticated()
+          && (isSuperAdmin() || hasPermission('leads:read'));
+        allow create: if isAuthenticated()
+          && (isSuperAdmin() || hasPermission('leads:write'));
+        allow update, delete: if isSuperAdmin();
+      }
+    }
+
+    // ============================================
+    // CRM OPPORTUNITIES
+    // /crm_opportunities/{docId}
+    // ============================================
+    match /crm_opportunities/{docId} {
+      allow read: if isAuthenticated()
+        && (isSuperAdmin() || hasPermission('crm:read'));
+
+      allow create: if isAuthenticated()
+        && (isSuperAdmin() || hasPermission('crm:write'));
+
+      allow update: if isAuthenticated()
+        && (isSuperAdmin() || hasPermission('crm:write'));
+
+      allow delete: if isSuperAdmin();
+    }
+
+    // ============================================
+    // ORGANIZATION PROSPECTS
+    // /organization_prospects/{docId}
+    // ============================================
+    match /organization_prospects/{docId} {
+      allow read: if isAuthenticated()
+        && (isSuperAdmin() || hasPermission('organizations:read'));
+
+      allow create: if isAuthenticated()
+        && (isSuperAdmin() || hasPermission('organizations:write'));
+
+      allow update: if isAuthenticated()
+        && (isSuperAdmin() || hasPermission('organizations:write'));
+
+      allow delete: if isSuperAdmin();
+    }
+
+    // ============================================
+    // NOTIFICATIONS
+    // /notifications/{docId}
+    // ============================================
+    match /notifications/{docId} {
+      allow read: if isAuthenticated()
+        && (isSuperAdmin() || resource.data.recipientId == request.auth.uid);
+
+      allow create: if isAuthenticated();
+
+      allow update: if isAuthenticated()
+        && (isSuperAdmin() || resource.data.recipientId == request.auth.uid);
+
+      allow delete: if false;
     }
 
     // ============================================
@@ -185,8 +250,9 @@ service cloud.firestore {
     // /auditLogs/{logId}
     // ============================================
     match /auditLogs/{logId} {
-      allow read: if hasPermission('audit:read')
-        && (isSuperAdmin() || resource.data.tenantId == userTenantId());
+      allow read: if isAuthenticated()
+        && (isSuperAdmin() || hasPermission('audit:read'));
+
       allow create: if isAuthenticated();
       allow update, delete: if false;
     }

@@ -3,7 +3,7 @@
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { useAuth } from "@/features/auth/AuthContext"
-import { routePermissions } from "@/features/auth/PermissionGuard"
+import { ROUTE_PERMISSIONS } from "@/lib/constants"
 import {
   LayoutDashboard, FileText, Users, TrendingUp, Bell, Building2,
   UserPlus, Settings, Shield, ShieldAlert, UserCog, ChevronLeft, Key, Globe, Layers,
@@ -38,7 +38,7 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
   function hasAccess(href: string) {
     if (!user) return true
     if (user.permissions.includes("*")) return true
-    const required = routePermissions[href]
+    const required = ROUTE_PERMISSIONS[href]
     if (!required) return true
     return user.permissions.includes(required)
   }

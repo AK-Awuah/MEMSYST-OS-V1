@@ -11,7 +11,9 @@ export interface IAuthService {
   logout(): Promise<void>
   getCurrentUser(): Promise<MemsystUser | null>
   onAuthStateChanged(callback: (user: MemsystUser | null) => void): () => void
+  sendEmailVerification(): Promise<void>
   resetPassword(email: string): Promise<void>
+  confirmPasswordReset(oobCode: string, newPassword: string): Promise<void>
   changePassword(currentPassword: string, newPassword: string): Promise<void>
   updateProfile(data: Partial<MemsystUser>): Promise<MemsystUser>
   createUser(email: string, password: string, name: string, role: UserRole): Promise<MemsystUser>

@@ -1,6 +1,5 @@
 {
   "indexes": [
-    // Forms — filter by tenant + status, sorted by creation date
     {
       "collectionGroup": "forms",
       "queryScope": "COLLECTION",
@@ -10,27 +9,46 @@
         { "fieldPath": "createdAt", "order": "DESCENDING" }
       ]
     },
-    // Leads — filter by tenant + status
     {
-      "collectionGroup": "leads",
+      "collectionGroup": "formSubmissions",
       "queryScope": "COLLECTION",
       "fields": [
-        { "fieldPath": "tenantId", "order": "ASCENDING" },
         { "fieldPath": "status", "order": "ASCENDING" },
         { "fieldPath": "createdAt", "order": "DESCENDING" }
       ]
     },
-    // CRM Opportunities — filter by tenant + stage
+    {
+      "collectionGroup": "leads",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "status", "order": "ASCENDING" },
+        { "fieldPath": "createdAt", "order": "DESCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "leads",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "assignedTo", "order": "ASCENDING" },
+        { "fieldPath": "createdAt", "order": "DESCENDING" }
+      ]
+    },
     {
       "collectionGroup": "crm_opportunities",
       "queryScope": "COLLECTION",
       "fields": [
-        { "fieldPath": "tenantId", "order": "ASCENDING" },
         { "fieldPath": "currentStage", "order": "ASCENDING" },
         { "fieldPath": "createdAt", "order": "DESCENDING" }
       ]
     },
-    // Security Events — filter by tenant + action + result
+    {
+      "collectionGroup": "crm_opportunities",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "assignedTo", "order": "ASCENDING" },
+        { "fieldPath": "createdAt", "order": "DESCENDING" }
+      ]
+    },
     {
       "collectionGroup": "securityEvents",
       "queryScope": "COLLECTION",
@@ -49,7 +67,14 @@
         { "fieldPath": "createdAt", "order": "DESCENDING" }
       ]
     },
-    // Sessions — filter by tenant + userId + active
+    {
+      "collectionGroup": "securityEvents",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "actorId", "order": "ASCENDING" },
+        { "fieldPath": "createdAt", "order": "DESCENDING" }
+      ]
+    },
     {
       "collectionGroup": "sessions",
       "queryScope": "COLLECTION",
@@ -68,7 +93,14 @@
         { "fieldPath": "lastActiveAt", "order": "DESCENDING" }
       ]
     },
-    // Users — filter by tenant + role
+    {
+      "collectionGroup": "sessions",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "userId", "order": "ASCENDING" },
+        { "fieldPath": "isActive", "order": "ASCENDING" }
+      ]
+    },
     {
       "collectionGroup": "users",
       "queryScope": "COLLECTION",
@@ -87,7 +119,6 @@
         { "fieldPath": "createdAt", "order": "DESCENDING" }
       ]
     },
-    // Audit Logs — filter by tenant + module
     {
       "collectionGroup": "auditLogs",
       "queryScope": "COLLECTION",
@@ -97,7 +128,15 @@
         { "fieldPath": "createdAt", "order": "DESCENDING" }
       ]
     },
-    // Notifications — filter by recipient + status
+    {
+      "collectionGroup": "auditLogs",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "recordType", "order": "ASCENDING" },
+        { "fieldPath": "recordId", "order": "ASCENDING" },
+        { "fieldPath": "createdAt", "order": "DESCENDING" }
+      ]
+    },
     {
       "collectionGroup": "notifications",
       "queryScope": "COLLECTION",
@@ -107,13 +146,35 @@
         { "fieldPath": "createdAt", "order": "DESCENDING" }
       ]
     },
-    // Organization Prospects — filter by tenant + status
     {
       "collectionGroup": "organization_prospects",
       "queryScope": "COLLECTION",
       "fields": [
-        { "fieldPath": "tenantId", "order": "ASCENDING" },
         { "fieldPath": "status", "order": "ASCENDING" },
+        { "fieldPath": "createdAt", "order": "DESCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "tenants",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "status", "order": "ASCENDING" },
+        { "fieldPath": "createdAt", "order": "DESCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "tenants",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "commercialStatus", "order": "ASCENDING" },
+        { "fieldPath": "createdAt", "order": "DESCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "roles",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "tenantId", "order": "ASCENDING" },
         { "fieldPath": "createdAt", "order": "DESCENDING" }
       ]
     }

@@ -6,7 +6,7 @@ import { PageHeader } from "@/components/admin/PageHeader"
 import { StatCard } from "@/components/admin/StatCard"
 import { useAuth } from "@/features/auth/AuthContext"
 import {
-  getLeadsService, getFormsService, getCRMService, getOrganizationService, getNotificationService,
+  getLeadsService, getFormsService, getCRMService, getOrganizationService, getNotificationService, getTenantProvisioningService,
 } from "@/lib/services"
 import type { DashboardMetrics, Lead, FormSubmission, CRMOpportunity } from "@/types"
 import { Users, FileText, TrendingUp, Target, Building2, Bell, CheckCircle, Calendar, ListChecks } from "lucide-react"
@@ -22,16 +22,18 @@ export default function DashboardPage() {
 
   useEffect(() => {
     async function load() {
-      const [leadsSvc, formsSvc, crmSvc, orgSvc, notifSvc] = await Promise.all([
-        getLeadsService(), getFormsService(), getCRMService(), getOrganizationService(), getNotificationService(),
+      const [leadsSvc, formsSvc, crmSvc, orgSvc, notifSvc, tenantSvc] = await Promise.all([
+        getLeadsService(), getFormsService(), getCRMService(), getOrganizationService(), getNotificationService(), getTenantProvisioningService(),
       ])
-      const [leads, submissions, leadStats, formsStats, opps, prospects, unread] = await Promise.all([
+      const [leads, submissions, leadStats, formsStats, opps, prospects, unread, allTenants] = await Promise.all([
         leadsSvc.listLeads(), formsSvc.listSubmissions(),
         leadsSvc.getLeadStats(), formsSvc.getSubmissionStats(),
         crmSvc.listOpportunities(), orgSvc.listProspects(),
         user ? notifSvc.getUnreadCount(user.id) : Promise.resolve(0),
+        tenantSvc.listTenants(),
       ])
       const activeOpps = opps.filter((o) => !["approved", "tenant_creation"].includes(o.currentStage))
+      const activeTenantCount = allTenants.filter((t) => t.commercialStatus === "active").length
       setMetrics({
         totalLeads: leadStats.total,
         newLeads: leadStats.new,
@@ -42,7 +44,7 @@ export default function DashboardPage() {
         wonOpportunities: leadStats.won,
         lostOpportunities: leadStats.lost,
         pendingOnboarding: prospects.filter((p) => p.status === "qualified" || p.status === "proposal_stage").length,
-        activeTenants: 1,
+        activeTenants: activeTenantCount,
         newFormSubmissions: formsStats.new,
         unreadNotifications: unread,
       })

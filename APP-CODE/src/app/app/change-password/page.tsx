@@ -3,6 +3,9 @@
 import { useState, type FormEvent } from "react"
 import { useAuth } from "@/features/auth/AuthContext"
 import { PageHeader } from "@/components/admin/PageHeader"
+import { getAuthService } from "@/lib/services"
+import { logAuditEvent, createAuditEntry } from "@/lib/audit"
+import { validatePassword } from "@/lib/validation"
 
 export default function ChangePasswordPage() {
   const { user } = useAuth()
@@ -21,13 +24,21 @@ export default function ChangePasswordPage() {
       setError("Passwords do not match")
       return
     }
-    if (newPassword.length < 8) {
-      setError("Password must be at least 8 characters")
-      return
-    }
+    const pwdErr = validatePassword(newPassword)
+    if (pwdErr) { setError(pwdErr); return }
     setIsSubmitting(true)
     try {
-      await new Promise((r) => setTimeout(r, 1000))
+      const svc = await getAuthService()
+      await svc.changePassword(currentPassword, newPassword)
+      await logAuditEvent(createAuditEntry({
+        actor: user ? `${user.firstName} ${user.lastName}` : "Unknown",
+        role: user?.role || "system",
+        action: "password_changed",
+        module: "AUTH",
+        recordType: "User",
+        recordId: user?.id || "unknown",
+        newValue: "Password changed",
+      }))
       setSuccess(true)
       setCurrentPassword("")
       setNewPassword("")

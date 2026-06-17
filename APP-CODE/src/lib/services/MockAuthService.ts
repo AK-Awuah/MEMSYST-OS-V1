@@ -34,7 +34,15 @@ export class MockAuthService implements IAuthService {
     }
   }
 
+  async sendEmailVerification(): Promise<void> {
+    await delay(300)
+  }
+
   async resetPassword(_email: string): Promise<void> {
+    await delay(500)
+  }
+
+  async confirmPasswordReset(_oobCode: string, _newPassword: string): Promise<void> {
     await delay(500)
   }
 

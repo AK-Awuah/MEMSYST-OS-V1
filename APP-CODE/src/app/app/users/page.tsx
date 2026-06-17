@@ -7,8 +7,13 @@ import { StatusBadge } from "@/components/admin/StatusBadge"
 import { getAuthService } from "@/lib/services"
 import type { MemsystUser, UserRole, UserStatus } from "@/types"
 import { UserCog, X, Search, Filter } from "lucide-react"
+import { logAuditEvent, createAuditEntry } from "@/lib/audit"
+import { useAuth } from "@/features/auth/AuthContext"
+import { validateUserForm, validateRequired } from "@/lib/validation"
+import { USER_ROLES, USER_STATUSES, USER_ROLE_LABELS } from "@/lib/constants"
 
 export default function UsersPage() {
+  const { user: currentUser } = useAuth()
   const [users, setUsers] = useState<MemsystUser[]>([])
   const [loading, setLoading] = useState(true)
   const [search, setSearch] = useState("")
@@ -18,11 +23,12 @@ export default function UsersPage() {
   const [editUser, setEditUser] = useState<MemsystUser | null>(null)
   const [resetUserId, setResetUserId] = useState<string | null>(null)
   const [resetPassword, setResetPassword] = useState("")
+  const [formErrors, setFormErrors] = useState<Record<string, string>>({})
   const [form, setForm] = useState<{ email: string; password: string; name: string; role: UserRole }>({ email: "", password: "", name: "", role: "support_admin" })
   const [editForm, setEditForm] = useState<{ firstName: string; lastName: string; email: string; role: UserRole }>({ firstName: "", lastName: "", email: "", role: "support_admin" })
 
-  const allRoles: UserRole[] = ["super_admin", "operations_admin", "sales_admin", "support_admin"]
-  const allStatuses: UserStatus[] = ["active", "inactive", "suspended", "archived", "pending_verification"]
+  const allRoles: UserRole[] = [...USER_ROLES]
+  const allStatuses: UserStatus[] = [...USER_STATUSES]
 
   async function loadUsers() {
     const svc = await getAuthService()
@@ -52,8 +58,23 @@ export default function UsersPage() {
   }, [users, search, roleFilter, statusFilter])
 
   async function handleCreate() {
+    const validation = validateUserForm(form.name, form.email, form.password)
+    if (!validation.valid) {
+      setFormErrors(validation.errors)
+      return
+    }
+    setFormErrors({})
     const svc = await getAuthService()
     await svc.createUser(form.email, form.password, form.name, form.role)
+    await logAuditEvent(createAuditEntry({
+      actor: currentUser ? `${currentUser.firstName} ${currentUser.lastName}` : "System",
+      role: currentUser?.role || "system",
+      action: "CREATE",
+      module: "USERS",
+      recordType: "User",
+      recordId: form.email,
+      newValue: `Created user ${form.name} (${form.email}) as ${form.role}`,
+    }))
     setShowCreate(false)
     setForm({ email: "", password: "", name: "", role: "support_admin" })
     loadUsers()
@@ -66,22 +87,60 @@ export default function UsersPage() {
 
   async function handleEditSave() {
     if (!editUser) return
+    const nameErr = validateRequired(editForm.firstName, "First Name")
+    if (nameErr) { setFormErrors({ firstName: nameErr }); return }
+    setFormErrors({})
     const svc = await getAuthService()
     await svc.updateUser(editUser.id, editForm)
+    await logAuditEvent(createAuditEntry({
+      actor: currentUser ? `${currentUser.firstName} ${currentUser.lastName}` : "System",
+      role: currentUser?.role || "system",
+      action: "UPDATE",
+      module: "USERS",
+      recordType: "User",
+      recordId: editUser.id,
+      previousValue: `${editUser.firstName} ${editUser.lastName} (${editUser.role})`,
+      newValue: `${editForm.firstName} ${editForm.lastName} (${editForm.role})`,
+    }))
     setEditUser(null)
     loadUsers()
   }
 
   async function handleStatusChange(userId: string, status: UserStatus) {
+    const targetUser = users.find((u) => u.id === userId)
+    const prev = targetUser?.status || "unknown"
     const svc = await getAuthService()
     await svc.updateUser(userId, { status } as Partial<MemsystUser>)
+    await logAuditEvent(createAuditEntry({
+      actor: currentUser ? `${currentUser.firstName} ${currentUser.lastName}` : "System",
+      role: currentUser?.role || "system",
+      action: status === "active" ? "user_activated" : status === "suspended" ? "user_suspended" : status === "archived" ? "user_archived" : "UPDATE",
+      module: "USERS",
+      recordType: "User",
+      recordId: userId,
+      previousValue: prev,
+      newValue: status,
+    }))
     loadUsers()
   }
 
   async function handleResetPassword() {
     if (!resetUserId || !resetPassword) return
+    if (resetPassword.length < 8) {
+      setFormErrors({ resetPassword: "Password must be at least 8 characters" })
+      return
+    }
+    setFormErrors({})
     const svc = await getAuthService()
     await svc.adminResetPassword(resetUserId, resetPassword)
+    await logAuditEvent(createAuditEntry({
+      actor: currentUser ? `${currentUser.firstName} ${currentUser.lastName}` : "System",
+      role: currentUser?.role || "system",
+      action: "password_reset",
+      module: "USERS",
+      recordType: "User",
+      recordId: resetUserId,
+    }))
     setResetUserId(null)
     setResetPassword("")
   }
@@ -90,7 +149,7 @@ export default function UsersPage() {
     { key: "name", header: "Name", render: (u) => <span className="font-medium text-white">{u.firstName} {u.lastName}</span> },
     { key: "email", header: "Email" },
     { key: "username", header: "Username", render: (u) => <span className="text-gray-500 text-sm">{u.username || "—"}</span> },
-    { key: "role", header: "Role", render: (u) => <span className="capitalize text-gray-400">{u.role.replace(/_/g, " ")}</span> },
+    { key: "role", header: "Role", render: (u) => <span className="capitalize text-gray-400">{USER_ROLE_LABELS[u.role] || u.role.replace(/_/g, " ")}</span> },
     { key: "status", header: "Status", render: (u) => <StatusBadge status={u.status} /> },
     { key: "lastLogin", header: "Last Login", render: (u) => <span className="text-sm text-gray-500">{u.lastLogin ? new Date(u.lastLogin).toLocaleDateString() : "Never"}</span> },
     {
@@ -145,7 +204,7 @@ export default function UsersPage() {
           >
             <option value="all">All Roles</option>
             {allRoles.map((r) => (
-              <option key={r} value={r}>{r.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase())}</option>
+              <option key={r} value={r}>{USER_ROLE_LABELS[r]}</option>
             ))}
           </select>
           <select
@@ -166,13 +225,25 @@ export default function UsersPage() {
         <div className="mb-6 rounded-xl border border-[#1e3a5f] bg-[#012a42] p-6">
           <h3 className="mb-4 text-lg font-semibold text-white">Create New User</h3>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            <div><label className="form-label">Full Name</label><input className="form-input" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} /></div>
-            <div><label className="form-label">Email</label><input type="email" className="form-input" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} /></div>
-            <div><label className="form-label">Password</label><input type="password" className="form-input" value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} /></div>
+            <div>
+              <label className="form-label">Full Name</label>
+              <input className={`form-input ${formErrors.name ? "border-red-500/50" : ""}`} value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} />
+              {formErrors.name && <p className="mt-1 text-xs text-red-400">{formErrors.name}</p>}
+            </div>
+            <div>
+              <label className="form-label">Email</label>
+              <input type="email" className={`form-input ${formErrors.email ? "border-red-500/50" : ""}`} value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} />
+              {formErrors.email && <p className="mt-1 text-xs text-red-400">{formErrors.email}</p>}
+            </div>
+            <div>
+              <label className="form-label">Password</label>
+              <input type="password" className={`form-input ${formErrors.password ? "border-red-500/50" : ""}`} value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} />
+              {formErrors.password && <p className="mt-1 text-xs text-red-400">{formErrors.password}</p>}
+            </div>
             <div><label className="form-label">Role</label>
               <select className="form-input" value={form.role} onChange={(e) => setForm({ ...form, role: e.target.value as UserRole })}>
                 {allRoles.map((r) => (
-                  <option key={r} value={r}>{r.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase())}</option>
+                  <option key={r} value={r}>{USER_ROLE_LABELS[r]}</option>
                 ))}
               </select>
             </div>
@@ -191,13 +262,17 @@ export default function UsersPage() {
             <button onClick={() => setEditUser(null)} className="text-gray-400 hover:text-white"><X className="h-4 w-4" /></button>
           </div>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            <div><label className="form-label">First Name</label><input className="form-input" value={editForm.firstName} onChange={(e) => setEditForm({ ...editForm, firstName: e.target.value })} /></div>
+            <div>
+              <label className="form-label">First Name</label>
+              <input className={`form-input ${formErrors.firstName ? "border-red-500/50" : ""}`} value={editForm.firstName} onChange={(e) => setEditForm({ ...editForm, firstName: e.target.value })} />
+              {formErrors.firstName && <p className="mt-1 text-xs text-red-400">{formErrors.firstName}</p>}
+            </div>
             <div><label className="form-label">Last Name</label><input className="form-input" value={editForm.lastName} onChange={(e) => setEditForm({ ...editForm, lastName: e.target.value })} /></div>
             <div><label className="form-label">Email</label><input type="email" className="form-input" value={editForm.email} onChange={(e) => setEditForm({ ...editForm, email: e.target.value })} /></div>
             <div><label className="form-label">Role</label>
               <select className="form-input" value={editForm.role} onChange={(e) => setEditForm({ ...editForm, role: e.target.value as UserRole })}>
                 {allRoles.map((r) => (
-                  <option key={r} value={r}>{r.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase())}</option>
+                  <option key={r} value={r}>{USER_ROLE_LABELS[r]}</option>
                 ))}
               </select>
             </div>
@@ -212,6 +287,7 @@ export default function UsersPage() {
       {resetUserId && (
         <div className="mb-6 rounded-xl border border-[#1e3a5f] bg-[#012a42] p-6">
           <h3 className="mb-4 text-lg font-semibold text-white">Reset Password</h3>
+          {formErrors.resetPassword && <p className="mb-2 text-xs text-red-400">{formErrors.resetPassword}</p>}
           <div className="flex gap-3">
             <input
               type="password"

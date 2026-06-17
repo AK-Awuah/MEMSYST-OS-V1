@@ -3,14 +3,19 @@ import {
   signOut,
   createUserWithEmailAndPassword,
   sendPasswordResetEmail,
+  confirmPasswordReset,
+  sendEmailVerification as firebaseSendEmailVerification,
   updatePassword,
   reauthenticateWithCredential,
   EmailAuthProvider,
   onAuthStateChanged as firebaseOnAuthStateChanged,
+  getAuth,
   type User as FirebaseUser,
 } from "firebase/auth"
+import { initializeApp, deleteApp } from "firebase/app"
 import { doc, getDoc, setDoc, updateDoc, collection, query, getDocs } from "firebase/firestore"
 import { getFirebaseAuth, getFirestoreDb } from "@/lib/firebase/client"
+import firebaseConfig from "@/lib/firebase/config"
 import type { IAuthService } from "./IAuthService"
 import type { MemsystUser, UserRole } from "@/types"
 
@@ -91,8 +96,18 @@ export class FirebaseAuthService implements IAuthService {
     })
   }
 
+  async sendEmailVerification(): Promise<void> {
+    const fbUser = this.auth.currentUser
+    if (!fbUser) throw new Error("Not authenticated")
+    await firebaseSendEmailVerification(fbUser)
+  }
+
   async resetPassword(email: string): Promise<void> {
     await sendPasswordResetEmail(this.auth, email)
+  }
+
+  async confirmPasswordReset(oobCode: string, newPassword: string): Promise<void> {
+    await confirmPasswordReset(this.auth, oobCode, newPassword)
   }
 
   async changePassword(currentPassword: string, newPassword: string): Promise<void> {
@@ -114,26 +129,35 @@ export class FirebaseAuthService implements IAuthService {
   }
 
   async createUser(email: string, password: string, name: string, role: UserRole): Promise<MemsystUser> {
-    const cred = await createUserWithEmailAndPassword(this.auth, email, password)
-    const [firstName, lastName] = name.split(" ")
-    const now = new Date().toISOString()
-    const newUser: MemsystUser = {
-      id: cred.user.uid,
-      tenantId: "",
-      email,
-      emailVerified: false,
-      firstName: firstName || name,
-      lastName: lastName || "",
-      phone: "",
-      username: email.split("@")[0],
-      role,
-      permissions: this.getDefaultPermissions(role),
-      status: "active",
-      createdAt: now,
-      updatedAt: now,
+    // Use a secondary app instance to avoid signing out the current admin session
+    const secondaryApp = initializeApp(firebaseConfig, `secondary-${Date.now()}`)
+    const secondaryAuth = getAuth(secondaryApp)
+    try {
+      const cred = await createUserWithEmailAndPassword(secondaryAuth, email, password)
+      const [firstName, lastName] = name.split(" ")
+      const now = new Date().toISOString()
+      const newUser: MemsystUser = {
+        id: cred.user.uid,
+        tenantId: "",
+        email,
+        emailVerified: false,
+        firstName: firstName || name,
+        lastName: lastName || "",
+        phone: "",
+        username: email.split("@")[0],
+        role,
+        permissions: this.getDefaultPermissions(role),
+        status: "active",
+        createdAt: now,
+        updatedAt: now,
+      }
+      await setDoc(doc(this.db, "users", cred.user.uid), newUser)
+      return newUser
+    } finally {
+      // Always clean up the secondary app to free resources
+      await signOut(secondaryAuth).catch(() => {})
+      await deleteApp(secondaryApp).catch(() => {})
     }
-    await setDoc(doc(this.db, "users", cred.user.uid), newUser)
-    return newUser
   }
 
   async updateUser(userId: string, data: Partial<MemsystUser>): Promise<MemsystUser> {

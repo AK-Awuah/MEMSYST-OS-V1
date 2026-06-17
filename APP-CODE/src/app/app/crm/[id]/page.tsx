@@ -6,16 +6,14 @@ import { getCRMService } from "@/lib/services"
 import { StatusBadge } from "@/components/admin/StatusBadge"
 import type { CRMOpportunity, CRMStage } from "@/types"
 import { ArrowLeft, TrendingUp, DollarSign, Target } from "lucide-react"
-
-const stageLabels: Record<CRMStage, string> = {
-  new_lead: "New Lead", contacted: "Contacted", discovery_meeting: "Discovery Meeting",
-  needs_assessment: "Needs Assessment", proposal_sent: "Proposal Sent",
-  negotiation: "Negotiation", approved: "Approved", tenant_creation: "Tenant Creation",
-}
+import { logAuditEvent, createAuditEntry } from "@/lib/audit"
+import { useAuth } from "@/features/auth/AuthContext"
+import { CRM_STAGES, CRM_STAGE_LABELS } from "@/lib/constants"
 
 export default function CRMOpportunityDetailPage() {
   const params = useParams()
   const router = useRouter()
+  const { user: currentUser } = useAuth()
   const [opportunity, setOpportunity] = useState<CRMOpportunity | null>(null)
   const [loading, setLoading] = useState(true)
   const [updating, setUpdating] = useState(false)
@@ -31,10 +29,21 @@ export default function CRMOpportunityDetailPage() {
 
   async function handleStageChange(stage: CRMStage) {
     if (!opportunity) return
+    const prev = opportunity.currentStage
     setUpdating(true)
     const svc = await getCRMService()
     await svc.updateStage(opportunity.id, stage)
     setOpportunity({ ...opportunity, currentStage: stage })
+    await logAuditEvent(createAuditEntry({
+      actor: currentUser ? `${currentUser.firstName} ${currentUser.lastName}` : "System",
+      role: currentUser?.role || "system",
+      action: "STATUS_CHANGE",
+      module: "CRM",
+      recordType: "CRMOpportunity",
+      recordId: opportunity.id,
+      previousValue: prev,
+      newValue: stage,
+    }))
     setUpdating(false)
   }
 
@@ -59,7 +68,7 @@ export default function CRMOpportunityDetailPage() {
 
       <div className="mb-6 flex flex-wrap gap-2">
         <StatusBadge status={opportunity.currentStage} variant="stage" />
-        {(["new_lead", "contacted", "discovery_meeting", "needs_assessment", "proposal_sent", "negotiation", "approved", "tenant_creation"] as CRMStage[]).map((s) => (
+        {CRM_STAGES.map((s) => (
           <button
             key={s}
             onClick={() => handleStageChange(s)}
@@ -70,7 +79,7 @@ export default function CRMOpportunityDetailPage() {
                 : "border-[#1e3a5f] text-gray-400 hover:border-[#3CA4F9]/50 hover:text-white"
             } disabled:opacity-50`}
           >
-            {stageLabels[s]}
+            {CRM_STAGE_LABELS[s]}
           </button>
         ))}
       </div>

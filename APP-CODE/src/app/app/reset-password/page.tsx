@@ -2,11 +2,16 @@
 
 import { useState, type FormEvent } from "react"
 import Link from "next/link"
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import { ArrowLeft } from "lucide-react"
+import { getAuthService } from "@/lib/services"
+import { logAuditEvent, createAuditEntry } from "@/lib/audit"
+import { validatePassword } from "@/lib/validation"
 
 export default function ResetPasswordPage() {
   const router = useRouter()
+  const searchParams = useSearchParams()
+  const oobCode = searchParams.get("oobCode") || searchParams.get("code") || ""
   const [password, setPassword] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("")
   const [error, setError] = useState("")
@@ -15,17 +20,29 @@ export default function ResetPasswordPage() {
   async function handleSubmit(e: FormEvent) {
     e.preventDefault()
     setError("")
+    const pwdErr = validatePassword(password)
+    if (pwdErr) { setError(pwdErr); return }
     if (password !== confirmPassword) {
       setError("Passwords do not match")
       return
     }
-    if (password.length < 8) {
-      setError("Password must be at least 8 characters")
+    if (!oobCode) {
+      setError("Invalid or missing reset token. Please request a new password reset link.")
       return
     }
     setIsSubmitting(true)
     try {
-      await new Promise((r) => setTimeout(r, 1000))
+      const svc = await getAuthService()
+      await svc.confirmPasswordReset(oobCode, password)
+      await logAuditEvent(createAuditEntry({
+        actor: "system",
+        role: "system",
+        action: "password_reset_completed",
+        module: "AUTH",
+        recordType: "User",
+        recordId: oobCode.slice(0, 8),
+        newValue: "Password reset completed",
+      }))
       router.push("/app/login")
     } catch {
       setError("Failed to reset password")

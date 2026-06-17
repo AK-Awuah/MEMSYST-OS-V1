@@ -1,29 +1,11 @@
 import type { ReactNode } from "react"
 import { useAuth } from "@/features/auth/AuthContext"
-
-export const routePermissions: Record<string, string | null> = {
-  "/app/dashboard": null,
-  "/app/forms": "forms:read",
-  "/app/leads": "leads:read",
-  "/app/crm": "crm:read",
-  "/app/notifications": "notifications:read",
-  "/app/organizations": "organizations:read",
-  "/app/tenants": "tenants:read",
-  "/app/onboarding": "tenants:write",
-  "/app/users": "users:read",
-  "/app/roles": "roles:read",
-  "/app/sessions": null,
-  "/app/security": null,
-  "/app/settings": "settings:read",
-  "/app/audit-logs": "audit:read",
-  "/app/profile": null,
-  "/app/change-password": null,
-}
+import { ROUTE_PERMISSIONS } from "@/lib/constants"
 
 export function getRequiredPermission(pathname: string): string | null {
-  const exact = routePermissions[pathname]
+  const exact = ROUTE_PERMISSIONS[pathname]
   if (exact !== undefined) return exact
-  for (const [route, perm] of Object.entries(routePermissions)) {
+  for (const [route, perm] of Object.entries(ROUTE_PERMISSIONS)) {
     if (pathname.startsWith(route + "/")) return perm
   }
   return null

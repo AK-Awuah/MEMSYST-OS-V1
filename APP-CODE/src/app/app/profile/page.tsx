@@ -4,14 +4,20 @@ import { useState, useEffect } from "react"
 import { useAuth } from "@/features/auth/AuthContext"
 import { PageHeader } from "@/components/admin/PageHeader"
 import { Mail, Phone, Shield, Calendar, BadgeCheck, AlertTriangle } from "lucide-react"
+import { getAuthService } from "@/lib/services"
+import { logAuditEvent, createAuditEntry } from "@/lib/audit"
+import { validatePhone } from "@/lib/validation"
 
 export default function ProfilePage() {
-  const { user } = useAuth()
+  const { user, refreshUser } = useAuth()
   const [firstName, setFirstName] = useState("")
   const [lastName, setLastName] = useState("")
   const [phone, setPhone] = useState("")
   const [saving, setSaving] = useState(false)
   const [saved, setSaved] = useState(false)
+  const [error, setError] = useState("")
+  const [resending, setResending] = useState(false)
+  const [resendSent, setResendSent] = useState(false)
 
   useEffect(() => {
     if (user) {
@@ -22,11 +28,46 @@ export default function ProfilePage() {
   }, [user])
 
   async function handleSave() {
+    if (!user) return
+    const phoneErr = phone ? validatePhone(phone) : null
+    if (phoneErr) { setError(phoneErr); return }
+    setError("")
     setSaving(true)
-    await new Promise((r) => setTimeout(r, 800))
-    setSaving(false)
-    setSaved(true)
-    setTimeout(() => setSaved(false), 3000)
+    try {
+      const svc = await getAuthService()
+      await svc.updateUser(user.id, { firstName, lastName, phone } as Partial<typeof user>)
+      await logAuditEvent(createAuditEntry({
+        actor: `${user.firstName} ${user.lastName}`,
+        role: user.role,
+        action: "UPDATE",
+        module: "USERS",
+        recordType: "Profile",
+        recordId: user.id,
+        newValue: "Profile updated",
+      }))
+      await refreshUser()
+      setSaved(true)
+      setTimeout(() => setSaved(false), 3000)
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to save profile")
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  async function handleResendVerification() {
+    if (!user) return
+    setResending(true)
+    setResendSent(false)
+    try {
+      const svc = await getAuthService()
+      await svc.sendEmailVerification()
+      setResendSent(true)
+    } catch {
+      setError("Failed to send verification email")
+    } finally {
+      setResending(false)
+    }
   }
 
   if (!user) return null
@@ -88,8 +129,12 @@ export default function ProfilePage() {
                 <p className="text-xs text-gray-400">{user.email}</p>
               </div>
             </div>
-            <button className="rounded-lg bg-[#3CA4F9] px-4 py-2 text-xs font-medium text-white hover:bg-[#3594e0]">
-              Resend Verification
+            <button
+              onClick={handleResendVerification}
+              disabled={resending}
+              className="rounded-lg bg-[#3CA4F9] px-4 py-2 text-xs font-medium text-white hover:bg-[#3594e0] disabled:opacity-50"
+            >
+              {resending ? "Sending..." : resendSent ? "Sent!" : "Resend Verification"}
             </button>
           </div>
         )}
@@ -97,6 +142,12 @@ export default function ProfilePage() {
 
       <div className="rounded-xl border border-[#1e3a5f] bg-[#012a42] p-6">
         <h3 className="mb-4 text-lg font-semibold text-white">Edit Profile</h3>
+
+        {error && (
+          <div className="mb-4 rounded-lg border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-400">
+            {error}
+          </div>
+        )}
 
         {saved && (
           <div className="mb-4 rounded-lg border border-green-500/30 bg-green-500/10 px-4 py-3 text-sm text-green-400">

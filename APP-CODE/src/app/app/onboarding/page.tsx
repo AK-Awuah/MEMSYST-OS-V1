@@ -4,6 +4,8 @@ import { useState } from "react"
 import { PageHeader } from "@/components/admin/PageHeader"
 import { getOrganizationService } from "@/lib/services"
 import { Check } from "lucide-react"
+import { logAuditEvent, createAuditEntry } from "@/lib/audit"
+import { useAuth } from "@/features/auth/AuthContext"
 
 interface WizardData {
   organizationName: string
@@ -37,6 +39,7 @@ const initialWizardData: WizardData = {
 }
 
 export default function OnboardingPage() {
+  const { user } = useAuth()
   const [step, setStep] = useState(1)
   const [data, setData] = useState<WizardData>(initialWizardData)
   const [submitting, setSubmitting] = useState(false)
@@ -62,6 +65,15 @@ export default function OnboardingPage() {
         organizationType: data.organizationType || "Association",
         region: data.region || "",
       })
+      await logAuditEvent(createAuditEntry({
+        actor: user ? `${user.firstName} ${user.lastName}` : "System",
+        role: user?.role || "system",
+        action: "tenant_onboarded",
+        module: "ORGANIZATIONS",
+        recordType: "Tenant",
+        recordId: data.organizationName,
+        newValue: `Onboarded ${data.organizationName} (${data.plan}, ${data.subscription})`,
+      }))
       setSuccess(true)
     } catch (err) {
       setError(err instanceof Error ? err.message : "Failed to onboard tenant")

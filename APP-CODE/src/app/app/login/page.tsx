@@ -4,11 +4,15 @@ import { useState, type FormEvent } from "react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { useAuth } from "@/features/auth/AuthContext"
+import { Eye, EyeOff } from "lucide-react"
+import { validateLoginForm } from "@/lib/validation"
 
 export default function AppLoginPage() {
-  const [email, setEmail] = useState("admin@memsyst.com")
-  const [password, setPassword] = useState("password")
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const [showPassword, setShowPassword] = useState(false)
   const [error, setError] = useState("")
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({})
   const [isSubmitting, setIsSubmitting] = useState(false)
   const { login } = useAuth()
   const router = useRouter()
@@ -16,12 +20,20 @@ export default function AppLoginPage() {
   async function handleSubmit(e: FormEvent) {
     e.preventDefault()
     setError("")
+    setFieldErrors({})
+
+    const validation = validateLoginForm(email, password)
+    if (!validation.valid) {
+      setFieldErrors(validation.errors)
+      return
+    }
+
     setIsSubmitting(true)
     try {
       await login(email, password)
       router.replace("/app/dashboard")
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Login failed")
+      setError(err instanceof Error ? err.message : "Login failed. Please check your credentials.")
     } finally {
       setIsSubmitting(false)
     }
@@ -44,7 +56,7 @@ export default function AppLoginPage() {
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="space-y-5">
+          <form onSubmit={handleSubmit} className="space-y-5" noValidate>
             <div>
               <label className="form-label" htmlFor="email">Email</label>
               <input
@@ -52,22 +64,33 @@ export default function AppLoginPage() {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="form-input"
+                className={`form-input ${fieldErrors.email ? "border-red-500/50" : ""}`}
                 placeholder="you@organization.org"
                 required
               />
+              {fieldErrors.email && <p className="mt-1 text-xs text-red-400">{fieldErrors.email}</p>}
             </div>
             <div>
               <label className="form-label" htmlFor="password">Password</label>
-              <input
-                id="password"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="form-input"
-                placeholder="Enter your password"
-                required
-              />
+              <div className="relative">
+                <input
+                  id="password"
+                  type={showPassword ? "text" : "password"}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className={`form-input pr-10 ${fieldErrors.password ? "border-red-500/50" : ""}`}
+                  placeholder="Enter your password"
+                  required
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white"
+                >
+                  {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                </button>
+              </div>
+              {fieldErrors.password && <p className="mt-1 text-xs text-red-400">{fieldErrors.password}</p>}
             </div>
             <div className="flex items-center justify-between text-sm">
               <label className="flex items-center gap-2 text-gray-400">
