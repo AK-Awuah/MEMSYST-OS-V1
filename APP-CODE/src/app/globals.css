@@ -1,0 +1,297 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-background: #011B2B;
+  --color-foreground: #D9D9D9;
+  --color-primary: #3CA4F9;
+  --color-secondary: #01314E;
+  --color-muted: #01314E;
+  --color-accent: #3CA4F9;
+  --color-border: #01314E;
+  
+  --font-sans: "Inter", var(--font-geist-sans), sans-serif;
+  --radius: 0.5rem;
+}
+
+:root {
+  --background: #011B2B;
+  --foreground: #D9D9D9;
+  
+  --card: #01314E;
+  --card-foreground: #D9D9D9;
+  --popover: #01314E;
+  --popover-foreground: #D9D9D9;
+  --primary: #3CA4F9;
+  --primary-foreground: #011B2B;
+  --secondary: #01314E;
+  --secondary-foreground: #D9D9D9;
+  --muted: #01314E;
+  --muted-foreground: #A1A1AA;
+  --accent: #3CA4F9;
+  --accent-foreground: #011B2B;
+  --destructive: #EF4444;
+  --destructive-foreground: #FAFAFA;
+  --border: #01314E;
+  --input: #01314E;
+  --ring: #3CA4F9;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ============================================================
+   Glass Effect
+   ============================================================ */
+.glass-effect {
+  background: rgba(1, 49, 78, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(60, 164, 249, 0.1);
+}
+
+/* ============================================================
+   Form Inputs — Global Base
+   ============================================================ */
+.form-input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  background: rgba(1, 27, 43, 0.8);
+  border: 1px solid rgba(1, 49, 78, 0.8);
+  color: #ffffff;
+  font-size: 0.95rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  outline: none;
+}
+
+.form-input::placeholder {
+  color: #6b7280;
+}
+
+.form-input:focus {
+  border-color: #3CA4F9;
+  box-shadow: 0 0 0 3px rgba(60, 164, 249, 0.15);
+}
+
+.form-label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #d1d5db;
+  margin-bottom: 0.375rem;
+}
+
+/* ============================================================
+   Mobile Menu Animation
+   ============================================================ */
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.mobile-menu-enter {
+  animation: slideDown 0.22s ease forwards;
+}
+
+/* ============================================================
+   Glow Pulse for CTAs
+   ============================================================ */
+@keyframes glowPulse {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(60, 164, 249, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(60, 164, 249, 0.6);
+  }
+}
+
+.glow-pulse {
+  animation: glowPulse 3s ease-in-out infinite;
+}
+
+/* ============================================================
+   Gradient Section Divider
+   ============================================================ */
+.section-fade-bottom {
+  background: linear-gradient(to bottom, transparent, var(--background));
+}
+
+.section-fade-top {
+  background: linear-gradient(to top, transparent, var(--background));
+}
+
+/* ============================================================
+   Card Improvements
+   ============================================================ */
+.card-hover {
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.card-hover:hover {
+  transform: translateY(-4px) scale(1.01);
+  box-shadow: 0 12px 40px rgba(60, 164, 249, 0.15);
+  border-color: rgba(60, 164, 249, 0.5);
+}
+
+.card-glow {
+  position: relative;
+  overflow: hidden;
+}
+
+.card-glow::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle at 50% 0%, rgba(60, 164, 249, 0.06), transparent 60%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+
+.card-glow:hover::before {
+  opacity: 1;
+}
+
+/* ============================================================
+   Animations
+   ============================================================ */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.5s ease forwards;
+}
+
+.animate-fade-in-scale {
+  animation: fadeInScale 0.4s ease forwards;
+}
+
+.animate-slide-in-left {
+  animation: slideInLeft 0.4s ease forwards;
+}
+
+.animate-slide-in-right {
+  animation: slideInRight 0.4s ease forwards;
+}
+
+.stagger-1 { animation-delay: 0.05s; }
+.stagger-2 { animation-delay: 0.1s; }
+.stagger-3 { animation-delay: 0.15s; }
+.stagger-4 { animation-delay: 0.2s; }
+.stagger-5 { animation-delay: 0.25s; }
+.stagger-6 { animation-delay: 0.3s; }
+.stagger-7 { animation-delay: 0.35s; }
+.stagger-8 { animation-delay: 0.4s; }
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+}
+
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+/* ============================================================
+   Number Badge (Capability Cards)
+   ============================================================ */
+.capability-number {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #3CA4F9;
+  letter-spacing: 0.1em;
+  opacity: 0.7;
+}
+
+/* ============================================================
+   Prose / Rich Text
+   ============================================================ */
+.prose-memsyst p {
+  color: #d1d5db;
+  line-height: 1.8;
+  margin-bottom: 1.25rem;
+}
+
+/* ============================================================
+   Scrollbar
+   ============================================================ */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--background);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--secondary);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(60, 164, 249, 0.4);
+}
