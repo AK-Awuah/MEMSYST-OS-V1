@@ -1,0 +1,126 @@
+"use client"
+
+import { useState, useEffect } from "react"
+import { useAuth } from "@/features/auth/AuthContext"
+import { PageHeader } from "@/components/admin/PageHeader"
+import { Mail, Phone, Shield, Calendar } from "lucide-react"
+
+export default function ProfilePage() {
+  const { user } = useAuth()
+  const [firstName, setFirstName] = useState("")
+  const [lastName, setLastName] = useState("")
+  const [phone, setPhone] = useState("")
+  const [saving, setSaving] = useState(false)
+  const [saved, setSaved] = useState(false)
+
+  useEffect(() => {
+    if (user) {
+      setFirstName(user.firstName)
+      setLastName(user.lastName)
+      setPhone(user.phone || "")
+    }
+  }, [user])
+
+  async function handleSave() {
+    setSaving(true)
+    await new Promise((r) => setTimeout(r, 800))
+    setSaving(false)
+    setSaved(true)
+    setTimeout(() => setSaved(false), 3000)
+  }
+
+  if (!user) return null
+
+  return (
+    <div className="max-w-2xl">
+      <PageHeader
+        title="My Profile"
+        description="Manage your account information"
+      />
+
+      <div className="mb-6 rounded-xl border border-[#1e3a5f] bg-[#012a42] p-6">
+        <div className="mb-6 flex items-center gap-4">
+          <div className="flex h-16 w-16 items-center justify-center rounded-full bg-[#3CA4F9]/20 text-2xl font-bold text-[#3CA4F9]">
+            {user.firstName[0]}{user.lastName[0]}
+          </div>
+          <div>
+            <h2 className="text-xl font-semibold text-white">{user.firstName} {user.lastName}</h2>
+            <p className="text-sm text-[#3CA4F9] capitalize">{user.role.replace(/_/g, " ")}</p>
+          </div>
+        </div>
+
+        <dl className="grid gap-4 sm:grid-cols-2">
+          <div>
+            <dt className="flex items-center gap-1.5 text-xs text-gray-500"><Mail className="h-3.5 w-3.5" /> Email</dt>
+            <dd className="text-sm text-white">{user.email}</dd>
+          </div>
+          <div>
+            <dt className="flex items-center gap-1.5 text-xs text-gray-500"><Phone className="h-3.5 w-3.5" /> Phone</dt>
+            <dd className="text-sm text-white">{user.phone || "Not set"}</dd>
+          </div>
+          <div>
+            <dt className="flex items-center gap-1.5 text-xs text-gray-500"><Shield className="h-3.5 w-3.5" /> Role</dt>
+            <dd className="text-sm text-white capitalize">{user.role.replace(/_/g, " ")}</dd>
+          </div>
+          <div>
+            <dt className="flex items-center gap-1.5 text-xs text-gray-500"><Calendar className="h-3.5 w-3.5" /> Member Since</dt>
+            <dd className="text-sm text-white">{new Date(user.createdAt).toLocaleDateString()}</dd>
+          </div>
+        </dl>
+      </div>
+
+      <div className="rounded-xl border border-[#1e3a5f] bg-[#012a42] p-6">
+        <h3 className="mb-4 text-lg font-semibold text-white">Edit Profile</h3>
+
+        {saved && (
+          <div className="mb-4 rounded-lg border border-green-500/30 bg-green-500/10 px-4 py-3 text-sm text-green-400">
+            Profile updated successfully.
+          </div>
+        )}
+
+        <div className="space-y-4">
+          <div className="grid gap-4 sm:grid-cols-2">
+            <div>
+              <label className="form-label" htmlFor="firstName">First Name</label>
+              <input
+                id="firstName"
+                type="text"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+                className="form-input"
+              />
+            </div>
+            <div>
+              <label className="form-label" htmlFor="lastName">Last Name</label>
+              <input
+                id="lastName"
+                type="text"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+                className="form-input"
+              />
+            </div>
+          </div>
+          <div>
+            <label className="form-label" htmlFor="phone">Phone</label>
+            <input
+              id="phone"
+              type="tel"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              className="form-input"
+              placeholder="+233 XX XXX XXXX"
+            />
+          </div>
+          <button
+            onClick={handleSave}
+            disabled={saving}
+            className="rounded-lg bg-[#3CA4F9] px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#3594e0] disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            {saving ? "Saving..." : "Save Changes"}
+          </button>
+        </div>
+      </div>
+    </div>
+  )
+}
