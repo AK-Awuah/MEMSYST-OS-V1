@@ -3,6 +3,8 @@
 import { useState, useEffect } from "react"
 import { usePathname, useRouter } from "next/navigation"
 import { AuthProvider, useAuth } from "@/features/auth/AuthContext"
+import { PermissionGuard } from "@/features/auth/PermissionGuard"
+import { TenantGate } from "@/features/tenant/TenantGate"
 import { Sidebar } from "@/components/admin/Sidebar"
 import { TopNav } from "@/components/admin/TopNav"
 import { Breadcrumbs } from "@/components/admin/Breadcrumbs"
@@ -42,7 +44,11 @@ function AppShellContent({ children }: { children: React.ReactNode }) {
         <TopNav />
         <main className="p-6">
           <Breadcrumbs />
-          {children}
+          <PermissionGuard pathname={pathname}>
+            <TenantGate>
+              {children}
+            </TenantGate>
+          </PermissionGuard>
         </main>
       </div>
     </div>

@@ -3,25 +3,26 @@
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { useAuth } from "@/features/auth/AuthContext"
+import { routePermissions } from "@/features/auth/PermissionGuard"
 import {
   LayoutDashboard, FileText, Users, TrendingUp, Bell, Building2,
   UserPlus, Settings, Shield, ShieldAlert, UserCog, ChevronLeft, Key, Globe,
 } from "lucide-react"
 
 const navItems = [
-  { href: "/app/dashboard", label: "Dashboard", icon: LayoutDashboard, permission: null },
-  { href: "/app/forms", label: "Form Submissions", icon: FileText, permission: "forms:read" },
-  { href: "/app/leads", label: "Leads", icon: Users, permission: "leads:read" },
-  { href: "/app/crm", label: "CRM Pipeline", icon: TrendingUp, permission: "crm:read" },
-  { href: "/app/notifications", label: "Notifications", icon: Bell, permission: null },
-  { href: "/app/organizations", label: "Organizations", icon: Building2, permission: "organizations:read" },
-  { href: "/app/onboarding", label: "Tenant Onboarding", icon: UserPlus, permission: null },
-  { href: "/app/users", label: "User Management", icon: UserCog, permission: "users:read" },
-  { href: "/app/roles", label: "Role Management", icon: Key, permission: "roles:read" },
-  { href: "/app/sessions", label: "Sessions", icon: Globe, permission: null },
-  { href: "/app/security", label: "Security", icon: ShieldAlert, permission: null },
-  { href: "/app/settings", label: "Settings", icon: Settings, permission: null },
-  { href: "/app/audit-logs", label: "Audit Logs", icon: Shield, permission: null },
+  { href: "/app/dashboard", label: "Dashboard", icon: LayoutDashboard },
+  { href: "/app/forms", label: "Form Submissions", icon: FileText },
+  { href: "/app/leads", label: "Leads", icon: Users },
+  { href: "/app/crm", label: "CRM Pipeline", icon: TrendingUp },
+  { href: "/app/notifications", label: "Notifications", icon: Bell },
+  { href: "/app/organizations", label: "Organizations", icon: Building2 },
+  { href: "/app/onboarding", label: "Tenant Onboarding", icon: UserPlus },
+  { href: "/app/users", label: "User Management", icon: UserCog },
+  { href: "/app/roles", label: "Role Management", icon: Key },
+  { href: "/app/sessions", label: "Sessions", icon: Globe },
+  { href: "/app/security", label: "Security", icon: ShieldAlert },
+  { href: "/app/settings", label: "Settings", icon: Settings },
+  { href: "/app/audit-logs", label: "Audit Logs", icon: Shield },
 ]
 
 interface SidebarProps {
@@ -33,10 +34,12 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
   const pathname = usePathname()
   const { user } = useAuth()
 
-  function hasAccess(permission: string | null) {
-    if (!permission || !user) return true
+  function hasAccess(href: string) {
+    if (!user) return true
     if (user.permissions.includes("*")) return true
-    return user.permissions.includes(permission)
+    const required = routePermissions[href]
+    if (!required) return true
+    return user.permissions.includes(required)
   }
 
   return (
@@ -64,7 +67,7 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
       <nav className="flex-1 overflow-y-auto p-3">
         <ul className="space-y-1">
           {navItems.map((item) => {
-            if (!hasAccess(item.permission)) return null
+            if (!hasAccess(item.href)) return null
             const isActive = pathname === item.href || pathname.startsWith(item.href + "/")
             return (
               <li key={item.href}>

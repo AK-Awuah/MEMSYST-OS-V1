@@ -1,0 +1,201 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ============================================
+    // TENANT ISOLATION — every query scoped by tenantId
+    // ============================================
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isSuperAdmin() {
+      return isAuthenticated()
+        && request.auth.token.get('permissions', []).hasAny(['*']);
+    }
+
+    function getTokenField(field) {
+      return request.auth.token.get(field, null);
+    }
+
+    function userTenantId() {
+      return getTokenField('tenantId');
+    }
+
+    function hasPermission(perm) {
+      return isAuthenticated()
+        && (getTokenField('permissions', []).hasAny(['*', perm]));
+    }
+
+    function sameTenant(resourceTenant) {
+      return isAuthenticated() && resourceTenant == userTenantId();
+    }
+
+    function canAccess(requiredPermission, resourceTenant) {
+      return isAuthenticated()
+        && (isSuperAdmin() || (hasPermission(requiredPermission) && sameTenant(resourceTenant)));
+    }
+
+    // ============================================
+    // Tenant-scoped read access
+    // ============================================
+    function tenantReadAccess(requiredPermission) {
+      return isSuperAdmin()
+        || (hasPermission(requiredPermission) && resource.data.tenantId == userTenantId());
+    }
+
+    function tenantWriteAccess(requiredPermission) {
+      return isSuperAdmin()
+        || (hasPermission(requiredPermission) && resource.data.tenantId == userTenantId());
+    }
+
+    // ============================================
+    // USERS
+    // /users/{userId}
+    // ============================================
+    match /users/{userId} {
+      allow read: if isAuthenticated()
+        && (request.auth.uid == userId || isSuperAdmin()
+          || (hasPermission('users:read') && resource.data.tenantId == userTenantId()));
+
+      allow create: if hasPermission('users:write')
+        && request.resource.data.tenantId == userTenantId();
+
+      allow update: if isAuthenticated()
+        && (request.auth.uid == userId
+          || hasPermission('users:write'))
+        && (isSuperAdmin() || request.resource.data.tenantId == userTenantId());
+
+      allow delete: if isSuperAdmin();
+    }
+
+    // ============================================
+    // ROLES
+    // /roles/{roleId}
+    // ============================================
+    match /roles/{roleId} {
+      allow read: if isSuperAdmin()
+        || (hasPermission('roles:read') && resource.data.tenantId == userTenantId());
+
+      allow create: if hasPermission('roles:write')
+        && request.resource.data.tenantId == userTenantId();
+
+      allow update: if hasPermission('roles:write')
+        && (isSuperAdmin() || resource.data.tenantId == userTenantId());
+
+      allow delete: if isSuperAdmin();
+    }
+
+    // ============================================
+    // PERMISSIONS (read-only reference data)
+    // /permissions/{permKey}
+    // ============================================
+    match /permissions/{permKey} {
+      allow read: if isAuthenticated();
+      allow write: if isSuperAdmin();
+    }
+
+    // ============================================
+    // SESSIONS
+    // /sessions/{sessionId}
+    // ============================================
+    match /sessions/{sessionId} {
+      allow read: if isSuperAdmin()
+        || (request.auth.uid == resource.data.userId)
+        || (hasPermission('sessions:read') && resource.data.tenantId == userTenantId());
+
+      allow create: if request.auth.uid == request.resource.data.userId;
+      allow update: if request.auth.uid == resource.data.userId
+        || hasPermission('sessions:write');
+      allow delete: if isSuperAdmin()
+        || hasPermission('sessions:write')
+        || request.auth.uid == resource.data.userId;
+    }
+
+    // ============================================
+    // SECURITY EVENTS (immutable audit trail)
+    // /securityEvents/{eventId}
+    // ============================================
+    match /securityEvents/{eventId} {
+      allow read: if isSuperAdmin()
+        || (hasPermission('audit:read') && resource.data.tenantId == userTenantId());
+
+      // Append-only: no updates or deletes
+      allow create: if isAuthenticated();
+      allow update, delete: if false;
+    }
+
+    // ============================================
+    // TENANTS
+    // /tenants/{tenantId}
+    // ============================================
+    match /tenants/{tenantId} {
+      allow read: if isAuthenticated()
+        && (isSuperAdmin() || tenantId == userTenantId());
+
+      allow create: if hasPermission('tenants:write');
+      allow update: if hasPermission('tenants:write')
+        && (isSuperAdmin() || tenantId == userTenantId());
+      allow delete: if isSuperAdmin();
+    }
+
+    // ============================================
+    // FORMS / LEADS / CRM / ORGANIZATIONS (Stage 1 entities)
+    // All scoped by tenantId
+    // ============================================
+    match /forms/{docId} {
+      allow read, write: if canAccess('forms:read', resource.data.tenantId);
+    }
+
+    match /leads/{docId} {
+      allow read, write: if canAccess('leads:read', resource.data.tenantId);
+    }
+
+    match /crm_opportunities/{docId} {
+      allow read, write: if canAccess('crm:read', resource.data.tenantId);
+    }
+
+    match /organization_prospects/{docId} {
+      allow read, write: if canAccess('organizations:read', resource.data.tenantId);
+    }
+
+    match /notifications/{docId} {
+      allow read: if isAuthenticated()
+        && (isSuperAdmin() || resource.data.recipientId == request.auth.uid);
+      allow create: if isAuthenticated();
+      allow update: if isAuthenticated()
+        && (isSuperAdmin() || resource.data.recipientId == request.auth.uid);
+      allow delete: if false;
+    }
+
+    // ============================================
+    // TENANT SETTINGS
+    // /tenantSettings/{tenantId}
+    // ============================================
+    match /tenantSettings/{tenantId} {
+      allow read: if isAuthenticated()
+        && (isSuperAdmin() || tenantId == userTenantId());
+      allow write: if hasPermission('settings:write')
+        && (isSuperAdmin() || tenantId == userTenantId());
+    }
+
+    // ============================================
+    // AUDIT LOGS (immutable)
+    // /auditLogs/{logId}
+    // ============================================
+    match /auditLogs/{logId} {
+      allow read: if hasPermission('audit:read')
+        && (isSuperAdmin() || resource.data.tenantId == userTenantId());
+      allow create: if isAuthenticated();
+      allow update, delete: if false;
+    }
+
+    // ============================================
+    // Deny everything else by default
+    // ============================================
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
