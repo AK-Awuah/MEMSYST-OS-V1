@@ -8,6 +8,7 @@ export const routePermissions: Record<string, string | null> = {
   "/app/crm": "crm:read",
   "/app/notifications": "notifications:read",
   "/app/organizations": "organizations:read",
+  "/app/tenants": "tenants:read",
   "/app/onboarding": "tenants:write",
   "/app/users": "users:read",
   "/app/roles": "roles:read",

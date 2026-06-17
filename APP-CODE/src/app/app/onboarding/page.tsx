@@ -8,8 +8,12 @@ import { Check } from "lucide-react"
 interface WizardData {
   organizationName: string
   shortName: string
+  abbreviation: string
+  domain: string
   subdomain: string
+  organizationType: string
   country: string
+  region: string
   industry: string
   logo: string
   primaryColor: string
@@ -24,8 +28,9 @@ interface WizardData {
 }
 
 const initialWizardData: WizardData = {
-  organizationName: "", shortName: "", subdomain: "", country: "Ghana", industry: "",
-  logo: "", primaryColor: "#3CA4F9", secondaryColor: "#01314E",
+  organizationName: "", shortName: "", abbreviation: "", domain: "",
+  subdomain: "", organizationType: "Association", country: "Ghana", region: "",
+  industry: "", logo: "", primaryColor: "#3CA4F9", secondaryColor: "#01314E",
   plan: "Enterprise", subscription: "annual",
   commissionModel: "percentage", revenueDistributionModel: "shared",
   adminName: "", adminEmail: "", adminPhone: "",
@@ -52,6 +57,10 @@ export default function OnboardingPage() {
         status: "setup",
         tenantId: "",
         commercialStatus: "onboarding",
+        abbreviation: data.abbreviation || data.shortName,
+        domain: data.domain || `${data.subdomain}.memsyst.com`,
+        organizationType: data.organizationType || "Association",
+        region: data.region || "",
       })
       setSuccess(true)
     } catch (err) {

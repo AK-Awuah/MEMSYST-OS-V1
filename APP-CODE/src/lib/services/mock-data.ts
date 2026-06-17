@@ -12,6 +12,19 @@ import type {
   DashboardMetrics,
   Role,
   Permission,
+  TenantProfile,
+  TenantBranding,
+  Region,
+  Branch,
+  OrganizationalUnit,
+  ExecutivePosition,
+  ExecutiveAppointment,
+  GovernanceConfig,
+  ApprovalWorkflow,
+  TenantDocument,
+  TenantAuditLog,
+  TenantSettings,
+  MembershipFrameworkConfig,
 } from "@/types"
 
 export const mockUsers: MemsystUser[] = [
@@ -196,9 +209,13 @@ export const mockTenants: Tenant[] = [
     tenantId: "memsyst",
     organizationName: "Ghana Medical Association",
     shortName: "GMA",
+    abbreviation: "GMA",
+    domain: "gma.memsyst.com",
     subdomain: "gma",
+    organizationType: "Association",
     country: "Ghana",
-    industry: "Association",
+    region: "Greater Accra",
+    industry: "Healthcare",
     logo: "",
     primaryColor: "#1a73e8",
     secondaryColor: "#34a853",
@@ -328,6 +345,155 @@ export const allPermissions: Permission[] = [
   { key: "audit:export", label: "Export Audit Logs", group: "Audit", description: "Export audit trail data" },
   { key: "organizations:read", label: "View Organizations", group: "Tenants", description: "View organization prospects" },
   { key: "organizations:write", label: "Manage Organizations", group: "Tenants", description: "Create and edit organization prospects" },
+]
+
+// ============================================
+// STAGE 3 — TENANT MANAGEMENT PLATFORM MOCK DATA
+// ============================================
+
+export const mockTenantProfiles: TenantProfile[] = [
+  {
+    id: "tp-1",
+    tenantId: "tenant-1",
+    yearEstablished: 1995,
+    description: "The Ghana Medical Association is the professional body for medical practitioners in Ghana.",
+    mission: "To promote and protect the interests of the medical profession and the health of the people of Ghana.",
+    vision: "A healthy nation through excellence in medical practice.",
+    objectives: "Advance medical science, promote ethical practice, advocate for better healthcare.",
+    website: "https://gma.org.gh",
+    socialMediaLinks: ["https://twitter.com/GHMedicalAssoc", "https://linkedin.com/company/gma"],
+    createdAt: "2026-03-15T00:00:00Z",
+    updatedAt: "2026-03-20T00:00:00Z",
+  },
+]
+
+export const mockTenantBrandings: TenantBranding[] = [
+  {
+    id: "tb-1",
+    tenantId: "tenant-1",
+    logo: "",
+    coverImage: "",
+    primaryColor: "#1a73e8",
+    secondaryColor: "#34a853",
+    accentColor: "#fbbc04",
+    typography: "Inter",
+    themeSettings: { layout: "default", sidebar: "dark" },
+    createdAt: "2026-03-15T00:00:00Z",
+    updatedAt: "2026-03-20T00:00:00Z",
+  },
+]
+
+export const mockRegions: Region[] = [
+  { id: "reg-1", tenantId: "tenant-1", name: "Greater Accra", code: "GA", status: "active", createdAt: "2026-04-01T00:00:00Z", updatedAt: "2026-04-01T00:00:00Z" },
+  { id: "reg-2", tenantId: "tenant-1", name: "Ashanti", code: "AH", status: "active", createdAt: "2026-04-01T00:00:00Z", updatedAt: "2026-04-01T00:00:00Z" },
+  { id: "reg-3", tenantId: "tenant-1", name: "Western", code: "WR", status: "active", createdAt: "2026-04-01T00:00:00Z", updatedAt: "2026-04-01T00:00:00Z" },
+]
+
+export const mockBranches: Branch[] = [
+  { id: "br-1", tenantId: "tenant-1", regionId: "reg-1", name: "Accra Central", code: "ACC-C", location: "Accra", status: "active", createdAt: "2026-04-10T00:00:00Z", updatedAt: "2026-04-10T00:00:00Z" },
+  { id: "br-2", tenantId: "tenant-1", regionId: "reg-1", name: "Tema", code: "TEM", location: "Tema", status: "active", createdAt: "2026-04-10T00:00:00Z", updatedAt: "2026-04-10T00:00:00Z" },
+  { id: "br-3", tenantId: "tenant-1", regionId: "reg-2", name: "Kumasi", code: "KUM", location: "Kumasi", status: "active", createdAt: "2026-04-12T00:00:00Z", updatedAt: "2026-04-12T00:00:00Z" },
+]
+
+export const mockOrgUnits: OrganizationalUnit[] = [
+  { id: "ou-1", tenantId: "tenant-1", parentId: null, name: "National Secretariat", type: "national", status: "active", createdAt: "2026-04-01T00:00:00Z", updatedAt: "2026-04-01T00:00:00Z" },
+  { id: "ou-2", tenantId: "tenant-1", parentId: "ou-1", name: "Greater Accra Region", type: "regional", status: "active", createdAt: "2026-04-01T00:00:00Z", updatedAt: "2026-04-01T00:00:00Z" },
+  { id: "ou-3", tenantId: "tenant-1", parentId: "ou-2", name: "Accra Central Branch", type: "branch", status: "active", createdAt: "2026-04-10T00:00:00Z", updatedAt: "2026-04-10T00:00:00Z" },
+]
+
+export const mockExecutivePositions: ExecutivePosition[] = [
+  { id: "ep-1", tenantId: "tenant-1", title: "National President", level: "national", termLength: 24, description: "Highest elected office", status: "active", createdAt: "2026-04-01T00:00:00Z", updatedAt: "2026-04-01T00:00:00Z" },
+  { id: "ep-2", tenantId: "tenant-1", title: "Vice President", level: "national", termLength: 24, description: "Deputy to the President", status: "active", createdAt: "2026-04-01T00:00:00Z", updatedAt: "2026-04-01T00:00:00Z" },
+  { id: "ep-3", tenantId: "tenant-1", title: "National Secretary", level: "national", termLength: 24, description: "Responsible for records and correspondence", status: "active", createdAt: "2026-04-01T00:00:00Z", updatedAt: "2026-04-01T00:00:00Z" },
+  { id: "ep-4", tenantId: "tenant-1", title: "National Treasurer", level: "national", termLength: 24, description: "Responsible for financial management", status: "active", createdAt: "2026-04-01T00:00:00Z", updatedAt: "2026-04-01T00:00:00Z" },
+  { id: "ep-5", tenantId: "tenant-1", title: "Regional Chairman", level: "regional", termLength: 12, description: "Regional leadership", status: "active", createdAt: "2026-04-01T00:00:00Z", updatedAt: "2026-04-01T00:00:00Z" },
+  { id: "ep-6", tenantId: "tenant-1", title: "Branch Chairman", level: "branch", termLength: 12, description: "Branch-level leadership", status: "active", createdAt: "2026-04-01T00:00:00Z", updatedAt: "2026-04-01T00:00:00Z" },
+]
+
+export const mockExecutiveAppointments: ExecutiveAppointment[] = [
+  { id: "ea-1", tenantId: "tenant-1", executiveId: "user-3", positionId: "ep-1", level: "national", unitId: "ou-1", startDate: "2026-04-15T00:00:00Z", endDate: "2028-04-15T00:00:00Z", status: "active", createdAt: "2026-04-15T00:00:00Z", updatedAt: "2026-04-15T00:00:00Z" },
+  { id: "ea-2", tenantId: "tenant-1", executiveId: "user-2", positionId: "ep-3", level: "national", unitId: "ou-1", startDate: "2026-04-15T00:00:00Z", endDate: "2028-04-15T00:00:00Z", status: "active", createdAt: "2026-04-15T00:00:00Z", updatedAt: "2026-04-15T00:00:00Z" },
+]
+
+export const mockGovernanceConfigs: GovernanceConfig[] = [
+  {
+    id: "gc-1",
+    tenantId: "tenant-1",
+    approvalLevels: ["branch", "regional", "national"],
+    governanceHierarchy: { branch: ["regional"], regional: ["national"], national: [] },
+    executiveStructure: ["national_president", "vice_president", "national_secretary", "national_treasurer"],
+    organizationalRules: ["Two-term limit for president", "Annual general meeting required", "Financial audit every 6 months"],
+    createdAt: "2026-04-01T00:00:00Z",
+    updatedAt: "2026-04-01T00:00:00Z",
+  },
+]
+
+export const mockApprovalWorkflows: ApprovalWorkflow[] = [
+  {
+    id: "aw-1",
+    tenantId: "tenant-1",
+    name: "Membership Approval",
+    stages: [
+      { order: 1, label: "Branch Review", approverLevel: "branch", required: true },
+      { order: 2, label: "Regional Review", approverLevel: "regional", required: true },
+      { order: 3, label: "National Approval", approverLevel: "national", required: true },
+    ],
+    status: "active",
+    createdAt: "2026-04-05T00:00:00Z",
+    updatedAt: "2026-04-05T00:00:00Z",
+  },
+  {
+    id: "aw-2",
+    tenantId: "tenant-1",
+    name: "Expense Approval",
+    stages: [
+      { order: 1, label: "Branch Chairman Approval", approverLevel: "branch", required: true },
+      { order: 2, label: "National Treasurer Approval", approverLevel: "national", required: true },
+    ],
+    status: "active",
+    createdAt: "2026-04-05T00:00:00Z",
+    updatedAt: "2026-04-05T00:00:00Z",
+  },
+]
+
+export const mockTenantDocuments: TenantDocument[] = [
+  { id: "td-1", tenantId: "tenant-1", name: "GMA Constitution", type: "policy", url: "/docs/gma-constitution.pdf", status: "active", uploadedBy: "user-1", createdAt: "2026-03-20T00:00:00Z", updatedAt: "2026-03-20T00:00:00Z" },
+  { id: "td-2", tenantId: "tenant-1", name: "Registration Certificate", type: "legal", url: "/docs/gma-registration.pdf", status: "active", uploadedBy: "user-1", createdAt: "2026-03-20T00:00:00Z", updatedAt: "2026-03-20T00:00:00Z" },
+]
+
+export const mockTenantAuditLogs: TenantAuditLog[] = [
+  { id: "tal-1", tenantId: "tenant-1", actor: "Kwame Asante", action: "tenant_created", module: "tenants", record: "Tenant", recordId: "tenant-1", newValue: "Tenant created: Ghana Medical Association", createdAt: "2026-03-15T00:00:00Z" },
+  { id: "tal-2", tenantId: "tenant-1", actor: "Kwame Asante", action: "region_created", module: "structure", record: "Region", recordId: "reg-1", newValue: "Region created: Greater Accra", createdAt: "2026-04-01T00:00:00Z" },
+  { id: "tal-3", tenantId: "tenant-1", actor: "Kwame Asante", action: "branch_created", module: "structure", record: "Branch", recordId: "br-1", newValue: "Branch created: Accra Central", createdAt: "2026-04-10T00:00:00Z" },
+  { id: "tal-4", tenantId: "tenant-1", actor: "Kwame Asante", action: "position_created", module: "executives", record: "ExecutivePosition", recordId: "ep-1", newValue: "Position created: National President", createdAt: "2026-04-01T00:00:00Z" },
+  { id: "tal-5", tenantId: "tenant-1", actor: "Kwame Asante", action: "executive_appointed", module: "executives", record: "ExecutiveAppointment", recordId: "ea-1", newValue: "Yaw Mensah appointed as National President", createdAt: "2026-04-15T00:00:00Z" },
+  { id: "tal-6", tenantId: "tenant-1", actor: "Kwame Asante", action: "config_changed", module: "governance", record: "GovernanceConfig", recordId: "gc-1", newValue: "Governance configuration updated", createdAt: "2026-04-05T00:00:00Z" },
+]
+
+export const mockTenantSettings: TenantSettings[] = [
+  {
+    id: "ts-1",
+    tenantId: "tenant-1",
+    general: { locale: "en-GH", timezone: "Africa/Accra", dateFormat: "DD/MM/YYYY" },
+    branding: { primaryColor: "#1a73e8", secondaryColor: "#34a853" },
+    governance: { approvalChain: "branch->regional->national" },
+    membership: {
+      categories: [
+        { id: "mc-1", name: "Full Member", description: "Licensed medical practitioner", requiresApproval: true, renewalPeriodMonths: 12, fee: 500 },
+        { id: "mc-2", name: "Associate Member", description: "Medical student or intern", requiresApproval: false, renewalPeriodMonths: 12, fee: 100 },
+        { id: "mc-3", name: "Honorary Member", description: "Awarded for distinguished service", requiresApproval: true, renewalPeriodMonths: 0, fee: 0 },
+      ],
+      registrationRequirements: ["Valid medical license", "Proof of identity", "Two references"],
+      approvalRules: ["Branch committee reviews application", "Regional chairperson approves", "National secretariat issues certificate"],
+      renewalRules: ["Renewal notice sent 60 days before expiry", "Late renewal fee applies after 30 days", "Lapsed after 90 days without renewal"],
+    },
+    finance: { currency: "GHS", fiscalYearStart: "January" },
+    notifications: { email: true, sms: false, inApp: true },
+    training: { requiresApproval: true, maxParticipants: 100 },
+    marketplace: { enabled: false },
+    createdAt: "2026-03-15T00:00:00Z",
+    updatedAt: "2026-03-20T00:00:00Z",
+  },
 ]
 
 export const mockRolePermissions: Record<string, string[]> = {

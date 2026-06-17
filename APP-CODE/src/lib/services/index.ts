@@ -12,6 +12,13 @@ import type { ISessionService } from "./ISessionService"
 import type { ISecurityAuditService } from "./ISecurityAuditService"
 import type { IAccessControlService } from "./IAccessControlService"
 import type { ITenantProvisioningService } from "./ITenantProvisioningService"
+import type { ITenantManagementService } from "./ITenantManagementService"
+import type { IOrganizationStructureService } from "./IOrganizationStructureService"
+import type { IExecutiveService } from "./IExecutiveService"
+import type { IGovernanceService } from "./IGovernanceService"
+import type { ITenantSettingsService } from "./ITenantSettingsService"
+import type { ITenantDocumentService } from "./ITenantDocumentService"
+import type { ITenantAuditService } from "./ITenantAuditService"
 
 type ServiceInstance =
   | IAuthService
@@ -27,6 +34,13 @@ type ServiceInstance =
   | ISecurityAuditService
   | IAccessControlService
   | ITenantProvisioningService
+  | ITenantManagementService
+  | IOrganizationStructureService
+  | IExecutiveService
+  | IGovernanceService
+  | ITenantSettingsService
+  | ITenantDocumentService
+  | ITenantAuditService
 
 const instances = new Map<string, ServiceInstance>()
 
@@ -154,6 +168,62 @@ export async function getTenantProvisioningService(): Promise<ITenantProvisionin
   return createInstance("tenantProvisioning", new FirebaseTenantProvisioningService())
 }
 
+export async function getTenantManagementService(): Promise<ITenantManagementService> {
+  if (USE_MOCK_SERVICES) {
+    const { MockTenantManagementService } = await import("./MockTenantManagementService")
+    return createInstance("tenantManagement", new MockTenantManagementService())
+  }
+  throw new Error("FirebaseTenantManagementService not yet implemented")
+}
+
+export async function getOrganizationStructureService(): Promise<IOrganizationStructureService> {
+  if (USE_MOCK_SERVICES) {
+    const { MockOrganizationStructureService } = await import("./MockOrganizationStructureService")
+    return createInstance("orgStructure", new MockOrganizationStructureService())
+  }
+  throw new Error("FirebaseOrganizationStructureService not yet implemented")
+}
+
+export async function getExecutiveService(): Promise<IExecutiveService> {
+  if (USE_MOCK_SERVICES) {
+    const { MockExecutiveService } = await import("./MockExecutiveService")
+    return createInstance("executive", new MockExecutiveService())
+  }
+  throw new Error("FirebaseExecutiveService not yet implemented")
+}
+
+export async function getGovernanceService(): Promise<IGovernanceService> {
+  if (USE_MOCK_SERVICES) {
+    const { MockGovernanceService } = await import("./MockGovernanceService")
+    return createInstance("governance", new MockGovernanceService())
+  }
+  throw new Error("FirebaseGovernanceService not yet implemented")
+}
+
+export async function getTenantSettingsService(): Promise<ITenantSettingsService> {
+  if (USE_MOCK_SERVICES) {
+    const { MockTenantSettingsService } = await import("./MockTenantSettingsService")
+    return createInstance("tenantSettings", new MockTenantSettingsService())
+  }
+  throw new Error("FirebaseTenantSettingsService not yet implemented")
+}
+
+export async function getTenantDocumentService(): Promise<ITenantDocumentService> {
+  if (USE_MOCK_SERVICES) {
+    const { MockTenantDocumentService } = await import("./MockTenantDocumentService")
+    return createInstance("tenantDocuments", new MockTenantDocumentService())
+  }
+  throw new Error("FirebaseTenantDocumentService not yet implemented")
+}
+
+export async function getTenantAuditService(): Promise<ITenantAuditService> {
+  if (USE_MOCK_SERVICES) {
+    const { MockTenantAuditService } = await import("./MockTenantAuditService")
+    return createInstance("tenantAudit", new MockTenantAuditService())
+  }
+  throw new Error("FirebaseTenantAuditService not yet implemented")
+}
+
 export type {
   IAuthService,
   IFormsService,
@@ -168,5 +238,12 @@ export type {
   ISecurityAuditService,
   IAccessControlService,
   ITenantProvisioningService,
+  ITenantManagementService,
+  IOrganizationStructureService,
+  IExecutiveService,
+  IGovernanceService,
+  ITenantSettingsService,
+  ITenantDocumentService,
+  ITenantAuditService,
 }
 export type { AuthState } from "./IAuthService"

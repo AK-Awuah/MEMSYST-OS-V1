@@ -13,6 +13,7 @@ const labelMap: Record<string, string> = {
   organizations: "Organizations",
   onboarding: "Tenant Onboarding",
   users: "Users",
+  tenants: "Tenants",
   roles: "Role Management",
   sessions: "Sessions",
   security: "Security Dashboard",

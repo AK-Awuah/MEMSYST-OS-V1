@@ -6,7 +6,7 @@ import { useAuth } from "@/features/auth/AuthContext"
 import { routePermissions } from "@/features/auth/PermissionGuard"
 import {
   LayoutDashboard, FileText, Users, TrendingUp, Bell, Building2,
-  UserPlus, Settings, Shield, ShieldAlert, UserCog, ChevronLeft, Key, Globe,
+  UserPlus, Settings, Shield, ShieldAlert, UserCog, ChevronLeft, Key, Globe, Layers,
 } from "lucide-react"
 
 const navItems = [
@@ -16,6 +16,7 @@ const navItems = [
   { href: "/app/crm", label: "CRM Pipeline", icon: TrendingUp },
   { href: "/app/notifications", label: "Notifications", icon: Bell },
   { href: "/app/organizations", label: "Organizations", icon: Building2 },
+  { href: "/app/tenants", label: "Tenants", icon: Layers },
   { href: "/app/onboarding", label: "Tenant Onboarding", icon: UserPlus },
   { href: "/app/users", label: "User Management", icon: UserCog },
   { href: "/app/roles", label: "Role Management", icon: Key },
