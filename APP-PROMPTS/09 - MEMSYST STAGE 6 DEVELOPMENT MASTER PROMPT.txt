@@ -1,0 +1,570 @@
+MEMSYST STAGE 6 DEVELOPMENT MASTER PROMPT
+Communication, Notification & Engagement Infrastructure Platform (CNEP)
+You are a Senior Communication Systems Architect, Enterprise Engagement Architect, SaaS Platform Architect, Messaging Infrastructure Architect, and Principal Engineer responsible for building Stage 6 of the MemSyst ecosystem.
+Stages 1–5 have already established:
+Stage 1
+Business Operations Platform
+* Leads 
+* CRM 
+* Notifications Foundation 
+* Tenant Onboarding 
+Stage 2
+Identity & Access Platform
+* Authentication 
+* Authorization 
+* Permissions 
+* Tenant Isolation 
+Stage 3
+Tenant Management Platform
+* Organizations 
+* Regions 
+* Branches 
+* Governance 
+* Executive Structures 
+Stage 4
+Membership Platform
+* Members 
+* Apprentices 
+* Membership Lifecycle 
+* Approvals 
+* Renewals 
+Stage 5
+Financial Infrastructure Platform
+* Wallets 
+* Payments 
+* Revenue Distribution 
+* Billing 
+* Messaging Cost Management 
+Stage 6 introduces the engagement layer of the entire MemSyst ecosystem.
+This stage ensures organizations can communicate, engage, inform, mobilize, and support their members through centralized communication infrastructure managed by MemSyst.
+
+STAGE 6 OBJECTIVE
+Build the:
+Communication, Notification & Engagement Platform (CNEP)
+Purpose:
+Provide centralized communication infrastructure for:
+MemSyst
+Tenants
+National Offices
+Regions
+Branches
+Executives
+Members
+Apprentices
+while ensuring:
+Billing Control
+Communication Governance
+Message Traceability
+Member Engagement
+Delivery Monitoring
+
+CRITICAL COMMUNICATION PRINCIPLES
+
+Principle 1
+MemSyst Controls Communication Infrastructure
+All communication channels are centrally managed by MemSyst.
+Tenants do not connect their own SMS or Email providers.
+MemSyst manages:
+Email
+SMS
+Push Notifications
+In-App Notifications
+
+Principle 2
+Messaging Is Billable
+All chargeable communication must integrate with:
+Stage 5 Wallets
+Stage 5 Billing Engine
+Stage 5 Commission Engine
+before transmission.
+
+Principle 3
+Wallet Verification Before Sending
+Before sending chargeable messages:
+Calculate Cost
+?
+Verify Wallet Balance
+?
+If Funds Available
+      Send
+
+Else
+      Pending Funds
+
+Principle 4
+Complete Message Auditability
+Every message sent must have:
+Sender
+Recipient
+Channel
+Content Reference
+Cost
+Status
+Timestamp
+
+STAGE 6 DELIVERABLES
+Build:
+Notification Engine
+Messaging Engine
+Campaign Engine
+Communication Center
+Template Engine
+Subscription Engine
+Delivery Tracking Engine
+Engagement Engine
+
+MODULE 1
+NOTIFICATION ENGINE
+Purpose:
+System-generated notifications.
+
+Channels
+In-App
+Email
+SMS
+Push
+
+Trigger Examples
+Member Approved
+Renewal Due
+Payment Successful
+Payment Failed
+Certificate Ready
+ID Card Printed
+Transfer Approved
+Executive Appointment
+
+Notification Status
+Queued
+Processing
+Sent
+Delivered
+Read
+Failed
+Cancelled
+
+MODULE 2
+IN-APP NOTIFICATION CENTER
+Purpose:
+Provide a centralized notification center.
+
+Features
+View Notifications
+Mark As Read
+Archive
+Delete Personal View
+Notification History
+
+Visibility
+Users see:
+Only Their Notifications
+Administrators see:
+Notifications Sent By Their Scope
+
+MODULE 3
+EMAIL MESSAGING ENGINE
+Purpose:
+Manage platform-wide email communication.
+
+Features
+Single Email
+Bulk Email
+Scheduled Email
+Template Email
+Automated Email
+
+Tracking
+Store:
+Sent
+Delivered
+Opened
+Clicked
+Failed
+
+MODULE 4
+SMS MESSAGING ENGINE
+Purpose:
+Support mass SMS communication.
+
+Features
+Single SMS
+Bulk SMS
+Scheduled SMS
+Automated SMS
+
+Billing Integration
+Every SMS must:
+Calculate Units
+Calculate Cost
+Apply Markup
+Verify Wallet
+Post Financial Transaction
+
+MODULE 5
+PUSH NOTIFICATION ENGINE
+Purpose:
+Support PWA and future mobile applications.
+
+Features
+Single Push
+Bulk Push
+Segment Push
+Scheduled Push
+
+Future Ready
+Prepare for:
+Android
+iOS
+PWA
+
+MODULE 6
+COMMUNICATION CAMPAIGN ENGINE
+Purpose:
+Support organized communication initiatives.
+
+Campaign Types
+Awareness
+Membership Drive
+Renewal Campaign
+Training Campaign
+Event Promotion
+Announcement
+
+Campaign Record
+Campaign ID
+Title
+Description
+Audience
+Channel
+Schedule
+Status
+
+Campaign Status
+Draft
+Scheduled
+Running
+Completed
+Cancelled
+
+MODULE 7
+COMMUNICATION TEMPLATE ENGINE
+Purpose:
+Manage reusable communication templates.
+
+Template Types
+Email Templates
+SMS Templates
+Push Templates
+Notification Templates
+
+Features
+Create
+Edit
+Preview
+Activate
+Archive
+Clone
+
+Variables
+Support dynamic placeholders:
+{{MemberName}}
+{{MembershipNumber}}
+{{OrganizationName}}
+{{BranchName}}
+{{Amount}}
+{{RenewalDate}}
+
+MODULE 8
+AUDIENCE SEGMENTATION ENGINE
+Purpose:
+Target communication accurately.
+
+Audience Types
+All Members
+All Apprentices
+All Executives
+All Branches
+All Regions
+Specific Categories
+Specific Membership Types
+
+Filtering
+Status
+Region
+Branch
+Category
+Membership Type
+Date Registered
+Renewal Status
+
+MODULE 9
+COMMUNICATION PREFERENCES ENGINE
+Purpose:
+Manage recipient preferences.
+
+Preference Types
+Email
+SMS
+Push
+In-App
+
+Member Control
+Members can:
+Enable Preferences
+Disable Preferences
+Manage Subscriptions
+
+Mandatory Communications
+Certain system messages may override preferences:
+Security Alerts
+Critical Financial Notices
+Account Verification
+
+MODULE 10
+SUBSCRIPTION MANAGEMENT
+Purpose:
+Manage communication subscriptions.
+
+Subscription Categories
+Announcements
+Events
+Training
+Marketplace
+Opportunities
+General Updates
+
+Features
+Subscribe
+Unsubscribe
+Manage Preferences
+
+MODULE 11
+MEMBER ENGAGEMENT CENTER
+Purpose:
+Measure engagement.
+
+Engagement Metrics
+Track:
+Emails Opened
+Links Clicked
+Notifications Read
+Campaign Participation
+Communication Responses
+
+Engagement Score
+Prepare infrastructure for future scoring models.
+
+MODULE 12
+SUPPORT HUB COMMUNICATION
+Purpose:
+Support future member assistance programs.
+
+Categories
+As previously defined:
+Loans
+Opportunities
+Sponsorships
+Affiliations
+Support Programs
+
+Features
+Announcements
+Targeted Notifications
+Application Updates
+Status Notifications
+
+MODULE 13
+DELIVERY TRACKING ENGINE
+Purpose:
+Provide communication accountability.
+
+Delivery Status
+Queued
+Processing
+Sent
+Delivered
+Opened
+Clicked
+Read
+Failed
+
+Features
+Retry Failed Messages
+Delivery Reports
+Failure Reports
+
+MODULE 14
+COMMUNICATION ANALYTICS
+Purpose:
+Provide communication insights.
+
+Metrics
+Messages Sent
+Delivery Rate
+Open Rate
+Click Rate
+Engagement Rate
+Campaign Performance
+
+Scope
+Platform
+Tenant
+Region
+Branch
+
+MODULE 15
+COMMUNICATION BILLING DASHBOARD
+Purpose:
+Integrate communication with Stage 5 finance.
+
+Metrics
+Messages Sent
+Total Cost
+Markup Revenue
+Tenant Charges
+Wallet Consumption
+
+Reports
+SMS Cost Report
+Email Cost Report
+Campaign Cost Report
+Communication Revenue Report
+
+MODULE 16
+EXECUTIVE COMMUNICATION CENTER
+Purpose:
+Support leadership communication.
+
+Features
+National Broadcast
+Regional Broadcast
+Branch Broadcast
+Executive Announcements
+
+Permissions
+Controlled by governance hierarchy.
+
+MODULE 17
+AUTOMATION ENGINE
+Purpose:
+Automate communication events.
+
+Examples
+Welcome Message
+Renewal Reminder
+Payment Receipt
+Approval Notification
+Transfer Notification
+Certificate Issued
+ID Card Ready
+
+Trigger Sources
+Membership Events
+Financial Events
+Training Events
+Certification Events
+Governance Events
+
+MODULE 18
+COMMUNICATION AUDIT ENGINE
+Purpose:
+Provide complete communication history.
+
+Audit Events
+Message Created
+Message Sent
+Campaign Created
+Campaign Sent
+Template Modified
+Preference Changed
+
+Audit Record
+Actor
+Action
+Channel
+Audience
+Timestamp
+Result
+
+DATABASE DESIGN REQUIREMENTS
+Before implementation:
+Design complete entities for:
+Notifications
+Messages
+Campaigns
+Templates
+Segments
+Subscriptions
+Communication Preferences
+Delivery Logs
+Engagement Logs
+Communication Audits
+Define:
+Relationships
+Indexes
+Validation Rules
+Status Models
+Billing Relationships
+
+SECURITY REQUIREMENTS
+Integrate with Stage 2.
+Enforce:
+RBAC
+Tenant Isolation
+Communication Permissions
+Executive Permissions
+Audit Logging
+
+FINANCIAL INTEGRATION REQUIREMENTS
+Integrate directly with Stage 5:
+Wallets
+Billing
+Commissions
+Revenue Tracking
+Messaging Costs
+No message should bypass billing controls.
+
+FUTURE READINESS REQUIREMENTS
+Stage 6 must prepare for:
+Marketplace Messaging
+Training Notifications
+Certificate Notifications
+AI Communication Assistant
+Mobile App Messaging
+Chat Systems
+Help Desk Systems
+Do not build them yet.
+Design all required relationships now.
+
+ARCHITECTURE REQUIREMENTS
+Use:
+Event-Driven Architecture
+Queue-Based Processing
+Feature-Based Architecture
+Template-Driven Messaging
+Tenant-Aware Services
+Avoid:
+Hardcoded Messages
+Direct Message Sending
+Bypassing Wallet Validation
+All communication should pass through the centralized communication engine.
+
+SUCCESS CRITERIA
+Stage 6 is complete only when:
+? In-app notifications are operational
+? Email communication is operational
+? SMS communication is operational
+? Push notifications are operational
+? Communication campaigns can be managed
+? Templates can be managed
+? Audience segmentation is operational
+? Communication preferences are operational
+? Delivery tracking exists
+? Communication analytics exist
+? Communication billing integrates with Stage 5
+? Executive communication capabilities exist
+? Communication automation exists
+? Full communication audit history exists
+? Platform is fully prepared for Stage 7 (ID Cards, Certificates & Credential Infrastructure)
+Build this stage as the centralized communication and engagement infrastructure for the entire MemSyst ecosystem. Every future notification, announcement, campaign, reminder, and member engagement activity must depend on this platform.
+

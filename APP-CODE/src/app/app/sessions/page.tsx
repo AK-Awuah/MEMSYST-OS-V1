@@ -4,10 +4,12 @@ import { useState, useEffect } from "react"
 import { PageHeader } from "@/components/admin/PageHeader"
 import { DataTable, type Column } from "@/components/admin/DataTable"
 import { getSessionService, getAuthService } from "@/lib/services"
+import { useAuth } from "@/features/auth/AuthContext"
 import type { Session, MemsystUser } from "@/types"
 import { LogOut, Monitor, Smartphone, Globe } from "lucide-react"
 
 export default function SessionsPage() {
+  const { user } = useAuth()
   const [sessions, setSessions] = useState<Session[]>([])
   const [users, setUsers] = useState<MemsystUser[]>([])
   const [loading, setLoading] = useState(true)
@@ -16,7 +18,7 @@ export default function SessionsPage() {
   async function loadData() {
     const [sessionSvc, authSvc] = await Promise.all([getSessionService(), getAuthService()])
     const [sessionData, userData] = await Promise.all([
-      sessionSvc.listAllActiveSessions("memsyst"),
+      sessionSvc.listAllActiveSessions(user?.tenantId || "memsyst"),
       authSvc.listUsers(),
     ])
     setSessions(sessionData)

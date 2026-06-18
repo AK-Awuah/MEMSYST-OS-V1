@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react"
 import { PageHeader } from "@/components/admin/PageHeader"
 import { getSecurityAuditService } from "@/lib/services"
+import { useAuth } from "@/features/auth/AuthContext"
 import type { SecurityDashboardMetrics, SecurityEvent } from "@/types"
 import { Shield, Users, AlertTriangle, Lock, Eye, LogIn, UserCog, X } from "lucide-react"
 
@@ -42,13 +43,14 @@ function ActionBadge({ action }: { action: string }) {
 }
 
 export default function SecurityDashboardPage() {
+  const { user } = useAuth()
   const [metrics, setMetrics] = useState<SecurityDashboardMetrics | null>(null)
   const [loading, setLoading] = useState(true)
   const [selectedTab, setSelectedTab] = useState<"all" | "logins" | "failed" | "changes">("all")
 
   async function loadMetrics() {
     const svc = await getSecurityAuditService()
-    const data = await svc.getDashboardMetrics("memsyst")
+    const data = await svc.getDashboardMetrics(user?.tenantId || "memsyst")
     setMetrics(data)
     setLoading(false)
   }
@@ -70,7 +72,7 @@ export default function SecurityDashboardPage() {
   switch (selectedTab) {
     case "all": displayedEvents = metrics.recentEvents; break
     case "logins": displayedEvents = metrics.recentLogins; break
-    case "failed": displayedEvents = []; break
+    case "failed": displayedEvents = metrics.recentFailedLogins; break
     case "changes": displayedEvents = metrics.recentRoleChanges; break
   }
 

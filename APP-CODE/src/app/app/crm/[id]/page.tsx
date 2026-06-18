@@ -2,129 +2,111 @@
 
 import { useState, useEffect } from "react"
 import { useParams, useRouter } from "next/navigation"
-import { getCRMService } from "@/lib/services"
+import { PageHeader } from "@/components/admin/PageHeader"
 import { StatusBadge } from "@/components/admin/StatusBadge"
-import type { CRMOpportunity, CRMStage } from "@/types"
-import { ArrowLeft, TrendingUp, DollarSign, Target } from "lucide-react"
-import { logAuditEvent, createAuditEntry } from "@/lib/audit"
-import { useAuth } from "@/features/auth/AuthContext"
-import { CRM_STAGES, CRM_STAGE_LABELS } from "@/lib/constants"
+import { getCRMService } from "@/lib/services"
+import type { CRMOpportunity } from "@/types"
+import { ArrowLeft, DollarSign, Target, Calendar } from "lucide-react"
 
 export default function CRMOpportunityDetailPage() {
   const params = useParams()
   const router = useRouter()
-  const { user: currentUser } = useAuth()
   const [opportunity, setOpportunity] = useState<CRMOpportunity | null>(null)
   const [loading, setLoading] = useState(true)
-  const [updating, setUpdating] = useState(false)
 
   useEffect(() => {
-    getCRMService().then((svc) => {
-      svc.getOpportunity(params.id as string).then((o) => {
-        setOpportunity(o)
+    getCRMService().then((svc) =>
+      svc.getOpportunity(params.id as string).then((data) => {
+        setOpportunity(data)
         setLoading(false)
       })
-    })
+    )
   }, [params.id])
-
-  async function handleStageChange(stage: CRMStage) {
-    if (!opportunity) return
-    const prev = opportunity.currentStage
-    setUpdating(true)
-    const svc = await getCRMService()
-    await svc.updateStage(opportunity.id, stage)
-    setOpportunity({ ...opportunity, currentStage: stage })
-    await logAuditEvent(createAuditEntry({
-      actor: currentUser ? `${currentUser.firstName} ${currentUser.lastName}` : "System",
-      role: currentUser?.role || "system",
-      action: "STATUS_CHANGE",
-      module: "CRM",
-      recordType: "CRMOpportunity",
-      recordId: opportunity.id,
-      previousValue: prev,
-      newValue: stage,
-    }))
-    setUpdating(false)
-  }
 
   if (loading) {
     return <div className="flex items-center justify-center py-20"><div className="h-8 w-8 animate-spin rounded-full border-2 border-[#3CA4F9] border-t-transparent" /></div>
   }
 
   if (!opportunity) {
-    return <div className="py-20 text-center text-gray-400">Opportunity not found.</div>
+    return (
+      <div className="text-center py-20">
+        <p className="text-gray-500">Opportunity not found</p>
+        <button onClick={() => router.push("/app/crm")} className="mt-4 text-[#3CA4F9] underline">Back to CRM</button>
+      </div>
+    )
+  }
+
+  const stageLabels: Record<string, string> = {
+    new_lead: "New Lead", contacted: "Contacted", discovery_meeting: "Discovery Meeting",
+    needs_assessment: "Needs Assessment", proposal_sent: "Proposal Sent",
+    negotiation: "Negotiation", approved: "Approved", tenant_creation: "Tenant Creation",
   }
 
   return (
-    <div className="max-w-4xl">
-      <button onClick={() => router.back()} className="mb-4 flex items-center gap-2 text-sm text-gray-400 hover:text-white">
-        <ArrowLeft className="h-4 w-4" /> Back to CRM Pipeline
-      </button>
-
-      <div className="mb-6">
-        <h1 className="text-2xl font-bold text-white">Opportunity Detail</h1>
-        <p className="mt-1 text-sm text-gray-400">Created {new Date(opportunity.createdAt).toLocaleDateString()}</p>
-      </div>
-
-      <div className="mb-6 flex flex-wrap gap-2">
-        <StatusBadge status={opportunity.currentStage} variant="stage" />
-        {CRM_STAGES.map((s) => (
-          <button
-            key={s}
-            onClick={() => handleStageChange(s)}
-            disabled={updating || opportunity.currentStage === s}
-            className={`rounded-lg border px-3 py-1.5 text-xs font-medium transition-colors ${
-              opportunity.currentStage === s
-                ? "border-[#3CA4F9] bg-[#3CA4F9]/15 text-[#3CA4F9]"
-                : "border-[#1e3a5f] text-gray-400 hover:border-[#3CA4F9]/50 hover:text-white"
-            } disabled:opacity-50`}
-          >
-            {CRM_STAGE_LABELS[s]}
+    <div className="mx-auto max-w-3xl">
+      <PageHeader
+        title={`Opportunity: ${opportunity.leadId}`}
+        description="CRM pipeline opportunity details"
+        actions={
+          <button onClick={() => router.back()} className="flex items-center gap-2 rounded-lg border border-[#1e3a5f] px-4 py-2 text-sm text-gray-400 hover:text-white">
+            <ArrowLeft className="h-4 w-4" /> Back
           </button>
-        ))}
-      </div>
+        }
+      />
 
-      <div className="mb-8 grid gap-6 lg:grid-cols-3">
-        <div className="rounded-xl border border-[#1e3a5f] bg-[#012a42] p-6">
-          <div className="mb-1 text-xs text-gray-500">Value</div>
-          <div className="flex items-center gap-2 text-2xl font-bold text-white">
-            <DollarSign className="h-5 w-5 text-[#3CA4F9]" />
-            GH₵{opportunity.value.toLocaleString()}
+      <div className="mb-6 grid gap-4 sm:grid-cols-4">
+        <div className="rounded-xl border border-[#1e3a5f] bg-[#012a42] p-4">
+          <div className="flex items-center justify-between">
+            <p className="text-xs text-gray-500 uppercase tracking-wider">Stage</p>
+            <Target className="h-4 w-4 text-[#3CA4F9]" />
+          </div>
+          <p className="mt-1 text-sm font-semibold text-white capitalize">{stageLabels[opportunity.currentStage] || opportunity.currentStage}</p>
+        </div>
+        <div className="rounded-xl border border-[#1e3a5f] bg-[#012a42] p-4">
+          <div className="flex items-center justify-between">
+            <p className="text-xs text-gray-500 uppercase tracking-wider">Value</p>
+            <DollarSign className="h-4 w-4 text-green-400" />
+          </div>
+          <p className="mt-1 text-lg font-semibold text-white">GH₵{opportunity.value.toLocaleString()}</p>
+        </div>
+        <div className="rounded-xl border border-[#1e3a5f] bg-[#012a42] p-4">
+          <p className="text-xs text-gray-500 uppercase tracking-wider">Probability</p>
+          <div className="mt-2 flex items-center gap-2">
+            <div className="h-2 flex-1 overflow-hidden rounded-full bg-[#1e3a5f]">
+              <div className="h-full rounded-full bg-[#3CA4F9] transition-all" style={{ width: `${opportunity.probability}%` }} />
+            </div>
+            <span className="text-sm font-semibold text-white">{opportunity.probability}%</span>
           </div>
         </div>
-        <div className="rounded-xl border border-[#1e3a5f] bg-[#012a42] p-6">
-          <div className="mb-1 text-xs text-gray-500">Probability</div>
-          <div className="flex items-center gap-2 text-2xl font-bold text-white">
-            <Target className="h-5 w-5 text-[#3CA4F9]" />
-            {opportunity.probability}%
+        <div className="rounded-xl border border-[#1e3a5f] bg-[#012a42] p-4">
+          <div className="flex items-center justify-between">
+            <p className="text-xs text-gray-500 uppercase tracking-wider">Close Date</p>
+            <Calendar className="h-4 w-4 text-[#3CA4F9]" />
           </div>
-          <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-[#1e3a5f]">
-            <div className="h-full rounded-full bg-[#3CA4F9] transition-all" style={{ width: `${opportunity.probability}%` }} />
-          </div>
-        </div>
-        <div className="rounded-xl border border-[#1e3a5f] bg-[#012a42] p-6">
-          <div className="mb-1 text-xs text-gray-500">Expected Close</div>
-          <div className="flex items-center gap-2 text-2xl font-bold text-white">
-            <TrendingUp className="h-5 w-5 text-[#3CA4F9]" />
-            {opportunity.expectedCloseDate ? new Date(opportunity.expectedCloseDate).toLocaleDateString() : "N/A"}
-          </div>
+          <p className="mt-1 text-sm font-semibold text-white">{new Date(opportunity.expectedCloseDate).toLocaleDateString()}</p>
         </div>
       </div>
 
       <div className="rounded-xl border border-[#1e3a5f] bg-[#012a42] p-6">
-        <h2 className="mb-4 text-lg font-semibold text-white">Activity Timeline</h2>
-        {opportunity.activities.length === 0 && <p className="text-sm text-gray-500">No activities recorded for this opportunity.</p>}
-        <div className="space-y-3">
-          {opportunity.activities.map((act) => (
-            <div key={act.id} className="flex items-start gap-3 rounded-lg border border-[#1e3a5f] bg-[#011B2B] p-3">
-              <div className="flex-1">
-                <p className="text-sm text-white">{act.title}</p>
-                <p className="mt-0.5 text-xs text-gray-500">{act.performedBy} · {new Date(act.createdAt).toLocaleString()}</p>
+        <h3 className="mb-4 text-lg font-semibold text-white">Activity Timeline</h3>
+        {opportunity.activities.length === 0 ? (
+          <p className="text-sm text-gray-500">No activities recorded yet.</p>
+        ) : (
+          <div className="space-y-3">
+            {opportunity.activities.map((a) => (
+              <div key={a.id} className="flex items-start gap-3 border-b border-[#1e3a5f] pb-3 last:border-0">
+                <div className={`mt-0.5 h-2 w-2 rounded-full ${
+                  a.type === "meeting" ? "bg-green-400" : a.type === "call" ? "bg-blue-400" : "bg-gray-500"
+                }`} />
+                <div>
+                  <p className="text-sm font-medium text-white">{a.title}</p>
+                  {a.description && <p className="text-xs text-gray-500">{a.description}</p>}
+                  <p className="text-xs text-gray-600">{a.performedBy} · {new Date(a.createdAt).toLocaleDateString()}</p>
+                </div>
               </div>
-              <span className="rounded-full bg-[#1e3a5f] px-2 py-0.5 text-[10px] font-medium text-gray-400 capitalize">{act.type}</span>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   )

@@ -46,6 +46,23 @@ export class MockNotificationService implements INotificationService {
     notifications.unshift(notif)
     return notif
   }
+
+  async deleteNotification(id: string): Promise<void> {
+    await delay(100)
+    notifications = notifications.filter((n) => n.id !== id)
+  }
+
+  async listByType(userId: string, type: string): Promise<Notification[]> {
+    await delay(200)
+    return notifications
+      .filter((n) => n.recipientId === userId && n.type === type)
+      .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+  }
+
+  async getNotificationById(id: string): Promise<Notification | null> {
+    await delay(100)
+    return notifications.find((n) => n.id === id) || null
+  }
 }
 
 function delay(ms: number) {

@@ -47,6 +47,7 @@ export class MockSecurityAuditService implements ISecurityAuditService {
       activeSessions: 3,
       recentEvents: tenantEvents.slice(0, 5),
       recentLogins: tenantEvents.filter((e) => e.action === "login").slice(0, 3),
+      recentFailedLogins: tenantEvents.filter((e) => e.action === "failed_login").slice(0, 5),
       recentRoleChanges: tenantEvents.filter((e) => e.action === "role_changed").slice(0, 3),
     }
   }

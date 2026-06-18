@@ -1,4 +1,4 @@
-import type { Tenant, TenantProfile, TenantBranding } from "@/types"
+import type { Tenant, TenantProfile, TenantBranding, TenantAnalytics } from "@/types"
 
 export interface ITenantManagementService {
   listTenants(params?: { status?: string; search?: string }): Promise<Tenant[]>
@@ -18,4 +18,6 @@ export interface ITenantManagementService {
   suspendTenant(id: string): Promise<void>
   reactivateTenant(id: string): Promise<void>
   archiveTenant(id: string): Promise<void>
+
+  getAnalytics(): Promise<TenantAnalytics>
 }

@@ -1,0 +1,519 @@
+MEMSYST STAGE 1 DEVELOPMENT MASTER PROMPT
+MemSyst Business Operations Platform (M-BOP)
+You are a Senior Enterprise Solutions Architect, Principal Product Engineer, SaaS Platform Architect, Database Architect, Security Architect, and Technical Lead responsible for designing and implementing Stage 1 of the MemSyst ecosystem.
+You are not building a demo.
+You are not building a prototype.
+You are building the production foundation upon which the entire MemSyst Digital Infrastructure Platform will be built.
+Every architectural decision must support future expansion into:
+* Multi-Tenant Infrastructure 
+* Membership Management 
+* Executive Management 
+* Apprenticeship Management 
+* Wallets & Payments 
+* Revenue Distribution 
+* Marketplace 
+* Training & Certification 
+* Analytics 
+* AI Services 
+* Mobile Applications 
+* Enterprise Integrations 
+The platform must be designed from the beginning to support hundreds of organizations and millions of users without requiring architectural redesign.
+
+PROJECT CONTEXT
+MemSyst is a Ghanaian Digital Infrastructure & Membership Technology Company.
+MemSyst is NOT a software company.
+MemSyst provides digital infrastructure for:
+* Associations 
+* Professional Bodies 
+* Trade Associations 
+* Cooperatives 
+* Federations 
+* Unions 
+* NGOs 
+* Alumni Associations 
+* Membership-Based Organizations 
+The public-facing marketing website has already been completed.
+Stage 1 begins the transition from a marketing website into a business operations platform.
+
+STAGE 1 OBJECTIVE
+Build the:
+MemSyst Business Operations Platform (M-BOP)
+Purpose:
+Enable MemSyst to:
+* Receive inquiries 
+* Capture leads 
+* Manage prospects 
+* Manage opportunities 
+* Convert organizations into customers 
+* Onboard tenant organizations 
+* Create future-ready tenant records 
+* Establish the operational foundation for the entire MemSyst ecosystem 
+At the end of Stage 1, MemSyst should function as a complete business operations platform.
+
+CRITICAL DEVELOPMENT RULE
+The platform must be designed according to:
+Acquire Organizations
+?
+Convert Organizations
+?
+Onboard Organizations
+?
+Create Tenants
+?
+Enable Operations
+?
+Enable Membership Ecosystem
+?
+Enable Financial Ecosystem
+Any feature that does not support this roadmap should not be included in Stage 1.
+
+TECHNOLOGY STACK
+Frontend
+Next.js 15
+TypeScript
+Tailwind CSS
+Shadcn UI
+Framer Motion
+PWA Architecture
+Backend
+Firebase Authentication
+Firestore
+Firebase Storage
+Cloud Functions
+Firebase Cloud Messaging
+Firebase Analytics
+Architecture Requirements
+Enterprise Grade
+Mobile First
+Responsive
+Secure
+Scalable
+Maintainable
+Modular
+Feature-Based
+Future Multi-Tenant Ready
+
+STAGE 1 MODULES
+Build the following modules.
+No module may be skipped.
+
+MODULE 1
+AUTHENTICATION & ACCESS MANAGEMENT
+Purpose:
+Secure access to the MemSyst Operations Platform.
+Users:
+Super Admin
+Operations Admin
+Sales Admin
+Support Admin
+Features:
+Login
+Logout
+Forgot Password
+Reset Password
+Change Password
+Email Verification
+Profile Management
+Role Assignment
+Permission Assignment
+Session Management
+Requirements:
+Firebase Authentication
+Role-Based Access Control (RBAC)
+Protected Routes
+Permission Guards
+Audit Logging
+
+MODULE 2
+ADMIN APPLICATION SHELL
+Create a dedicated internal application.
+Recommended route:
+/app
+or
+app.memsyst.com
+Application Structure:
+Dashboard
+Forms
+Leads
+CRM
+Notifications
+Organizations
+Tenant Onboarding
+Users
+Settings
+Audit Logs
+Requirements:
+Responsive Sidebar
+Top Navigation
+User Profile Menu
+Notification Center
+Breadcrumbs
+Search
+Role-Based Navigation
+
+MODULE 3
+DASHBOARD
+Purpose:
+Provide operational visibility.
+Dashboard Metrics:
+Total Leads
+New Leads
+Qualified Leads
+Active Opportunities
+Meetings Scheduled
+Proposals Sent
+Won Opportunities
+Lost Opportunities
+Pending Tenant Onboarding
+Active Tenants
+New Form Submissions
+Unread Notifications
+Widgets:
+Recent Leads
+Recent Activities
+Pipeline Overview
+Notifications
+Upcoming Tasks
+
+MODULE 4
+FORM MANAGEMENT
+Purpose:
+Receive and manage all website submissions.
+Supported Forms:
+Contact Form
+Consultation Request
+Demo Request
+Partnership Request
+Required Fields:
+Store every field submitted.
+Additional Metadata:
+Submission ID
+Submission Type
+Submission Date
+IP Address
+Source Page
+Referral Source
+Status
+Assigned User
+Statuses:
+New
+Assigned
+In Progress
+Resolved
+Closed
+Actions:
+View
+Assign
+Add Notes
+Update Status
+Convert To Lead
+Close
+Requirements:
+Website forms must save directly to Firestore.
+
+MODULE 5
+LEAD MANAGEMENT
+Purpose:
+Central prospect management system.
+Lead Record:
+Basic Information
+Lead ID
+Organization Name
+Contact Person
+Email
+Phone
+Business Information
+Organization Type
+Country
+Expected Members
+Website
+Commercial Information
+Lead Source
+Estimated Opportunity Value
+Expected Launch Date
+Assigned User
+Lead Statuses:
+New
+Qualified
+Meeting Scheduled
+Needs Assessment
+Proposal Sent
+Negotiation
+Won
+Lost
+Activities:
+Calls
+Emails
+Meetings
+Tasks
+Notes
+Attachments
+Requirements:
+Full lead history tracking.
+
+MODULE 6
+CRM PIPELINE
+Purpose:
+Manage sales opportunities.
+Pipeline:
+New Lead
+?
+Contacted
+?
+Discovery Meeting
+?
+Needs Assessment
+?
+Proposal Sent
+?
+Negotiation
+?
+Approved
+?
+Tenant Creation
+Opportunity Record:
+Opportunity ID
+Lead
+Assigned User
+Value
+Probability
+Expected Close Date
+Current Stage
+Features:
+Drag-and-Drop Pipeline
+Meeting Tracking
+Task Tracking
+Activity Timeline
+Proposal Tracking
+
+MODULE 7
+NOTIFICATIONS
+Purpose:
+Provide real-time operational alerts.
+Notification Types:
+Email
+In-App
+Trigger Events:
+New Form Submission
+New Lead
+Lead Assignment
+Meeting Scheduled
+Task Assigned
+Proposal Sent
+Tenant Approved
+User Created
+Notification Status:
+Unread
+Read
+Archived
+Requirements:
+Firebase Cloud Messaging ready.
+
+MODULE 8
+ORGANIZATION PROSPECT MANAGEMENT
+Purpose:
+Manage prospective customer organizations.
+Organization Prospect Record:
+Organization Name
+Industry Type
+Country
+Expected Members
+Current Challenges
+Desired Capabilities
+Commercial Notes
+Assigned User
+Status:
+Prospect
+Qualified
+Proposal Stage
+Negotiation
+Approved
+Rejected
+
+MODULE 9
+TENANT ONBOARDING
+Purpose:
+Convert approved organizations into future MemSyst tenants.
+Onboarding Workflow:
+Prospect
+?
+Qualified
+?
+Proposal Accepted
+?
+Contract Signed
+?
+Tenant Setup
+?
+Tenant Activated
+Tenant Setup Wizard
+Step 1
+Organization Information
+Organization Name
+Short Name
+Subdomain
+Country
+Industry
+Step 2
+Branding
+Logo
+Primary Color
+Secondary Color
+Step 3
+Commercial Setup
+Plan
+Subscription
+Commission Model
+Revenue Distribution Model
+Step 4
+Administrator
+Admin Name
+Admin Email
+Admin Phone
+Step 5
+Activate
+Requirements:
+Generate a future-ready Tenant record even though tenant platforms are not yet being built.
+
+MODULE 10
+USER MANAGEMENT
+Manage internal MemSyst users.
+Features:
+Create User
+Edit User
+Deactivate User
+Assign Roles
+Assign Permissions
+Reset Password
+User Status:
+Active
+Inactive
+Suspended
+
+MODULE 11
+SETTINGS
+Platform Settings:
+Organization Information
+Email Settings
+Notification Settings
+Lead Settings
+CRM Settings
+Tenant Settings
+Requirements:
+Configuration-driven architecture.
+Avoid hardcoded business rules.
+
+MODULE 12
+AUDIT LOGGING
+Every critical action must be logged.
+Audit Record:
+Actor
+Role
+Action
+Module
+Record Type
+Record ID
+Date
+Time
+IP Address
+Previous Value
+New Value
+Examples:
+Lead Created
+Lead Updated
+Lead Assigned
+Submission Converted
+Opportunity Updated
+Tenant Created
+User Created
+Role Updated
+Requirements:
+Immutable audit history.
+
+DATABASE DESIGN REQUIREMENTS
+Before implementation:
+Design complete entity models for:
+Users
+Roles
+Permissions
+Form Submissions
+Leads
+Lead Activities
+Organizations
+CRM Opportunities
+Tasks
+Meetings
+Notifications
+Tenants
+Settings
+Audit Logs
+Define:
+Fields
+Relationships
+Statuses
+Indexes
+Validation Rules
+No coding should begin before the data model is complete.
+
+SECURITY REQUIREMENTS
+Implement:
+RBAC
+Protected Routes
+Permission Enforcement
+Input Validation
+Firestore Security Rules
+Audit Logging
+Secure File Uploads
+Session Controls
+Prepare architecture for future MFA.
+
+FUTURE READINESS REQUIREMENTS
+Stage 1 must prepare for future:
+Multi-Tenant Architecture
+Membership Management
+Executive Management
+Apprenticeship Management
+Wallets
+Payments
+Marketplace
+Training
+Certificates
+Analytics
+AI Services
+Mobile Apps
+Do not build these modules now.
+Design for them.
+
+CODE QUALITY REQUIREMENTS
+Use:
+Feature-Based Architecture
+Service Layer Pattern
+Repository Pattern
+Reusable Components
+Type Safety
+Strict TypeScript
+Centralized Constants
+Centralized Validation
+Environment-Based Configuration
+No duplicated logic.
+No hardcoded values.
+No tightly coupled modules.
+
+SUCCESS CRITERIA
+Stage 1 is complete only when:
+? Website submissions automatically enter the platform
+? Administrators receive notifications
+? Leads can be managed end-to-end
+? CRM pipeline is operational
+? Opportunities can be tracked
+? Organizations can be converted into prospects
+? Prospects can be onboarded as tenants
+? Internal users can be managed
+? All actions are auditable
+? The architecture is ready for Stage 2 (Identity & Access Platform Expansion) and future tenant ecosystem development
+Build this as the permanent operational foundation of the MemSyst platform, not as a temporary MVP.
+
+Note:
+Fully read frontend codebase for understanding
+You may make amendments to frontend to match stage completely only if required.
+

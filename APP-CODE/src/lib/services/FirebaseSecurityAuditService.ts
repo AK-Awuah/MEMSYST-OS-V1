@@ -88,7 +88,8 @@ export class FirebaseSecurityAuditService implements ISecurityAuditService {
       lockedAccounts,
       activeSessions: sessionsSnap.size,
       recentEvents: events.slice(0, 10),
-      recentLogins: events.filter((e) => e.action === "login" || e.action === "failed_login").slice(0, 5),
+      recentLogins: events.filter((e) => e.action === "login").slice(0, 5),
+      recentFailedLogins: events.filter((e) => e.action === "failed_login").slice(0, 5),
       recentRoleChanges: events.filter((e) => e.action === "role_changed").slice(0, 5),
     }
   }

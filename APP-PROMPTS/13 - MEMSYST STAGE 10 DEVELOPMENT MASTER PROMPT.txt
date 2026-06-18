@@ -1,0 +1,602 @@
+MEMSYST STAGE 10 DEVELOPMENT MASTER PROMPT
+Support Hub, Opportunities, Grants, Loans & Member Services Platform (SHGMSP)
+You are a Senior Member Services Architect, Social Impact Systems Architect, Membership Technology Architect, Enterprise SaaS Architect, and Principal Engineer responsible for building Stage 10 of the MemSyst ecosystem.
+Stages 1–9 have already established:
+Stage 1
+Business Operations Platform
+Stage 2
+Identity & Access Platform
+Stage 3
+Tenant Management Platform
+Stage 4
+Membership & Apprentice Platform
+Stage 5
+Financial Infrastructure Platform
+Stage 6
+Communication & Engagement Platform
+Stage 7
+Digital Identity & Credential Platform
+Stage 8
+Marketplace, Business Directory & Commerce Platform
+Stage 9
+Training, Learning, Apprenticeship & Skills Development Platform
+Stage 10 introduces one of the most important member-value systems within MemSyst.
+This stage enables organizations to support members through:
+Loans
+Grants
+Scholarships
+Opportunities
+Sponsorships
+Affiliations
+Member Welfare Programs
+Business Support Services
+Emergency Assistance
+This platform transforms MemSyst from a membership management system into a member empowerment ecosystem.
+
+STAGE 10 OBJECTIVE
+Build the:
+Support Hub, Opportunities, Grants, Loans & Member Services Platform (SHGMSP)
+Purpose:
+Provide structured support services for:
+Members
+Apprentices
+Training Centers
+Businesses
+Branches
+Regions
+while enabling organizations to administer:
+Support Programs
+Funding Programs
+Opportunities
+Applications
+Approvals
+Disbursements
+Impact Tracking
+
+CRITICAL SUPPORT HUB PRINCIPLES
+
+Principle 1
+Support Programs Are Tenant-Specific
+Each tenant controls:
+Programs
+Eligibility Rules
+Application Requirements
+Approval Structures
+Funding Rules
+No hardcoded support structures.
+
+Principle 2
+Applications Must Follow Governance
+All applications must follow tenant approval workflows.
+Approval chains may include:
+Branch
+Region
+National
+Committee
+Board
+depending on tenant configuration.
+
+Principle 3
+Financial Support Must Integrate With Stage 5
+All financial assistance must connect to:
+Wallets
+Billing
+Disbursement Records
+Financial Audits
+
+Principle 4
+Every Application Must Be Auditable
+Applications must never be deleted.
+All actions remain historically traceable.
+
+STAGE 10 DELIVERABLES
+Build:
+Support Program Engine
+Opportunity Engine
+Loan Management Engine
+Grant Management Engine
+Scholarship Engine
+Application Engine
+Approval Engine
+Disbursement Engine
+Impact Tracking Engine
+
+MODULE 1
+SUPPORT PROGRAM MANAGEMENT
+Purpose:
+Manage support initiatives.
+
+Program Types
+Loans
+Grants
+Scholarships
+Business Support
+Emergency Assistance
+Sponsorships
+Affiliations
+Custom Programs
+
+Program Record
+Program ID
+Tenant ID
+Program Type
+Title
+Description
+Eligibility Rules
+Application Period
+Status
+
+Status
+Draft
+Active
+Closed
+Archived
+
+MODULE 2
+OPPORTUNITY MANAGEMENT ENGINE
+Purpose:
+Provide opportunities to members.
+
+Opportunity Types
+Jobs
+Contracts
+Tenders
+Partnerships
+Business Opportunities
+Scholarships
+Funding Opportunities
+Training Opportunities
+
+Features
+Publish
+Apply
+Save
+Share
+Close
+Archive
+
+MODULE 3
+APPLICATION MANAGEMENT ENGINE
+Purpose:
+Centralized application processing.
+
+Application Sources
+Loan Application
+Grant Application
+Scholarship Application
+Opportunity Application
+Support Request
+
+Application Record
+Application ID
+Applicant
+Program
+Submission Date
+Status
+Current Approval Stage
+
+Status
+Draft
+Submitted
+Under Review
+Approved
+Rejected
+Withdrawn
+Completed
+
+MODULE 4
+LOAN MANAGEMENT ENGINE
+Purpose:
+Manage member loan programs.
+
+Loan Record
+Loan ID
+Applicant
+Program
+Amount Requested
+Amount Approved
+Interest Model
+Repayment Period
+Status
+
+Status
+Applied
+Under Review
+Approved
+Disbursed
+Active
+Completed
+Defaulted
+Cancelled
+
+Features
+Application
+Approval
+Disbursement
+Repayment Tracking
+Loan History
+
+MODULE 5
+GRANT MANAGEMENT ENGINE
+Purpose:
+Manage grant programs.
+
+Features
+Apply
+Review
+Approve
+Disburse
+Track Usage
+Measure Impact
+
+Grant Record
+Grant ID
+Program
+Applicant
+Amount
+Status
+Impact Notes
+
+MODULE 6
+SCHOLARSHIP MANAGEMENT ENGINE
+Purpose:
+Support educational assistance.
+
+Features
+Application
+Review
+Approval
+Award
+Tracking
+Renewal
+
+Scholarship Record
+Scholarship ID
+Applicant
+Institution
+Program
+Amount
+Status
+
+MODULE 7
+AFFILIATIONS & PARTNERSHIPS ENGINE
+Purpose:
+Manage external support relationships.
+
+Examples
+Banks
+NGOs
+Government Programs
+Development Partners
+Corporate Sponsors
+Educational Institutions
+
+Features
+Partner Directory
+Program Mapping
+Referral Tracking
+Partner Opportunities
+
+MODULE 8
+APPROVAL WORKFLOW ENGINE
+Purpose:
+Support configurable governance.
+
+Approval Structures
+Examples:
+Branch ? Region ? National
+
+Branch ? National
+
+Committee ? National
+
+Direct Approval
+
+Actions
+Approve
+Reject
+Return
+Request Information
+Escalate
+
+Requirements
+Approval workflows must be:
+Configurable
+Versioned
+Auditable
+
+MODULE 9
+DOCUMENT MANAGEMENT ENGINE
+Purpose:
+Manage supporting documentation.
+
+Document Types
+Applications
+Business Plans
+National IDs
+Certificates
+Financial Statements
+Recommendations
+Supporting Letters
+
+Features
+Upload
+View
+Download
+Version History
+
+MODULE 10
+FINANCIAL DISBURSEMENT ENGINE
+Purpose:
+Manage approved financial assistance.
+
+Disbursement Types
+Loans
+Grants
+Scholarships
+Emergency Funds
+Business Support Funds
+
+Integration
+Must connect directly with:
+Stage 5 Wallets
+Stage 5 Ledger
+Stage 5 Receipts
+Stage 5 Audits
+
+Track
+Amount
+Recipient
+Source Wallet
+Disbursement Date
+Approver
+
+MODULE 11
+REPAYMENT MANAGEMENT ENGINE
+Purpose:
+Support loan repayment programs.
+
+Features
+Repayment Schedule
+Installments
+Payment Tracking
+Balance Tracking
+Penalty Rules
+
+Status
+Current
+Overdue
+Completed
+Defaulted
+
+MODULE 12
+MEMBER SUPPORT CENTER
+Purpose:
+Provide member-facing support access.
+
+Member Features
+Browse Programs
+Apply
+Track Application
+Upload Documents
+View Decisions
+View Disbursements
+
+Visibility
+Members see only their own applications.
+
+MODULE 13
+IMPACT TRACKING ENGINE
+Purpose:
+Measure effectiveness of support programs.
+
+Metrics
+Applications Submitted
+Approvals
+Disbursements
+Repayments
+Businesses Supported
+Members Assisted
+Scholarships Awarded
+
+Reporting
+Track outcomes over time.
+
+MODULE 14
+SUPPORT HUB COMMUNICATION INTEGRATION
+Purpose:
+Connect support services with Stage 6.
+
+Notifications
+Application Submitted
+Application Approved
+Application Rejected
+Disbursement Completed
+Repayment Due
+Program Opened
+Program Closing Soon
+
+Channels
+Email
+SMS
+Push
+In-App
+
+MODULE 15
+SUPPORT HUB FINANCIAL INTEGRATION
+Purpose:
+Connect support services with Stage 5.
+
+Financial Events
+Loan Disbursement
+Grant Disbursement
+Scholarship Award
+Repayment Collection
+Program Funding
+
+Requirements
+All financial activities must:
+Generate Ledger Entries
+Generate Audit Records
+Generate Receipts
+
+MODULE 16
+ELIGIBILITY & SCORING ENGINE
+Purpose:
+Automate preliminary qualification checks.
+
+Evaluation Factors
+Examples:
+Membership Status
+Membership Duration
+Training History
+Loan History
+Program Requirements
+Executive Recommendations
+
+Result
+Eligible
+Conditionally Eligible
+Not Eligible
+
+Requirements
+Scoring models must be configurable.
+
+MODULE 17
+PROGRAM ANALYTICS ENGINE
+Purpose:
+Provide support program insights.
+
+Metrics
+Applications
+Approvals
+Funding Utilization
+Repayment Performance
+Program Reach
+Impact Scores
+
+Scope
+Platform
+Tenant
+Region
+Branch
+Program
+
+MODULE 18
+SUPPORT HUB AUDIT ENGINE
+Purpose:
+Provide complete accountability.
+
+Audit Events
+Application Submitted
+Application Reviewed
+Application Approved
+Funds Disbursed
+Repayment Received
+Program Updated
+
+Audit Record
+Actor
+Action
+Record
+Date
+Time
+Before
+After
+
+MODULE 19
+SUPPORT HUB SETTINGS MANAGEMENT
+Purpose:
+Tenant-level support configuration.
+
+Settings
+Program Types
+Eligibility Rules
+Approval Rules
+Funding Rules
+Repayment Rules
+Scoring Models
+
+Requirements
+Everything configurable.
+No hardcoded workflows.
+
+DATABASE DESIGN REQUIREMENTS
+Before implementation:
+Design complete entities for:
+Support Programs
+Applications
+Loans
+Loan Repayments
+Grants
+Scholarships
+Opportunities
+Partners
+Affiliations
+Disbursements
+Eligibility Rules
+Program Audits
+Define:
+Relationships
+Indexes
+Validation Rules
+Approval States
+Funding States
+Lifecycle Models
+
+SECURITY REQUIREMENTS
+Integrate with Stage 2.
+Enforce:
+RBAC
+Tenant Isolation
+Program Permissions
+Approval Permissions
+Financial Permissions
+Audit Logging
+
+FUTURE READINESS REQUIREMENTS
+Stage 10 must prepare for:
+Credit Scoring
+Bank Integrations
+Government Grant Programs
+Donor Management
+Fundraising
+Crowdfunding
+Insurance Programs
+AI Eligibility Assessment
+Do not build them now.
+Design the architecture to support them without restructuring the platform.
+
+ARCHITECTURE REQUIREMENTS
+Use:
+Program-Based Architecture
+Workflow-Driven Approvals
+Event-Driven Processing
+Tenant-Aware Services
+Configuration-Driven Rules
+Audit-First Design
+Avoid:
+Hardcoded Approval Paths
+Hardcoded Eligibility Rules
+Manual Financial Tracking
+Deleting Application Records
+All support activities must be governed, traceable, auditable, and measurable.
+
+SUCCESS CRITERIA
+Stage 10 is complete only when:
+? Support programs can be created and managed
+? Members can apply for support programs
+? Loans can be administered and repaid
+? Grants can be administered
+? Scholarships can be administered
+? Opportunity management is operational
+? Approval workflows are configurable
+? Financial disbursements integrate with Stage 5
+? Notifications integrate with Stage 6
+? Eligibility and scoring exist
+? Impact tracking exists
+? Program analytics exist
+? Audit history exists
+? Platform is fully prepared for Stage 11 (Events, Conferences, Meetings & Attendance Management Platform)
+Build this stage as the member empowerment and support infrastructure of the MemSyst ecosystem, enabling organizations to create measurable value for members through opportunities, financial assistance, partnerships, and structured support programs.
+

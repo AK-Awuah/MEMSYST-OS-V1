@@ -1,0 +1,561 @@
+MEMSYST STAGE 4 DEVELOPMENT MASTER PROMPT
+Membership, Apprentice & Member Lifecycle Management Platform (MLMP)
+You are a Senior Membership Systems Architect, Multi-Tenant Platform Architect, Enterprise Product Architect, Digital Identity Architect, and Principal Engineer responsible for building Stage 4 of the MemSyst ecosystem.
+Stages 1–3 have already established:
+Stage 1
+MemSyst Business Operations Platform (M-BOP)
+* Leads 
+* CRM 
+* Tenant Onboarding 
+* Notifications 
+* Audit Infrastructure 
+Stage 2
+Identity & Access Platform
+* Authentication 
+* Authorization 
+* RBAC 
+* Permission Engine 
+* Tenant Isolation 
+Stage 3
+Tenant Management Platform
+* Organizations 
+* Regions 
+* Branches 
+* Governance 
+* Executive Structures 
+* Tenant Configuration 
+* Organizational Hierarchies 
+Stage 4 introduces the core operational capability of the MemSyst ecosystem:
+Membership Management
+This is the stage where tenant organizations become fully operational.
+For example:
+GHABA
+Hairdressers Association
+Barbers Association
+Professional Bodies
+Trade Associations
+Unions
+Cooperatives
+can begin registering, managing, approving, renewing, and serving members.
+
+STAGE 4 OBJECTIVE
+Build the:
+Membership, Apprentice & Member Lifecycle Management Platform
+Purpose:
+Enable tenant organizations to:
+Register Members
+Register Apprentices
+Manage Approvals
+Manage Renewals
+Manage Transfers
+Manage Upgrades
+Manage Statuses
+Manage Membership Records
+Manage Membership Directories
+while maintaining complete governance, auditability, and organizational control.
+
+CORE MEMBERSHIP PRINCIPLES
+The following principles are mandatory.
+
+Principle 1
+One Person = One Account
+A person may only have:
+One Account
+One Role
+One Tenant
+No duplicate membership accounts.
+
+Principle 2
+Members Register Apprentices
+Apprentices cannot self-register.
+Only an approved member can create an apprentice account.
+Example:
+Member
+?
+Registers Apprentice
+?
+Apprentice Linked To Member
+
+Principle 3
+Unlimited Apprentices
+A member may register:
+1 Apprentice
+10 Apprentices
+100 Apprentices
+No platform limit.
+
+Principle 4
+Apprentices Belong To A Member
+Every apprentice must be linked to:
+Parent Member
+at all times.
+
+Principle 5
+Apprentice Transfer
+An apprentice may be transferred from:
+Member A
+?
+Member B
+with complete audit history.
+
+Principle 6
+Apprentice Upgrade
+An apprentice may be upgraded to:
+Master Member
+Main Member
+after satisfying tenant requirements.
+Only authorized executives may approve upgrades.
+
+STAGE 4 DELIVERABLES
+Build:
+Member Management Engine
+Apprentice Management Engine
+Approval Engine
+Renewal Engine
+Transfer Engine
+Upgrade Engine
+Membership Directory
+Member Profile Engine
+Membership Lifecycle Engine
+
+MODULE 1
+MEMBER MANAGEMENT ENGINE
+Purpose:
+Manage all members within a tenant.
+
+Member Record
+Every member must contain:
+Member ID
+Membership Number
+Tenant ID
+Branch ID
+Region ID
+Category
+Type
+Status
+
+Personal Information
+First Name
+Middle Name
+Last Name
+Gender
+Date Of Birth
+Photo
+
+Contact Information
+Phone
+Email
+Address
+City
+Region
+Country
+
+Professional Information
+Profession
+Specialization
+Business Name
+Years Of Experience
+
+Membership Information
+Membership Category
+Membership Type
+Date Registered
+Approval Status
+Membership Status
+Renewal Status
+
+MODULE 2
+MEMBERSHIP CATEGORIES
+Purpose:
+Support tenant-specific categories.
+
+Examples
+GHABA:
+Hairdresser
+Barber
+Beautician
+Makeup Artist
+Nail Technician
+Vendor
+
+Rules
+Categories must be:
+Tenant Configurable
+No hardcoded categories.
+
+MODULE 3
+MEMBER REGISTRATION
+Purpose:
+Enable member creation.
+
+Registration Sources
+Self Registration
+Executive Registration
+Admin Registration
+based on tenant configuration.
+
+Registration Workflow
+Registration
+?
+Verification
+?
+Review
+?
+Approval
+?
+Activation
+
+MODULE 4
+MEMBER APPROVAL ENGINE
+Purpose:
+Manage membership approval workflows.
+
+Approval Levels
+Configurable.
+Examples:
+Branch ? Regional ? National
+
+Regional ? National
+
+National Only
+
+Statuses
+Invited
+Pending Verification
+Under Review
+Approved
+Inactive
+Active
+Rejected
+
+Requirements
+Approval workflows must come from Stage 3 governance settings.
+
+MODULE 5
+MEMBER DIRECTORY
+Purpose:
+Provide searchable membership records.
+
+Features
+Search
+Filter
+View Profile
+Export
+
+Filters
+Category
+Region
+Branch
+Status
+Registration Date
+
+Visibility Rules
+Tenant users can only see:
+Their Tenant Members
+MemSyst Super Admin can see:
+All Members
+
+MODULE 6
+APPRENTICE MANAGEMENT ENGINE
+Purpose:
+Manage apprentices.
+
+Apprentice Record
+Apprentice ID
+Parent Member
+Tenant
+Branch
+Region
+Status
+Date Registered
+
+Personal Information
+Name
+Photo
+Phone
+Email
+Address
+
+Training Information
+Trade
+Start Date
+Expected Completion Date
+
+Statuses
+Pending
+Active
+Transferred
+Completed
+Upgraded
+Suspended
+
+MODULE 7
+APPRENTICE TRANSFER ENGINE
+Purpose:
+Transfer apprentices between members.
+
+Transfer Workflow
+Transfer Request
+?
+Review
+?
+Approval
+?
+Transfer Complete
+
+Audit Requirements
+Store:
+Previous Member
+New Member
+Reason
+Date
+Approver
+
+MODULE 8
+APPRENTICE UPGRADE ENGINE
+Purpose:
+Promote apprentices to members.
+
+Upgrade Workflow
+Eligibility Check
+?
+Executive Review
+?
+Approval
+?
+Member Creation
+
+Upgrade Result
+Apprentice Status = Upgraded
+
+New Member Record Created
+
+MODULE 9
+MEMBERSHIP LIFECYCLE ENGINE
+Purpose:
+Manage membership statuses.
+
+Membership Statuses
+Pending
+Active
+Inactive
+Suspended
+Expired
+Cancelled
+Deceased
+
+Lifecycle Events
+Registration
+Approval
+Activation
+Renewal
+Suspension
+Reactivation
+Cancellation
+
+MODULE 10
+RENEWAL ENGINE
+Purpose:
+Manage membership renewals.
+
+Renewal Workflow
+Upcoming Renewal
+?
+Renewal Due
+?
+Payment Verification (Stage 5)
+?
+Renewed
+
+Statuses
+Current
+Due Soon
+Overdue
+Renewed
+Expired
+
+MODULE 11
+MEMBER PROFILE ENGINE
+Purpose:
+Provide complete member profiles.
+
+Profile Sections
+Personal Information
+Contact Information
+Membership Information
+Professional Information
+Apprentices
+Documents
+History
+
+Activity Timeline
+Display:
+Registrations
+Approvals
+Renewals
+Transfers
+Status Changes
+
+MODULE 12
+MEMBER DOCUMENT MANAGEMENT
+Purpose:
+Store member-related documents.
+
+Examples
+Photos
+Application Forms
+Identification Documents
+Training Documents
+Supporting Documents
+
+Features
+Upload
+View
+Download
+Archive
+
+MODULE 13
+MEMBERSHIP ANALYTICS FOUNDATION
+Purpose:
+Prepare analytics infrastructure.
+Track:
+Total Members
+Active Members
+Inactive Members
+Apprentices
+Approvals
+Renewals
+Growth Trends
+
+Note
+Do not build advanced analytics.
+Build data structures only.
+
+MODULE 14
+MEMBER COMMUNICATION FOUNDATION
+Purpose:
+Prepare future notification integration.
+Track communication preferences:
+Email
+SMS
+Push
+In-App
+
+Future Integration
+Stage 6 Notification Platform.
+
+MODULE 15
+MEMBERSHIP AUDIT INFRASTRUCTURE
+Purpose:
+Track all membership activities.
+
+Audit Events
+Member Registered
+Member Approved
+Member Suspended
+Member Renewed
+Apprentice Created
+Apprentice Transferred
+Apprentice Upgraded
+
+Audit Record
+Actor
+Action
+Record
+Date
+Time
+Before
+After
+
+MEMBER DASHBOARD
+Build member-facing dashboard foundation.
+Display:
+Membership Status
+Membership Number
+Renewal Status
+Apprentices
+Notifications
+Profile Completeness
+
+APPRENTICE DASHBOARD
+Build apprentice-facing dashboard foundation.
+Display:
+Training Status
+Parent Member
+Progress Status
+Notifications
+
+DATABASE DESIGN REQUIREMENTS
+Before implementation:
+Design complete entities for:
+Members
+Membership Categories
+Membership Types
+Member Profiles
+Membership Statuses
+Apprentices
+Transfers
+Upgrade Requests
+Approvals
+Renewals
+Documents
+Membership History
+Membership Audits
+Define:
+Relationships
+Indexes
+Validation Rules
+Lifecycle States
+
+SECURITY REQUIREMENTS
+Integrate with Stage 2.
+Enforce:
+RBAC
+Tenant Isolation
+Governance Permissions
+Approval Permissions
+Audit Logging
+
+FUTURE READINESS REQUIREMENTS
+Stage 4 must prepare for:
+ID Cards
+Certificates
+Wallets
+Payments
+Marketplace
+Training
+Analytics
+AI
+Mobile Apps
+Do not build them yet.
+Design all required relationships now.
+
+ARCHITECTURE REQUIREMENTS
+Use:
+Domain-Driven Design
+Event-Based Lifecycle Tracking
+Feature-Based Architecture
+Configuration-Driven Membership Rules
+Tenant-Aware Services
+Avoid:
+Hardcoded Membership Categories
+Hardcoded Approval Chains
+Hardcoded Status Flows
+Everything must come from tenant configuration established in Stage 3.
+
+SUCCESS CRITERIA
+Stage 4 is complete only when:
+? Members can be registered
+? Members can be approved
+? Membership lifecycles are managed
+? Member directories are operational
+? Apprentices can be created by members
+? Apprentices can be transferred
+? Apprentices can be upgraded to members
+? Renewals are managed
+? Member profiles are complete
+? Membership audit history exists
+? Member and apprentice dashboards exist
+? Platform is fully prepared for Stage 5 (ID Cards, Certificates, Wallets & Financial Infrastructure)
+Build this stage as the operational heart of every tenant organization within the MemSyst ecosystem. Membership management is the primary business capability that most organizations will use daily, so the architecture must be scalable, configurable, auditable, and future-ready.
+

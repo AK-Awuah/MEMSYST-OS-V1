@@ -1,4 +1,5 @@
 import type { ReactNode } from "react"
+import { TableSkeleton } from "./Skeleton"
 
 export interface Column<T> {
   key: string
@@ -24,11 +25,7 @@ export function DataTable<T extends Record<string, any>>({
   emptyMessage = "No data found.",
 }: DataTableProps<T>) {
   if (isLoading) {
-    return (
-      <div className="flex items-center justify-center py-16">
-        <div className="h-8 w-8 animate-spin rounded-full border-2 border-[#3CA4F9] border-t-transparent" />
-      </div>
-    )
+    return <TableSkeleton rows={6} cols={columns.length} />
   }
 
   if (data.length === 0) {

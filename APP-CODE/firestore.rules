@@ -258,6 +258,147 @@ service cloud.firestore {
     }
 
     // ============================================
+    // FINANCIAL — WALLETS
+    // /wallets/{walletId}
+    // ============================================
+    match /wallets/{walletId} {
+      allow read: if isAuthenticated()
+        && (isSuperAdmin() || hasPermission('finance:read'));
+      allow create: if hasPermission('finance:write');
+      allow update: if hasPermission('finance:write');
+      allow delete: if isSuperAdmin();
+    }
+
+    // ============================================
+    // FINANCIAL — TRANSACTIONS
+    // /transactions/{txnId}
+    // ============================================
+    match /transactions/{txnId} {
+      allow read: if isAuthenticated()
+        && (isSuperAdmin() || hasPermission('finance:read'));
+      allow create: if hasPermission('finance:write');
+      allow update: if hasPermission('finance:write');
+      allow delete: if false;
+    }
+
+    // ============================================
+    // FINANCIAL — PAYMENTS
+    // /payments/{paymentId}
+    // ============================================
+    match /payments/{paymentId} {
+      allow read: if isAuthenticated()
+        && (isSuperAdmin() || hasPermission('finance:read'));
+      allow create: if hasPermission('finance:write');
+      allow update: if hasPermission('finance:write');
+      allow delete: if false;
+    }
+
+    // ============================================
+    // FINANCIAL — REVENUE RULES
+    // /revenueRules/{ruleId}
+    // ============================================
+    match /revenueRules/{ruleId} {
+      allow read: if isAuthenticated()
+        && (isSuperAdmin() || hasPermission('finance:read'));
+      allow create: if hasPermission('finance:write');
+      allow update: if hasPermission('finance:write');
+      allow delete: if isSuperAdmin();
+    }
+
+    // ============================================
+    // FINANCIAL — REVENUE DISTRIBUTIONS
+    // /revenueDistributions/{distId}
+    // ============================================
+    match /revenueDistributions/{distId} {
+      allow read: if isAuthenticated()
+        && (isSuperAdmin() || hasPermission('finance:read'));
+      allow create: if hasPermission('finance:write');
+      allow update, delete: if false;
+    }
+
+    // ============================================
+    // FINANCIAL — COMMISSION CONFIGS
+    // /commissionConfigs/{configId}
+    // ============================================
+    match /commissionConfigs/{configId} {
+      allow read: if isAuthenticated()
+        && (isSuperAdmin() || hasPermission('finance:read'));
+      allow create: if hasPermission('finance:write');
+      allow update: if hasPermission('finance:write');
+      allow delete: if isSuperAdmin();
+    }
+
+    // ============================================
+    // FINANCIAL — COMMISSIONS
+    // /commissions/{commissionId}
+    // ============================================
+    match /commissions/{commissionId} {
+      allow read: if isAuthenticated()
+        && (isSuperAdmin() || hasPermission('finance:read'));
+      allow create: if hasPermission('finance:write');
+      allow update, delete: if false;
+    }
+
+    // ============================================
+    // FINANCIAL — BILLS
+    // /bills/{billId}
+    // ============================================
+    match /bills/{billId} {
+      allow read: if isAuthenticated()
+        && (isSuperAdmin() || hasPermission('finance:read'));
+      allow create: if hasPermission('finance:write');
+      allow update: if hasPermission('finance:write');
+      allow delete: if isSuperAdmin();
+    }
+
+    // ============================================
+    // FINANCIAL — WITHDRAWALS
+    // /withdrawals/{withdrawalId}
+    // ============================================
+    match /withdrawals/{withdrawalId} {
+      allow read: if isAuthenticated()
+        && (isSuperAdmin() || hasPermission('finance:read'));
+      allow create: if isAuthenticated()
+        && hasPermission('finance:write');
+      allow update: if hasPermission('finance:write');
+      allow delete: if false;
+    }
+
+    // ============================================
+    // FINANCIAL — REFUNDS
+    // /refunds/{refundId}
+    // ============================================
+    match /refunds/{refundId} {
+      allow read: if isAuthenticated()
+        && (isSuperAdmin() || hasPermission('finance:read'));
+      allow create: if hasPermission('finance:write');
+      allow update: if hasPermission('finance:write');
+      allow delete: if false;
+    }
+
+    // ============================================
+    // FINANCIAL — RECEIPTS
+    // /receipts/{receiptId}
+    // ============================================
+    match /receipts/{receiptId} {
+      allow read: if isAuthenticated()
+        && (isSuperAdmin() || hasPermission('finance:read'));
+      allow create: if hasPermission('finance:write');
+      allow update: if hasPermission('finance:write');
+      allow delete: if false;
+    }
+
+    // ============================================
+    // FINANCIAL — FINANCIAL SETTINGS
+    // /financialSettings/{tenantId}
+    // ============================================
+    match /financialSettings/{tenantId} {
+      allow read: if isAuthenticated()
+        && (isSuperAdmin() || tenantId == userTenantId());
+      allow write: if hasPermission('finance:write');
+    }
+
+    // ============================================
     // Deny everything else by default
     // ============================================
     match /{document=**} {

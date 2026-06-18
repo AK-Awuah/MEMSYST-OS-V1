@@ -1,6 +1,6 @@
 import type { ITenantManagementService } from "./ITenantManagementService"
-import type { Tenant, TenantProfile, TenantBranding } from "@/types"
-import { mockTenants, mockTenantProfiles, mockTenantBrandings } from "./mock-data"
+import type { Tenant, TenantProfile, TenantBranding, TenantAnalytics } from "@/types"
+import { mockTenants, mockTenantProfiles, mockTenantBrandings, mockRegions, mockBranches, mockExecutiveAppointments } from "./mock-data"
 import { recordIdentitySecurityEvent } from "./shared-store"
 
 let tenants = [...mockTenants]
@@ -112,6 +112,23 @@ export class MockTenantManagementService implements ITenantManagementService {
     const tenant = tenants.find((t) => t.id === id)
     if (tenant) { tenant.status = "activated"; tenant.commercialStatus = "archived"; tenant.updatedAt = new Date().toISOString() }
     recordIdentitySecurityEvent({ actorId: "system", actorName: "System", action: "tenant_archived", resource: "tenants", tenantId: id, result: "success" })
+  }
+
+  async getAnalytics(): Promise<TenantAnalytics> {
+    await delay(200)
+    const activeTenants = tenants.filter((t) => t.commercialStatus === "active").length
+    const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+    return {
+      totalTenants: tenants.length,
+      activeTenants,
+      totalRegions: mockRegions.length,
+      totalBranches: mockBranches.length,
+      totalExecutives: mockExecutiveAppointments.length,
+      growthTrends: months.slice(0, 7).map((month, i) => ({
+        month,
+        count: Math.max(0, Math.floor(tenants.length * (i + 1) / 7)),
+      })),
+    }
   }
 }
 

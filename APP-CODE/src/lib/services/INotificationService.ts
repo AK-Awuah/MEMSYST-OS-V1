@@ -7,4 +7,7 @@ export interface INotificationService {
   markAllAsRead(userId: string): Promise<void>
   archive(id: string): Promise<void>
   createNotification(data: Omit<Notification, "id" | "createdAt">): Promise<Notification>
+  deleteNotification(id: string): Promise<void>
+  listByType(userId: string, type: string): Promise<Notification[]>
+  getNotificationById(id: string): Promise<Notification | null>
 }

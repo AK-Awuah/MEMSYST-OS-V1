@@ -1,516 +1,461 @@
-MEMSYST STAGE 2 DEVELOPMENT MASTER PROMPT 
-Identity, Access Control & Multi-Tenant Foundation Platform 
-You are a Senior Enterprise Architect, Identity Architect, Security Architect, SaaS 
-Platform Architect, and Principal Engineer responsible for building Stage 2 of the 
-MemSyst ecosystem. 
-Stage 1 (M-BOP) has been completed and provides: 
-• 
-Authentication  
-• 
-Internal User Management  
-• 
-Form Management  
-• 
-Lead Management  
-• 
-CRM Pipeline  
-• 
-Notifications  
-• 
-Tenant Prospect Management  
-• 
-Tenant Onboarding  
-• 
-Audit Logs  
-Stage 2 builds the security, identity, permission, and tenant isolation foundation that 
-every future MemSyst module will depend on. 
-This is one of the most critical stages in the entire platform because mistakes made 
-here will affect: 
-• 
-Membership  
-• 
-Apprentices  
-• 
-Executives  
-• 
-Wallets  
-• 
-Payments  
-• 
-Marketplace  
-• 
-Training  
-• 
-Certificates  
-• 
-Analytics  
-• 
-AI  
-• 
-Mobile Applications  
-The architecture must be designed correctly from the beginning. 
- 
+MEMSYST STAGE 2 DEVELOPMENT MASTER PROMPT
+Identity, Access Control & Multi-Tenant Foundation Platform
+You are a Senior Enterprise Architect, Identity Architect, Security Architect, SaaS Platform Architect, and Principal Engineer responsible for building Stage 2 of the MemSyst ecosystem.
+Stage 1 (M-BOP) has been completed and provides:
+* Authentication 
+* Internal User Management 
+* Form Management 
+* Lead Management 
+* CRM Pipeline 
+* Notifications 
+* Tenant Prospect Management 
+* Tenant Onboarding 
+* Audit Logs 
+Stage 2 builds the security, identity, permission, and tenant isolation foundation that every future MemSyst module will depend on.
+This is one of the most critical stages in the entire platform because mistakes made here will affect:
+* Membership 
+* Apprentices 
+* Executives 
+* Wallets 
+* Payments 
+* Marketplace 
+* Training 
+* Certificates 
+* Analytics 
+* AI 
+* Mobile Applications 
+The architecture must be designed correctly from the beginning.
 
----
-STAGE 2 OBJECTIVE 
-Build the: 
-Identity & Access Platform (IAP) 
-Purpose: 
-Provide: 
-Authentication 
-Authorization 
-Role Management 
-Permission Management 
-Tenant Isolation 
-Identity Management 
-Security Controls 
-Access Governance 
-This stage creates the foundational security layer for the entire MemSyst ecosystem. 
- 
-CRITICAL ARCHITECTURAL PRINCIPLE 
-MemSyst is: 
-One Platform 
-Multiple Organizations 
-Every future module must operate through: 
-Tenant Context 
-+ 
-Role Context 
-+ 
-Permission Context 
-No future feature may bypass this architecture. 
- 
-STAGE 2 DELIVERABLES 
-Build: 
-Identity Engine 
-Access Control Engine 
-Role Engine 
-Permission Engine 
-Tenant Isolation Engine 
-Session Management Engine 
-Authentication Engine 
-Security Audit Engine 
+STAGE 2 OBJECTIVE
+Build the:
+Identity & Access Platform (IAP)
+Purpose:
+Provide:
+Authentication
+Authorization
+Role Management
+Permission Management
+Tenant Isolation
+Identity Management
+Security Controls
+Access Governance
+This stage creates the foundational security layer for the entire MemSyst ecosystem.
 
----
- 
-MODULE 1 
-IDENTITY ENGINE 
-Purpose: 
-Provide a single identity framework across the platform. 
-Future users include: 
-MemSyst Administrators 
-Tenant Administrators 
-National Executives 
-Regional Executives 
-Branch Executives 
-Members 
-Apprentices 
-Do not build all user types yet. 
-Design for them. 
- 
-Identity Record 
-Every user must have: 
-User ID 
-Tenant ID 
-First Name 
-Last Name 
-Email 
-Phone 
-Username 
-Profile Photo 
-Status 
-Created Date 
- 
-User Status 
-Pending Verification 
-Active 
-Inactive 
-Suspended 
-Archived 
- 
-Identity Rules 
+CRITICAL ARCHITECTURAL PRINCIPLE
+MemSyst is:
+One Platform
+Multiple Organizations
+Every future module must operate through:
+Tenant Context
++
+Role Context
++
+Permission Context
+No future feature may bypass this architecture.
 
----
-One Person 
-One Account 
-One Role 
-One Tenant 
-(As defined in MemSyst architecture.) 
- 
-MODULE 2 
-AUTHENTICATION ENGINE 
-Purpose: 
-Secure access to all applications. 
-Use: 
-Firebase Authentication 
-Supported Methods: 
-Email + Password 
-Phone Number 
-Username 
-Membership Number (future) 
- 
-Authentication Features 
-Login 
-Logout 
-Password Reset 
-Email Verification 
-Account Verification 
-Session Management 
-Device Tracking 
- 
-Future Ready 
-Prepare architecture for: 
-MFA 
-Biometric Authentication 
-SSO 
-Enterprise Federation 
-Do not implement unless required. 
- 
-MODULE 3 
+STAGE 2 DELIVERABLES
+Build:
+Identity Engine
+Access Control Engine
+Role Engine
+Permission Engine
+Tenant Isolation Engine
+Session Management Engine
+Authentication Engine
+Security Audit Engine
 
----
-ROLE MANAGEMENT ENGINE 
-Purpose: 
-Manage platform and tenant roles. 
- 
-MemSyst Roles 
-Super Admin 
-Operations Admin 
-Sales Admin 
-Support Admin 
- 
-Future Tenant Roles 
-Tenant Admin 
-National Executive 
-Regional Executive 
-Branch Executive 
-Member 
-Apprentice 
-Design now. 
-Implement later. 
- 
-Role Features 
-Create Role 
-Edit Role 
-Deactivate Role 
-Assign Permissions 
-Clone Role 
- 
-MODULE 4 
-PERMISSION MANAGEMENT ENGINE 
-Purpose: 
-Control access to features. 
- 
-Permission Structure 
-Recommended: 
+MODULE 1
+IDENTITY ENGINE
+Purpose:
+Provide a single identity framework across the platform.
+Future users include:
+MemSyst Administrators
+Tenant Administrators
+National Executives
+Regional Executives
+Branch Executives
+Members
+Apprentices
+Do not build all user types yet.
+Design for them.
 
----
-Resource 
-Action 
-Examples: 
-Leads.Create 
-Leads.View 
-Leads.Edit 
-Leads.Delete 
- 
-Tenants.Create 
-Tenants.View 
-Tenants.Edit 
- 
-Users.Create 
-Users.View 
-Users.Edit 
- 
-Permission Types 
-View 
-Create 
-Edit 
-Delete 
-Approve 
-Assign 
-Export 
-Manage 
- 
-Features 
-Permission Groups 
-Permission Assignment 
-Role Permission Matrix 
- 
-MODULE 5 
-TENANT ISOLATION ENGINE 
-Purpose: 
-Prepare platform for multi-tenant operation. 
-This is one of the most important modules. 
- 
-Tenant Context 
+Identity Record
+Every user must have:
+User ID
+Tenant ID
+First Name
+Last Name
+Email
+Phone
+Username
+Profile Photo
+Status
+Created Date
 
----
-Every business record must contain: 
-Tenant ID 
-Future examples: 
-Members 
-Payments 
-Certificates 
-Marketplace Posts 
-Training Records 
- 
-Isolation Rules 
-Tenant A must never access: 
-Tenant B Data 
-under any circumstance. 
- 
-MemSyst Super Admin 
-Can access: 
-All Tenants 
-All Records 
-All Modules 
- 
-Tenant Users 
-Can access: 
-Only Their Tenant 
- 
-MODULE 6 
-ACCESS CONTROL ENGINE 
-Purpose: 
-Enforce authorization. 
- 
-Access Evaluation 
-Every request should evaluate: 
-User 
-Role 
+User Status
+Pending Verification
+Active
+Inactive
+Suspended
+Archived
 
----
-Permission 
-Tenant 
-Resource 
-Action 
-before access is granted. 
- 
-Access Levels 
-Platform 
-Tenant 
-Region (future) 
-Branch (future) 
-Personal (future) 
-Design now. 
- 
-MODULE 7 
-SESSION MANAGEMENT ENGINE 
-Purpose: 
-Manage authenticated sessions. 
- 
-Features 
-Active Sessions 
-Device Tracking 
-Session Expiry 
-Force Logout 
-Session Revocation 
- 
-Security Controls 
-Suspicious Login Detection 
-Concurrent Session Rules 
-Idle Timeout 
- 
-MODULE 8 
-USER DIRECTORY 
-Purpose: 
-Central user registry. 
+Identity Rules
+One Person
+One Account
+One Role
+One Tenant
+(As defined in MemSyst architecture.)
 
----
- 
-Features 
-Search Users 
-Filter Users 
-View Profiles 
-View Roles 
-View Status 
- 
-Search Filters 
-Tenant 
-Role 
-Status 
-Date Created 
- 
-MODULE 9 
-ORGANIZATION DIRECTORY 
-Purpose: 
-Manage all tenant organizations. 
- 
-Features 
-View Organizations 
-Search Organizations 
-Tenant Status 
-Commercial Status 
-Activation Status 
- 
-Organization Status 
-Prospect 
-Onboarding 
-Active 
-Inactive 
-Suspended 
-Archived 
- 
-MODULE 10 
-SECURITY AUDIT ENGINE 
+MODULE 2
+AUTHENTICATION ENGINE
+Purpose:
+Secure access to all applications.
+Use:
+Firebase Authentication
+Supported Methods:
+Email + Password
+Phone Number
+Username
+Membership Number (future)
 
----
-Purpose: 
-Track identity and security activities. 
- 
-Audit Events 
-Login 
-Logout 
-Failed Login 
-Password Reset 
-Role Change 
-Permission Change 
-User Creation 
-User Suspension 
- 
-Audit Record 
-Actor 
-Action 
-Timestamp 
-IP Address 
-Device 
-Result 
- 
-MODULE 11 
-SECURITY DASHBOARD 
-Purpose: 
-Provide visibility into platform security. 
- 
-Metrics 
-Total Users 
-Active Users 
-Failed Logins 
-Locked Accounts 
-Active Sessions 
-Recent Security Events 
- 
-Widgets 
+Authentication Features
+Login
+Logout
+Password Reset
+Email Verification
+Account Verification
+Session Management
+Device Tracking
 
----
-Recent Logins 
-Recent Role Changes 
-Security Alerts 
- 
-MODULE 12 
-TENANT PROVISIONING FOUNDATION 
-Purpose: 
-Prepare future tenant creation. 
-When Stage 3 begins, tenant management will expand significantly. 
-Stage 2 should create foundational structures. 
- 
-Tenant Record 
-Tenant ID 
-Tenant Name 
-Short Name 
-Subdomain 
-Country 
-Industry 
-Status 
- 
-Future Readiness 
-Prepare for: 
-Branding 
-Branches 
-Regions 
-Membership Types 
-Executives 
-Financial Rules 
- 
-DATABASE DESIGN REQUIREMENTS 
-Before implementation: 
-Design complete entities for: 
-Users 
-Roles 
-Permissions 
-Role Permissions 
-User Roles 
+Future Ready
+Prepare architecture for:
+MFA
+Biometric Authentication
+SSO
+Enterprise Federation
+Do not implement unless required.
 
----
-Sessions 
-Security Events 
-Tenants 
-Tenant Settings 
-Access Policies 
-Audit Logs 
-Define: 
-Relationships 
-Indexes 
-Validation Rules 
-Status Models 
- 
-SECURITY REQUIREMENTS 
-Implement: 
-RBAC 
-Permission Enforcement 
-Protected APIs 
-Protected Routes 
-Tenant Isolation 
-Security Auditing 
-Session Controls 
- 
-FIRESTORE SECURITY RULES 
-Design rules that enforce: 
-Authentication 
-Role Validation 
-Tenant Isolation 
-Permission Checks 
-No client-side trust assumptions. 
- 
-FUTURE READINESS REQUIREMENTS 
-Stage 2 must prepare for: 
-Membership Management 
-Executive Management 
-Apprentice Management 
-Wallets 
-Payments 
-Marketplace 
-Training 
+MODULE 3
+ROLE MANAGEMENT ENGINE
+Purpose:
+Manage platform and tenant roles.
 
----
-Certificates 
-AI 
-Mobile Apps 
-Do not build them. 
-Design for them. 
- 
-ARCHITECTURE REQUIREMENTS 
-Use: 
-Domain-Driven Design 
-Feature-Based Architecture 
-Service Layer Pattern 
-Repository Pattern 
-Type-Safe APIs 
-Centralized Authorization 
-Centralized Permission Engine 
-Avoid: 
-Hardcoded Permissions 
-Module-Specific Authorization Logic 
-Direct Firestore Access From UI 
-All access should flow through the Identity & Access Platform. 
- 
-SUCCESS CRITERIA 
-Stage 2 is complete only when: 
-  Platform-wide identity architecture exists 
-  Role management is operational 
-  Permission management is operational 
-  Tenant isolation is enforced 
-  Session management is operational 
-  Security auditing is operational 
-  Access control is centralized 
-  Organization directory exists 
-  User directory exists 
-  Future tenant ecosystem is supported 
+MemSyst Roles
+Super Admin
+Operations Admin
+Sales Admin
+Support Admin
 
----
-  Stage 3 (Tenant Management Platform) can be built without redesigning identity or 
-security 
-Build this stage as the permanent security and identity foundation for the entire 
-MemSyst ecosystem. Every future module must depend on this platform rather than 
-implementing its own authentication, authorization, or tenant access logic. 
- 
+Future Tenant Roles
+Tenant Admin
+National Executive
+Regional Executive
+Branch Executive
+Member
+Apprentice
+Design now.
+Implement later.
 
----
+Role Features
+Create Role
+Edit Role
+Deactivate Role
+Assign Permissions
+Clone Role
+
+MODULE 4
+PERMISSION MANAGEMENT ENGINE
+Purpose:
+Control access to features.
+
+Permission Structure
+Recommended:
+Resource
+Action
+Examples:
+Leads.Create
+Leads.View
+Leads.Edit
+Leads.Delete
+
+Tenants.Create
+Tenants.View
+Tenants.Edit
+
+Users.Create
+Users.View
+Users.Edit
+
+Permission Types
+View
+Create
+Edit
+Delete
+Approve
+Assign
+Export
+Manage
+
+Features
+Permission Groups
+Permission Assignment
+Role Permission Matrix
+
+MODULE 5
+TENANT ISOLATION ENGINE
+Purpose:
+Prepare platform for multi-tenant operation.
+This is one of the most important modules.
+
+Tenant Context
+Every business record must contain:
+Tenant ID
+Future examples:
+Members
+Payments
+Certificates
+Marketplace Posts
+Training Records
+
+Isolation Rules
+Tenant A must never access:
+Tenant B Data
+under any circumstance.
+
+MemSyst Super Admin
+Can access:
+All Tenants
+All Records
+All Modules
+
+Tenant Users
+Can access:
+Only Their Tenant
+
+MODULE 6
+ACCESS CONTROL ENGINE
+Purpose:
+Enforce authorization.
+
+Access Evaluation
+Every request should evaluate:
+User
+Role
+Permission
+Tenant
+Resource
+Action
+before access is granted.
+
+Access Levels
+Platform
+Tenant
+Region (future)
+Branch (future)
+Personal (future)
+Design now.
+
+MODULE 7
+SESSION MANAGEMENT ENGINE
+Purpose:
+Manage authenticated sessions.
+
+Features
+Active Sessions
+Device Tracking
+Session Expiry
+Force Logout
+Session Revocation
+
+Security Controls
+Suspicious Login Detection
+Concurrent Session Rules
+Idle Timeout
+
+MODULE 8
+USER DIRECTORY
+Purpose:
+Central user registry.
+
+Features
+Search Users
+Filter Users
+View Profiles
+View Roles
+View Status
+
+Search Filters
+Tenant
+Role
+Status
+Date Created
+
+MODULE 9
+ORGANIZATION DIRECTORY
+Purpose:
+Manage all tenant organizations.
+
+Features
+View Organizations
+Search Organizations
+Tenant Status
+Commercial Status
+Activation Status
+
+Organization Status
+Prospect
+Onboarding
+Active
+Inactive
+Suspended
+Archived
+
+MODULE 10
+SECURITY AUDIT ENGINE
+Purpose:
+Track identity and security activities.
+
+Audit Events
+Login
+Logout
+Failed Login
+Password Reset
+Role Change
+Permission Change
+User Creation
+User Suspension
+
+Audit Record
+Actor
+Action
+Timestamp
+IP Address
+Device
+Result
+
+MODULE 11
+SECURITY DASHBOARD
+Purpose:
+Provide visibility into platform security.
+
+Metrics
+Total Users
+Active Users
+Failed Logins
+Locked Accounts
+Active Sessions
+Recent Security Events
+
+Widgets
+Recent Logins
+Recent Role Changes
+Security Alerts
+
+MODULE 12
+TENANT PROVISIONING FOUNDATION
+Purpose:
+Prepare future tenant creation.
+When Stage 3 begins, tenant management will expand significantly.
+Stage 2 should create foundational structures.
+
+Tenant Record
+Tenant ID
+Tenant Name
+Short Name
+Subdomain
+Country
+Industry
+Status
+
+Future Readiness
+Prepare for:
+Branding
+Branches
+Regions
+Membership Types
+Executives
+Financial Rules
+
+DATABASE DESIGN REQUIREMENTS
+Before implementation:
+Design complete entities for:
+Users
+Roles
+Permissions
+Role Permissions
+User Roles
+Sessions
+Security Events
+Tenants
+Tenant Settings
+Access Policies
+Audit Logs
+Define:
+Relationships
+Indexes
+Validation Rules
+Status Models
+
+SECURITY REQUIREMENTS
+Implement:
+RBAC
+Permission Enforcement
+Protected APIs
+Protected Routes
+Tenant Isolation
+Security Auditing
+Session Controls
+
+FIRESTORE SECURITY RULES
+Design rules that enforce:
+Authentication
+Role Validation
+Tenant Isolation
+Permission Checks
+No client-side trust assumptions.
+
+FUTURE READINESS REQUIREMENTS
+Stage 2 must prepare for:
+Membership Management
+Executive Management
+Apprentice Management
+Wallets
+Payments
+Marketplace
+Training
+Certificates
+AI
+Mobile Apps
+Do not build them.
+Design for them.
+
+ARCHITECTURE REQUIREMENTS
+Use:
+Domain-Driven Design
+Feature-Based Architecture
+Service Layer Pattern
+Repository Pattern
+Type-Safe APIs
+Centralized Authorization
+Centralized Permission Engine
+Avoid:
+Hardcoded Permissions
+Module-Specific Authorization Logic
+Direct Firestore Access From UI
+All access should flow through the Identity & Access Platform.
+
+SUCCESS CRITERIA
+Stage 2 is complete only when:
+? Platform-wide identity architecture exists
+? Role management is operational
+? Permission management is operational
+? Tenant isolation is enforced
+? Session management is operational
+? Security auditing is operational
+? Access control is centralized
+? Organization directory exists
+? User directory exists
+? Future tenant ecosystem is supported
+? Stage 3 (Tenant Management Platform) can be built without redesigning identity or security
+Build this stage as the permanent security and identity foundation for the entire MemSyst ecosystem. Every future module must depend on this platform rather than implementing its own authentication, authorization, or tenant access logic.
+

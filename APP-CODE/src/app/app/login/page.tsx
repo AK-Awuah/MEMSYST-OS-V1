@@ -43,8 +43,7 @@ export default function AppLoginPage() {
     <div className="flex min-h-screen items-center justify-center bg-[#011B2B] p-4">
       <div className="w-full max-w-md space-y-8">
         <div className="text-center">
-          <h1 className="text-3xl font-bold text-white">MEMSYST</h1>
-          <p className="mt-2 text-sm text-gray-400">Business Operations Platform</p>
+          <img src="/images/Small-logo.png" alt="MemSyst" className="mx-auto h-12 w-auto" />
         </div>
 
         <div className="rounded-xl border border-[#1e3a5f] bg-[#012a42] p-8">
@@ -112,7 +111,7 @@ export default function AppLoginPage() {
         </div>
 
         <p className="text-center text-xs text-gray-500">
-          MemSyst Business Operations Platform v1.0
+          &copy; 2026 MemSyst Technologies. All rights reserved.
         </p>
       </div>
     </div>

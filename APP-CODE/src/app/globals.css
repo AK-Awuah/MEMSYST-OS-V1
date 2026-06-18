@@ -1,5 +1,37 @@
 @import "tailwindcss";
 
+@font-face {
+  font-family: "Segoe UI";
+  src: url("/fonts/segoe-ui/Segoe UI.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Segoe UI";
+  src: url("/fonts/segoe-ui/Segoe UI Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Segoe UI";
+  src: url("/fonts/segoe-ui/Segoe UI Italic.ttf") format("truetype");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Segoe UI";
+  src: url("/fonts/segoe-ui/Segoe UI Bold Italic.ttf") format("truetype");
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+
 @theme inline {
   --color-background: #011B2B;
   --color-foreground: #D9D9D9;
@@ -9,7 +41,7 @@
   --color-accent: #3CA4F9;
   --color-border: #01314E;
   
-  --font-sans: "Inter", var(--font-geist-sans), sans-serif;
+  --font-sans: "Segoe UI", "Inter", system-ui, sans-serif;
   --radius: 0.5rem;
 }
 

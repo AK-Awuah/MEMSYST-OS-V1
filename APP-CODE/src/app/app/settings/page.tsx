@@ -2,17 +2,11 @@
 
 import { useState, useEffect } from "react"
 import { PageHeader } from "@/components/admin/PageHeader"
+import { getSettingsService } from "@/lib/services"
+import type { PlatformSettings } from "@/lib/services/ISettingsService"
 import { Save } from "lucide-react"
 
-const STORAGE_KEY = "memsyst_settings"
-
-function loadSettings() {
-  if (typeof window === "undefined") return null
-  const raw = localStorage.getItem(STORAGE_KEY)
-  return raw ? JSON.parse(raw) : null
-}
-
-const defaults = {
+const defaults: PlatformSettings = {
   organizationName: "MemSyst",
   supportEmail: "support@memsyst.com",
   notificationEmail: "notifications@memsyst.com",
@@ -22,20 +16,29 @@ const defaults = {
   crmDefaultProbability: "10",
   requireApprovalForTenants: true,
   auditRetentionDays: "365",
+  emailNotifications: true,
+  leadNotifications: true,
+  crmNotifications: true,
+  auditDigest: false,
 }
 
 export default function SettingsPage() {
   const [saved, setSaved] = useState(false)
-  const [settings, setSettings] = useState(defaults)
+  const [loading, setLoading] = useState(true)
+  const [settings, setSettings] = useState<PlatformSettings>(defaults)
 
   useEffect(() => {
-    const stored = loadSettings()
-    if (stored) setSettings(stored)
+    getSettingsService().then((svc) =>
+      svc.getSettings().then((data) => {
+        if (data) setSettings(data)
+        setLoading(false)
+      })
+    )
   }, [])
 
   async function handleSave() {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(settings))
-    await new Promise((r) => setTimeout(r, 500))
+    const svc = await getSettingsService()
+    await svc.updateSettings(settings)
     setSaved(true)
     setTimeout(() => setSaved(false), 2000)
   }
@@ -64,7 +67,7 @@ export default function SettingsPage() {
             </div>
             <div><label className="form-label">CRM Default Probability (%)</label><input className="form-input" value={settings.crmDefaultProbability} onChange={(e) => setSettings({ ...settings, crmDefaultProbability: e.target.value })} /></div>
             <div><label className="form-label">Lead Assignment Rule</label>
-              <select className="form-input" value={settings.leadAssignmentRule} onChange={(e) => setSettings({ ...settings, leadAssignmentRule: e.target.value })}>
+              <select className="form-input" value={settings.leadAssignmentRule} onChange={(e) => setSettings({ ...settings, leadAssignmentRule: e.target.value as "round-robin" | "manual" })}>
                 <option value="round-robin">Round Robin</option><option value="manual">Manual</option>
               </select>
             </div>
@@ -79,19 +82,19 @@ export default function SettingsPage() {
           <h3 className="mb-4 text-lg font-semibold text-white">Notifications</h3>
           <div className="space-y-3">
             <div className="flex items-center gap-3">
-              <input type="checkbox" id="emailNotifs" defaultChecked className="rounded border-gray-600 bg-[#011B2B]" />
+              <input type="checkbox" id="emailNotifs" checked={settings.emailNotifications} onChange={(e) => setSettings({ ...settings, emailNotifications: e.target.checked })} className="rounded border-gray-600 bg-[#011B2B]" />
               <label htmlFor="emailNotifs" className="text-sm text-gray-400">Email notifications for new submissions</label>
             </div>
             <div className="flex items-center gap-3">
-              <input type="checkbox" id="leadNotifs" defaultChecked className="rounded border-gray-600 bg-[#011B2B]" />
+              <input type="checkbox" id="leadNotifs" checked={settings.leadNotifications} onChange={(e) => setSettings({ ...settings, leadNotifications: e.target.checked })} className="rounded border-gray-600 bg-[#011B2B]" />
               <label htmlFor="leadNotifs" className="text-sm text-gray-400">Notify when leads are assigned</label>
             </div>
             <div className="flex items-center gap-3">
-              <input type="checkbox" id="crmNotifs" defaultChecked className="rounded border-gray-600 bg-[#011B2B]" />
+              <input type="checkbox" id="crmNotifs" checked={settings.crmNotifications} onChange={(e) => setSettings({ ...settings, crmNotifications: e.target.checked })} className="rounded border-gray-600 bg-[#011B2B]" />
               <label htmlFor="crmNotifs" className="text-sm text-gray-400">CRM opportunity stage changes</label>
             </div>
             <div className="flex items-center gap-3">
-              <input type="checkbox" id="auditNotifs" className="rounded border-gray-600 bg-[#011B2B]" />
+              <input type="checkbox" id="auditNotifs" checked={settings.auditDigest} onChange={(e) => setSettings({ ...settings, auditDigest: e.target.checked })} className="rounded border-gray-600 bg-[#011B2B]" />
               <label htmlFor="auditNotifs" className="text-sm text-gray-400">Daily audit summary digest</label>
             </div>
           </div>

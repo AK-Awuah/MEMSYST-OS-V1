@@ -1,9 +1,6 @@
 import Link from "next/link";
-import { Inter } from "next/font/google";
 import { Bell, Settings } from "lucide-react";
 import "@/app/globals.css";
-
-const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
 export const metadata = {
   title: "MemSyst Enterprise Demo",
@@ -16,7 +13,7 @@ export default function DemoLayout({
   children: React.ReactNode
 }) {
   return (
-    <div className={`${inter.variable} min-h-screen bg-[#000814] text-white flex`}>
+    <div className="min-h-screen bg-[#000814] text-white flex">
       
       {/* Demo Sidebar Navigation */}
       <aside className="w-64 border-r border-[#01314E] bg-[#011B2B] flex flex-col">

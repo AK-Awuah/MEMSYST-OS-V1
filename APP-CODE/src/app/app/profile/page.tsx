@@ -1,31 +1,62 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { useAuth } from "@/features/auth/AuthContext"
 import { PageHeader } from "@/components/admin/PageHeader"
-import { Mail, Phone, Shield, Calendar, BadgeCheck, AlertTriangle } from "lucide-react"
+import { Mail, Phone, Shield, Calendar, BadgeCheck, AlertTriangle, Camera } from "lucide-react"
 import { getAuthService } from "@/lib/services"
 import { logAuditEvent, createAuditEntry } from "@/lib/audit"
 import { validatePhone } from "@/lib/validation"
+import type { MemsystUser } from "@/types"
 
 export default function ProfilePage() {
   const { user, refreshUser } = useAuth()
   const [firstName, setFirstName] = useState("")
   const [lastName, setLastName] = useState("")
   const [phone, setPhone] = useState("")
+  const [photoURL, setPhotoURL] = useState("")
   const [saving, setSaving] = useState(false)
+  const [uploading, setUploading] = useState(false)
   const [saved, setSaved] = useState(false)
   const [error, setError] = useState("")
   const [resending, setResending] = useState(false)
   const [resendSent, setResendSent] = useState(false)
+  const fileRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
     if (user) {
       setFirstName(user.firstName)
       setLastName(user.lastName)
       setPhone(user.phone || "")
+      setPhotoURL(user.photoURL || "")
     }
   }, [user])
+
+  function handleFileSelect(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0]
+    if (!file) return
+    if (!file.type.startsWith("image/")) {
+      setError("Please select an image file")
+      return
+    }
+    if (file.size > 2 * 1024 * 1024) {
+      setError("Image must be under 2MB")
+      return
+    }
+    setUploading(true)
+    setError("")
+    const reader = new FileReader()
+    reader.onload = async (ev) => {
+      const dataUrl = ev.target?.result as string
+      setPhotoURL(dataUrl)
+      setUploading(false)
+    }
+    reader.onerror = () => {
+      setError("Failed to read image file")
+      setUploading(false)
+    }
+    reader.readAsDataURL(file)
+  }
 
   async function handleSave() {
     if (!user) return
@@ -35,7 +66,7 @@ export default function ProfilePage() {
     setSaving(true)
     try {
       const svc = await getAuthService()
-      await svc.updateUser(user.id, { firstName, lastName, phone } as Partial<typeof user>)
+      await svc.updateProfile({ firstName, lastName, phone, photoURL } as Partial<MemsystUser>)
       await logAuditEvent(createAuditEntry({
         actor: `${user.firstName} ${user.lastName}`,
         role: user.role,
@@ -81,9 +112,32 @@ export default function ProfilePage() {
 
       <div className="mb-6 rounded-xl border border-[#1e3a5f] bg-[#012a42] p-6">
         <div className="mb-6 flex items-center gap-4">
-          <div className="flex h-16 w-16 items-center justify-center rounded-full bg-[#3CA4F9]/20 text-2xl font-bold text-[#3CA4F9]">
-            {user.firstName[0]}{user.lastName[0]}
-          </div>
+          <button
+            onClick={() => fileRef.current?.click()}
+            disabled={uploading}
+            className="group relative flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-full bg-[#3CA4F9]/20 text-2xl font-bold text-[#3CA4F9] transition-opacity disabled:opacity-50"
+          >
+            {photoURL ? (
+              <img src={photoURL} alt="Profile" className="h-full w-full object-cover" />
+            ) : (
+              <span>{user.firstName[0]}{user.lastName[0]}</span>
+            )}
+            <div className="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 transition-opacity group-hover:opacity-100">
+              <Camera className="h-5 w-5 text-white" />
+            </div>
+            {uploading && (
+              <div className="absolute inset-0 flex items-center justify-center bg-black/60">
+                <div className="h-5 w-5 animate-spin rounded-full border-2 border-white border-t-transparent" />
+              </div>
+            )}
+          </button>
+          <input
+            ref={fileRef}
+            type="file"
+            accept="image/*"
+            className="hidden"
+            onChange={handleFileSelect}
+          />
           <div>
             <h2 className="text-xl font-semibold text-white">{user.firstName} {user.lastName}</h2>
             <p className="text-sm text-[#3CA4F9] capitalize">{user.role.replace(/_/g, " ")}</p>

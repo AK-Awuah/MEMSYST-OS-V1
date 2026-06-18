@@ -7,22 +7,44 @@ import { ROUTE_PERMISSIONS } from "@/lib/constants"
 import {
   LayoutDashboard, FileText, Users, TrendingUp, Bell, Building2,
   UserPlus, Settings, Shield, ShieldAlert, UserCog, ChevronLeft, Key, Globe, Layers,
+  Contact, GraduationCap, UserCheck, Wallet, CreditCard, Receipt, DollarSign, Percent, ArrowLeftRight,
+  MessageSquare, Send, Megaphone, BarChart3,
 } from "lucide-react"
 
-const navItems = [
+const navItems: { href: string; label: string; icon: React.ComponentType<{ className?: string }> }[] = [
   { href: "/app/dashboard", label: "Dashboard", icon: LayoutDashboard },
+  { href: "/app/members", label: "Members", icon: Contact },
+  { href: "/app/apprentices", label: "Apprentices", icon: GraduationCap },
   { href: "/app/forms", label: "Form Submissions", icon: FileText },
   { href: "/app/leads", label: "Leads", icon: Users },
   { href: "/app/crm", label: "CRM Pipeline", icon: TrendingUp },
   { href: "/app/notifications", label: "Notifications", icon: Bell },
   { href: "/app/organizations", label: "Organizations", icon: Building2 },
   { href: "/app/tenants", label: "Tenants", icon: Layers },
+  { href: "/app/directory", label: "Directory", icon: Globe },
   { href: "/app/onboarding", label: "Tenant Onboarding", icon: UserPlus },
   { href: "/app/users", label: "User Management", icon: UserCog },
   { href: "/app/roles", label: "Role Management", icon: Key },
   { href: "/app/sessions", label: "Sessions", icon: Globe },
   { href: "/app/security", label: "Security", icon: ShieldAlert },
-  { href: "/app/settings", label: "Settings", icon: Settings },
+  { href: "/app/finance/dashboard", label: "Finance", icon: Wallet },
+  { href: "/app/finance/wallets", label: "Wallets", icon: CreditCard },
+  { href: "/app/finance/transactions", label: "Transactions", icon: ArrowLeftRight },
+  { href: "/app/finance/billing", label: "Billing", icon: Receipt },
+  { href: "/app/finance/withdrawals", label: "Withdrawals", icon: DollarSign },
+  { href: "/app/finance/revenue-distribution", label: "Revenue", icon: Percent },
+  { href: "/app/finance/commissions", label: "Commissions", icon: TrendingUp },
+  { href: "/app/finance/settings", label: "Finance Settings", icon: Settings },
+  { href: "/app/communication", label: "Communication", icon: MessageSquare },
+  { href: "/app/communication/campaigns", label: "Campaigns", icon: Megaphone },
+  { href: "/app/communication/templates", label: "Templates", icon: FileText },
+  { href: "/app/communication/segments", label: "Segments", icon: Users },
+  { href: "/app/communication/preferences", label: "Preferences", icon: UserCheck },
+  { href: "/app/communication/broadcasts", label: "Broadcasts", icon: Send },
+  { href: "/app/communication/automation", label: "Automation", icon: Settings },
+  { href: "/app/communication/analytics", label: "Analytics", icon: BarChart3 },
+  { href: "/app/communication/audit", label: "Comm. Audit", icon: Shield },
+  { href: "/app/settings", label: "Platform Settings", icon: Settings },
   { href: "/app/audit-logs", label: "Audit Logs", icon: Shield },
 ]
 
@@ -93,8 +115,12 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
       {!collapsed && user && (
         <div className="border-t border-[#1e3a5f] p-4">
           <div className="flex items-center gap-3">
-            <div className="flex h-9 w-9 items-center justify-center rounded-full bg-[#3CA4F9]/20 text-sm font-semibold text-[#3CA4F9]">
-              {user.firstName[0]}{user.lastName[0]}
+            <div className="flex h-9 w-9 items-center justify-center overflow-hidden rounded-full bg-[#3CA4F9]/20 text-sm font-semibold text-[#3CA4F9]">
+              {user.photoURL ? (
+                <img src={user.photoURL} alt="" className="h-full w-full object-cover" />
+              ) : (
+                <span>{user.firstName[0]}{user.lastName[0]}</span>
+              )}
             </div>
             <div className="min-w-0">
               <p className="truncate text-sm font-medium text-white">

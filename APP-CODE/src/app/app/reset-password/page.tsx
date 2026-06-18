@@ -55,8 +55,7 @@ export default function ResetPasswordPage() {
     <div className="flex min-h-screen items-center justify-center bg-[#011B2B] p-4">
       <div className="w-full max-w-md space-y-8">
         <div className="text-center">
-          <h1 className="text-3xl font-bold text-white">MEMSYST</h1>
-          <p className="mt-2 text-sm text-gray-400">Set a new password</p>
+          <img src="/images/Small-logo.png" alt="MemSyst" className="mx-auto h-12 w-auto" />
         </div>
 
         <div className="rounded-xl border border-[#1e3a5f] bg-[#012a42] p-8">

@@ -4,10 +4,12 @@ import { useState, useEffect } from "react"
 import { PageHeader } from "@/components/admin/PageHeader"
 import { DataTable, type Column } from "@/components/admin/DataTable"
 import { getRoleService, getPermissionService } from "@/lib/services"
+import { useAuth } from "@/features/auth/AuthContext"
 import type { Role, Permission } from "@/types"
 import { Shield, X, Copy, Ban } from "lucide-react"
 
 export default function RolesPage() {
+  const { user } = useAuth()
   const [roles, setRoles] = useState<Role[]>([])
   const [permissionsByGroup, setPermissionsByGroup] = useState<Record<string, Permission[]>>({})
   const [loading, setLoading] = useState(true)
@@ -21,7 +23,7 @@ export default function RolesPage() {
   const [cloneName, setCloneName] = useState("")
   const [selectedPerms, setSelectedPerms] = useState<string[]>([])
 
-  const tenantId = "memsyst"
+  const tenantId = user?.tenantId || "memsyst"
 
   async function loadRoles() {
     const svc = await getRoleService()

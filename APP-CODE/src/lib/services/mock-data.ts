@@ -25,6 +25,55 @@ import type {
   TenantAuditLog,
   TenantSettings,
   MembershipFrameworkConfig,
+  Member,
+  Apprentice,
+  TransferRecord,
+  UpgradeRequest,
+  ApprovalRecord,
+  RenewalRecord,
+  MemberDocument,
+  MemberCommunication,
+  MemberAnalytics,
+  MembershipAuditLog,
+  Wallet,
+  LedgerEntry,
+  Transaction,
+  Payment,
+  RevenueDistributionRule,
+  DistributionSplit,
+  RevenueDistribution,
+  CommissionConfig,
+  Commission,
+  Bill,
+  Withdrawal,
+  Refund,
+  Receipt,
+  FinancialSettings,
+  EmailMessage,
+  SMSMessage,
+  PushNotificationRecord,
+  Campaign,
+  Template,
+  AudienceSegment,
+  CommunicationPreference,
+  Subscription,
+  EngagementEvent,
+  DeliveryLog,
+  CommunicationAnalytics,
+  BroadcastMessage,
+  AutomationRule,
+  CommunicationAuditLog,
+  NotificationChannel,
+  CampaignStatus,
+  CampaignType,
+  TemplateType,
+  TemplateStatus,
+  CommunicationChannel,
+  SubscriptionCategory,
+  AutomationTriggerEvent,
+  AutomationActionType,
+  CommunicationAuditAction,
+  BroadcastScope,
 } from "@/types"
 
 export const mockUsers: MemsystUser[] = [
@@ -345,6 +394,14 @@ export const allPermissions: Permission[] = [
   { key: "audit:export", label: "Export Audit Logs", group: "Audit", description: "Export audit trail data" },
   { key: "organizations:read", label: "View Organizations", group: "Tenants", description: "View organization prospects" },
   { key: "organizations:write", label: "Manage Organizations", group: "Tenants", description: "Create and edit organization prospects" },
+  { key: "members:read", label: "View Members", group: "Members", description: "View member records" },
+  { key: "members:write", label: "Manage Members", group: "Members", description: "Create, edit, and manage members" },
+  { key: "members:approve", label: "Approve Members", group: "Members", description: "Approve member registrations" },
+  { key: "apprentices:read", label: "View Apprentices", group: "Members", description: "View apprentice records" },
+  { key: "apprentices:write", label: "Manage Apprentices", group: "Members", description: "Create, transfer, and upgrade apprentices" },
+  { key: "communication:read", label: "View Communication", group: "Communication", description: "View communication history and analytics" },
+  { key: "communication:write", label: "Manage Communication", group: "Communication", description: "Send messages, manage campaigns and templates" },
+  { key: "executive:write", label: "Executive Broadcasts", group: "Communication", description: "Send executive broadcasts" },
 ]
 
 // ============================================
@@ -496,6 +553,316 @@ export const mockTenantSettings: TenantSettings[] = [
   },
 ]
 
+// ============================================
+// STAGE 4 — MEMBERSHIP MOCK DATA
+// ============================================
+
+export const mockMembers: Member[] = [
+  {
+    id: "mem-1",
+    tenantId: "tenant-1",
+    membershipNumber: "GMA-0001",
+    branchId: "br-1",
+    regionId: "reg-1",
+    category: "Full Member",
+    type: "Full Member",
+    status: "active",
+    approvalStatus: "active",
+    renewalStatus: "current",
+    firstName: "Kofi",
+    middleName: "",
+    lastName: "Ansah",
+    gender: "Male",
+    dateOfBirth: "1980-03-15",
+    photo: "",
+    phone: "+233 20 100 0001",
+    email: "kofi.ansah@gma.org",
+    address: "15 Independence Avenue",
+    city: "Accra",
+    region: "Greater Accra",
+    country: "Ghana",
+    profession: "Medical Doctor",
+    specialization: "Cardiology",
+    businessName: "Ansah Cardiac Centre",
+    yearsOfExperience: 15,
+    dateRegistered: "2026-04-01T00:00:00Z",
+    lastRenewalDate: "2026-04-01T00:00:00Z",
+    nextRenewalDate: "2027-04-01T00:00:00Z",
+    registeredBy: "self",
+    createdAt: "2026-04-01T00:00:00Z",
+    updatedAt: "2026-04-01T00:00:00Z",
+  },
+  {
+    id: "mem-2",
+    tenantId: "tenant-1",
+    membershipNumber: "GMA-0002",
+    branchId: "br-2",
+    regionId: "reg-1",
+    category: "Full Member",
+    type: "Full Member",
+    status: "active",
+    approvalStatus: "active",
+    renewalStatus: "current",
+    firstName: "Akua",
+    middleName: "Serwaa",
+    lastName: "Mensah",
+    gender: "Female",
+    dateOfBirth: "1985-07-22",
+    photo: "",
+    phone: "+233 20 100 0002",
+    email: "akua.mensah@gma.org",
+    address: "42 Harbour Road",
+    city: "Tema",
+    region: "Greater Accra",
+    country: "Ghana",
+    profession: "Medical Doctor",
+    specialization: "Pediatrics",
+    businessName: "Tema Children's Clinic",
+    yearsOfExperience: 12,
+    dateRegistered: "2026-04-05T00:00:00Z",
+    lastRenewalDate: "2026-04-05T00:00:00Z",
+    nextRenewalDate: "2027-04-05T00:00:00Z",
+    registeredBy: "executive",
+    registeredById: "user-3",
+    createdAt: "2026-04-05T00:00:00Z",
+    updatedAt: "2026-04-05T00:00:00Z",
+  },
+  {
+    id: "mem-3",
+    tenantId: "tenant-1",
+    membershipNumber: "GMA-0003",
+    branchId: "br-3",
+    regionId: "reg-2",
+    category: "Associate Member",
+    type: "Associate Member",
+    status: "pending",
+    approvalStatus: "under_review",
+    renewalStatus: "current",
+    firstName: "Yaw",
+    middleName: "Boateng",
+    lastName: "Asare",
+    gender: "Male",
+    dateOfBirth: "1998-11-10",
+    photo: "",
+    phone: "+233 20 100 0003",
+    email: "yaw.asare@medstudent.org",
+    address: "7 University Road",
+    city: "Kumasi",
+    region: "Ashanti",
+    country: "Ghana",
+    profession: "Medical Student",
+    specialization: "",
+    businessName: "",
+    yearsOfExperience: 0,
+    dateRegistered: "2026-06-01T00:00:00Z",
+    registeredBy: "self",
+    createdAt: "2026-06-01T00:00:00Z",
+    updatedAt: "2026-06-01T00:00:00Z",
+  },
+]
+
+export const mockApprentices: Apprentice[] = [
+  {
+    id: "appr-1",
+    tenantId: "tenant-1",
+    parentMemberId: "mem-1",
+    branchId: "br-1",
+    regionId: "reg-1",
+    status: "active",
+    dateRegistered: "2026-05-01T00:00:00Z",
+    firstName: "Adwoa",
+    lastName: "Sarpong",
+    photo: "",
+    phone: "+233 20 200 0001",
+    email: "adwoa.sarpong@learn.gma.org",
+    address: "15 Independence Avenue",
+    trade: "Nursing",
+    startDate: "2026-05-01T00:00:00Z",
+    expectedCompletionDate: "2028-05-01T00:00:00Z",
+    createdAt: "2026-05-01T00:00:00Z",
+    updatedAt: "2026-05-01T00:00:00Z",
+  },
+  {
+    id: "appr-2",
+    tenantId: "tenant-1",
+    parentMemberId: "mem-1",
+    branchId: "br-1",
+    regionId: "reg-1",
+    status: "active",
+    dateRegistered: "2026-05-15T00:00:00Z",
+    firstName: "Kwesi",
+    lastName: "Nyarko",
+    photo: "",
+    phone: "+233 20 200 0002",
+    email: "kwesi.nyarko@learn.gma.org",
+    address: "15 Independence Avenue",
+    trade: "Medical Laboratory",
+    startDate: "2026-05-15T00:00:00Z",
+    expectedCompletionDate: "2028-05-15T00:00:00Z",
+    createdAt: "2026-05-15T00:00:00Z",
+    updatedAt: "2026-05-15T00:00:00Z",
+  },
+  {
+    id: "appr-3",
+    tenantId: "tenant-1",
+    parentMemberId: "mem-2",
+    branchId: "br-2",
+    regionId: "reg-1",
+    status: "pending",
+    dateRegistered: "2026-06-10T00:00:00Z",
+    firstName: "Esi",
+    lastName: "Acquah",
+    photo: "",
+    phone: "+233 20 200 0003",
+    email: "esi.acquah@learn.gma.org",
+    address: "42 Harbour Road",
+    trade: "Pediatric Nursing",
+    startDate: "2026-06-10T00:00:00Z",
+    expectedCompletionDate: "2028-06-10T00:00:00Z",
+    createdAt: "2026-06-10T00:00:00Z",
+    updatedAt: "2026-06-10T00:00:00Z",
+  },
+]
+
+export const mockTransferRecords: TransferRecord[] = []
+
+export const mockUpgradeRequests: UpgradeRequest[] = []
+
+export const mockApprovalRecords: ApprovalRecord[] = [
+  {
+    id: "ar-1",
+    tenantId: "tenant-1",
+    memberId: "mem-3",
+    workflowId: "aw-1",
+    currentStage: 1,
+    stages: [
+      { order: 1, label: "Branch Review", approverLevel: "branch", status: "pending" },
+      { order: 2, label: "Regional Review", approverLevel: "regional", status: "pending" },
+      { order: 3, label: "National Approval", approverLevel: "national", status: "pending" },
+    ],
+    status: "in_progress",
+    createdAt: "2026-06-01T00:00:00Z",
+    updatedAt: "2026-06-01T00:00:00Z",
+  },
+]
+
+export const mockRenewalRecords: RenewalRecord[] = [
+  {
+    id: "rr-1",
+    tenantId: "tenant-1",
+    memberId: "mem-1",
+    previousExpiryDate: "2027-04-01T00:00:00Z",
+    newExpiryDate: "2028-04-01T00:00:00Z",
+    status: "pending",
+    amount: 500,
+    createdAt: "2026-06-01T00:00:00Z",
+    updatedAt: "2026-06-01T00:00:00Z",
+  },
+]
+
+export const mockMemberDocuments: MemberDocument[] = [
+  {
+    id: "md-1",
+    tenantId: "tenant-1",
+    memberId: "mem-1",
+    name: "Medical License",
+    type: "identification",
+    url: "/docs/mem-1/license.pdf",
+    status: "active",
+    uploadedBy: "mem-1",
+    createdAt: "2026-04-01T00:00:00Z",
+    updatedAt: "2026-04-01T00:00:00Z",
+  },
+  {
+    id: "md-2",
+    tenantId: "tenant-1",
+    memberId: "mem-1",
+    name: "Application Form",
+    type: "application",
+    url: "/docs/mem-1/application.pdf",
+    status: "active",
+    uploadedBy: "mem-1",
+    createdAt: "2026-04-01T00:00:00Z",
+    updatedAt: "2026-04-01T00:00:00Z",
+  },
+]
+
+export const mockMemberCommunications: MemberCommunication[] = [
+  {
+    id: "mc-1",
+    tenantId: "tenant-1",
+    memberId: "mem-1",
+    email: true,
+    sms: true,
+    push: false,
+    inApp: true,
+    createdAt: "2026-04-01T00:00:00Z",
+    updatedAt: "2026-04-01T00:00:00Z",
+  },
+  {
+    id: "mc-2",
+    tenantId: "tenant-1",
+    memberId: "mem-2",
+    email: true,
+    sms: false,
+    push: true,
+    inApp: true,
+    createdAt: "2026-04-05T00:00:00Z",
+    updatedAt: "2026-04-05T00:00:00Z",
+  },
+]
+
+export const mockMembershipAuditLogs: MembershipAuditLog[] = [
+  {
+    id: "mal-1",
+    tenantId: "tenant-1",
+    memberId: "mem-1",
+    actor: "Kofi Ansah",
+    action: "member_registered",
+    recordType: "Member",
+    recordId: "mem-1",
+    newValue: "Member registered via self-registration",
+    createdAt: "2026-04-01T00:00:00Z",
+  },
+  {
+    id: "mal-2",
+    tenantId: "tenant-1",
+    memberId: "mem-2",
+    actor: "Yaw Mensah",
+    action: "member_registered",
+    recordType: "Member",
+    recordId: "mem-2",
+    newValue: "Member registered by executive (Yaw Mensah)",
+    createdAt: "2026-04-05T00:00:00Z",
+  },
+  {
+    id: "mal-3",
+    tenantId: "tenant-1",
+    apprenticeId: "appr-1",
+    actor: "Kofi Ansah",
+    action: "apprentice_created",
+    recordType: "Apprentice",
+    recordId: "appr-1",
+    newValue: "Apprentice Adwoa Sarpong created under Kofi Ansah",
+    createdAt: "2026-05-01T00:00:00Z",
+  },
+]
+
+export const mockMemberAnalytics: MemberAnalytics = {
+  totalMembers: 3,
+  activeMembers: 2,
+  inactiveMembers: 0,
+  totalApprentices: 3,
+  pendingApprovals: 1,
+  pendingRenewals: 1,
+  recentRenewals: 2,
+  growthTrends: [
+    { month: "Apr", members: 2, apprentices: 0 },
+    { month: "May", members: 2, apprentices: 2 },
+    { month: "Jun", members: 3, apprentices: 3 },
+  ],
+}
+
 export const mockRolePermissions: Record<string, string[]> = {
   "role-1": ["*"],
   "role-2": ["leads:read", "leads:write", "leads:assign", "forms:read", "forms:write", "organizations:read"],
@@ -503,3 +870,184 @@ export const mockRolePermissions: Record<string, string[]> = {
   "role-4": ["forms:read", "forms:write", "notifications:read"],
   "role-5": ["leads:read", "leads:write", "crm:read", "members:read", "members:write", "finance:read", "notifications:read", "notifications:write"],
 }
+
+// ============================================
+// STAGE 5 — FINANCIAL INFRASTRUCTURE MOCK DATA
+// ============================================
+
+export const mockWallets: Wallet[] = [
+  { id: "wallet-1", tenantId: "memsyst", type: "platform", ownerId: "memsyst", ownerName: "MemSyst Platform", balance: 150000, lockedBalance: 5000, currency: "GHS", status: "active", createdAt: "2026-01-01T00:00:00Z", updatedAt: "2026-06-01T00:00:00Z" },
+  { id: "wallet-2", tenantId: "tenant-1", type: "tenant", ownerId: "tenant-1", ownerName: "GHABA", balance: 85000, lockedBalance: 3000, currency: "GHS", status: "active", createdAt: "2026-02-01T00:00:00Z", updatedAt: "2026-06-10T00:00:00Z" },
+  { id: "wallet-3", tenantId: "tenant-1", type: "national", ownerId: "org-unit-1", ownerName: "GHABA National", balance: 40000, lockedBalance: 2000, currency: "GHS", status: "active", createdAt: "2026-02-01T00:00:00Z", updatedAt: "2026-06-05T00:00:00Z" },
+  { id: "wallet-4", tenantId: "tenant-1", type: "regional", ownerId: "region-1", ownerName: "Greater Accra Region", balance: 25000, lockedBalance: 1000, currency: "GHS", status: "active", createdAt: "2026-02-15T00:00:00Z", updatedAt: "2026-06-08T00:00:00Z" },
+  { id: "wallet-5", tenantId: "tenant-1", type: "branch", ownerId: "branch-1", ownerName: "Accra Central Branch", balance: 15000, lockedBalance: 500, currency: "GHS", status: "active", createdAt: "2026-03-01T00:00:00Z", updatedAt: "2026-06-12T00:00:00Z" },
+  { id: "wallet-6", tenantId: "tenant-1", type: "member", ownerId: "mem-1", ownerName: "Kofi Ansah", balance: 5000, lockedBalance: 0, currency: "GHS", status: "active", createdAt: "2026-04-01T00:00:00Z", updatedAt: "2026-05-20T00:00:00Z" },
+  { id: "wallet-7", tenantId: "tenant-1", type: "member", ownerId: "mem-2", ownerName: "Akua Serwaa", balance: 3000, lockedBalance: 0, currency: "GHS", status: "active", createdAt: "2026-04-10T00:00:00Z", updatedAt: "2026-05-15T00:00:00Z" },
+  { id: "wallet-8", tenantId: "tenant-1", type: "executive", ownerId: "exec-1", ownerName: "Yaw Mensah", balance: 2000, lockedBalance: 0, currency: "GHS", status: "active", createdAt: "2026-03-15T00:00:00Z", updatedAt: "2026-06-01T00:00:00Z" },
+  { id: "wallet-9", tenantId: "tenant-2", type: "tenant", ownerId: "tenant-2", ownerName: "Teachers Association", balance: 120000, lockedBalance: 4000, currency: "GHS", status: "active", createdAt: "2026-02-01T00:00:00Z", updatedAt: "2026-06-10T00:00:00Z" },
+  { id: "wallet-10", tenantId: "tenant-2", type: "member", ownerId: "mem-3", ownerName: "Ama Danso", balance: 1500, lockedBalance: 0, currency: "GHS", status: "active", createdAt: "2026-04-15T00:00:00Z", updatedAt: "2026-05-25T00:00:00Z" },
+]
+
+export const mockTransactions: Transaction[] = [
+  { id: "txn-1", tenantId: "tenant-1", referenceNumber: "PAY-2026-001", sourceWalletId: "wallet-6", destinationWalletId: "wallet-2", amount: 500, fee: 25, commission: 50, netAmount: 425, type: "payment", status: "successful", description: "Membership registration fee", createdAt: "2026-04-01T10:00:00Z", updatedAt: "2026-04-01T10:05:00Z" },
+  { id: "txn-2", tenantId: "tenant-1", referenceNumber: "PAY-2026-002", sourceWalletId: "wallet-7", destinationWalletId: "wallet-2", amount: 300, fee: 15, commission: 30, netAmount: 255, type: "payment", status: "successful", description: "Annual renewal fee", createdAt: "2026-04-15T14:30:00Z", updatedAt: "2026-04-15T14:35:00Z" },
+  { id: "txn-3", tenantId: "tenant-1", referenceNumber: "DIST-2026-001", sourceWalletId: "wallet-2", destinationWalletId: "wallet-4", amount: 100, fee: 0, commission: 0, netAmount: 100, type: "revenue_distribution", status: "successful", description: "Revenue distribution — branch share", createdAt: "2026-04-16T00:00:00Z", updatedAt: "2026-04-16T00:00:00Z" },
+  { id: "txn-4", tenantId: "tenant-1", referenceNumber: "WD-2026-001", sourceWalletId: "wallet-5", destinationWalletId: "wallet-1", amount: 2000, fee: 100, commission: 0, netAmount: 1900, type: "withdrawal", status: "successful", description: "Branch withdrawal — Accra Central", createdAt: "2026-05-01T09:00:00Z", updatedAt: "2026-05-03T15:00:00Z" },
+  { id: "txn-5", tenantId: "tenant-1", referenceNumber: "COMM-2026-001", sourceWalletId: "wallet-2", destinationWalletId: "wallet-1", amount: 50, fee: 0, commission: 0, netAmount: 50, type: "commission", status: "successful", description: "Platform commission on registration", createdAt: "2026-04-01T10:06:00Z", updatedAt: "2026-04-01T10:06:00Z" },
+  { id: "txn-6", tenantId: "tenant-1", referenceNumber: "PAY-2026-003", sourceWalletId: "", destinationWalletId: "wallet-6", amount: 500, fee: 0, commission: 0, netAmount: 500, type: "payment", status: "pending", description: "Wallet funding via Paystack", createdAt: "2026-06-17T08:00:00Z", updatedAt: "2026-06-17T08:00:00Z" },
+  { id: "txn-7", tenantId: "tenant-2", referenceNumber: "PAY-2026-004", sourceWalletId: "wallet-10", destinationWalletId: "wallet-9", amount: 200, fee: 10, commission: 20, netAmount: 170, type: "payment", status: "successful", description: "Certificate fee payment", createdAt: "2026-05-10T11:00:00Z", updatedAt: "2026-05-10T11:05:00Z" },
+]
+
+export const mockPayments: Payment[] = [
+  { id: "pmt-1", tenantId: "tenant-1", transactionId: "txn-1", memberId: "mem-1", paymentMethod: "mobile_money", amount: 500, fee: 25, netAmount: 475, status: "successful", channel: "Paystack", reference: "PS-REF-001", createdAt: "2026-04-01T10:00:00Z", updatedAt: "2026-04-01T10:05:00Z" },
+  { id: "pmt-2", tenantId: "tenant-1", transactionId: "txn-2", memberId: "mem-2", paymentMethod: "card", amount: 300, fee: 15, netAmount: 285, status: "successful", channel: "Paystack", reference: "PS-REF-002", createdAt: "2026-04-15T14:30:00Z", updatedAt: "2026-04-15T14:35:00Z" },
+  { id: "pmt-3", tenantId: "tenant-2", transactionId: "txn-7", memberId: "mem-3", paymentMethod: "mobile_money", amount: 200, fee: 10, netAmount: 190, status: "successful", channel: "Paystack", reference: "PS-REF-003", createdAt: "2026-05-10T11:00:00Z", updatedAt: "2026-05-10T11:05:00Z" },
+]
+
+export const mockRevenueRules: RevenueDistributionRule[] = [
+  {
+    id: "rule-1", tenantId: "tenant-1", name: "Standard Membership Split", sourceType: "registration", rules: [
+      { destinationWalletType: "branch", destinationOwnerId: "branch-1", percentage: 20 },
+      { destinationWalletType: "regional", destinationOwnerId: "region-1", percentage: 20 },
+      { destinationWalletType: "national", destinationOwnerId: "org-unit-1", percentage: 40 },
+      { destinationWalletType: "reserve", destinationOwnerId: "tenant-1", percentage: 10 },
+      { destinationWalletType: "platform", destinationOwnerId: "memsyst", percentage: 10 },
+    ], effectiveDate: "2026-04-01", status: "active", createdAt: "2026-03-15T00:00:00Z", updatedAt: "2026-04-01T00:00:00Z",
+  },
+  {
+    id: "rule-2", tenantId: "tenant-1", name: "Renewal Split", sourceType: "renewal", rules: [
+      { destinationWalletType: "branch", destinationOwnerId: "branch-1", percentage: 30 },
+      { destinationWalletType: "national", destinationOwnerId: "org-unit-1", percentage: 50 },
+      { destinationWalletType: "platform", destinationOwnerId: "memsyst", percentage: 20 },
+    ], effectiveDate: "2026-04-01", status: "active", createdAt: "2026-03-15T00:00:00Z", updatedAt: "2026-04-01T00:00:00Z",
+  },
+]
+
+export const mockCommissions: Commission[] = [
+  { id: "comm-1", tenantId: "tenant-1", transactionId: "txn-1", sourceType: "registration", amount: 50, percentage: 10, createdAt: "2026-04-01T10:06:00Z" },
+  { id: "comm-2", tenantId: "tenant-1", transactionId: "txn-2", sourceType: "renewal", amount: 30, percentage: 10, createdAt: "2026-04-15T14:36:00Z" },
+  { id: "comm-3", tenantId: "tenant-2", transactionId: "txn-7", sourceType: "certificate", amount: 20, percentage: 10, createdAt: "2026-05-10T11:06:00Z" },
+]
+
+export const mockCommissionConfigs: CommissionConfig[] = [
+  { id: "cc-1", sourceType: "registration", percentage: 10, effectiveDate: "2026-01-01", status: "active", createdAt: "2026-01-01T00:00:00Z", updatedAt: "2026-01-01T00:00:00Z" },
+  { id: "cc-2", sourceType: "renewal", percentage: 10, effectiveDate: "2026-01-01", status: "active", createdAt: "2026-01-01T00:00:00Z", updatedAt: "2026-01-01T00:00:00Z" },
+  { id: "cc-3", sourceType: "certificate", percentage: 10, effectiveDate: "2026-01-01", status: "active", createdAt: "2026-01-01T00:00:00Z", updatedAt: "2026-01-01T00:00:00Z" },
+  { id: "cc-4", sourceType: "transfer", percentage: 10, effectiveDate: "2026-01-01", status: "active", createdAt: "2026-01-01T00:00:00Z", updatedAt: "2026-01-01T00:00:00Z" },
+  { id: "cc-5", sourceType: "marketplace", percentage: 10, effectiveDate: "2026-01-01", status: "inactive", createdAt: "2026-01-01T00:00:00Z", updatedAt: "2026-01-01T00:00:00Z" },
+  { id: "cc-6", sourceType: "wallet_funding", percentage: 5, effectiveDate: "2026-01-01", status: "active", createdAt: "2026-01-01T00:00:00Z", updatedAt: "2026-01-01T00:00:00Z" },
+  { id: "cc-7", sourceType: "wallet_withdrawal", percentage: 5, effectiveDate: "2026-01-01", status: "active", createdAt: "2026-01-01T00:00:00Z", updatedAt: "2026-01-01T00:00:00Z" },
+]
+
+export const mockBills: Bill[] = [
+  { id: "bill-1", tenantId: "tenant-1", memberId: "mem-1", type: "membership_fee", amount: 500, paidAmount: 500, dueDate: "2026-04-01", paidDate: "2026-04-01", status: "paid", description: "GHABA annual membership fee", createdAt: "2026-03-01T00:00:00Z", updatedAt: "2026-04-01T00:00:00Z" },
+  { id: "bill-2", tenantId: "tenant-1", memberId: "mem-2", type: "renewal_fee", amount: 300, paidAmount: 300, dueDate: "2026-04-15", paidDate: "2026-04-15", status: "paid", description: "Annual renewal", createdAt: "2026-03-15T00:00:00Z", updatedAt: "2026-04-15T00:00:00Z" },
+  { id: "bill-3", tenantId: "tenant-1", memberId: "mem-1", type: "renewal_fee", amount: 300, paidAmount: 0, dueDate: "2027-04-01", status: "pending", description: "Next annual renewal", createdAt: "2027-03-01T00:00:00Z", updatedAt: "2027-03-01T00:00:00Z" },
+  { id: "bill-4", tenantId: "tenant-1", memberId: "mem-3", type: "certificate_fee", amount: 200, paidAmount: 0, dueDate: "2026-07-01", status: "due", description: "Certificate issuance fee", createdAt: "2026-06-01T00:00:00Z", updatedAt: "2026-06-01T00:00:00Z" },
+  { id: "bill-5", tenantId: "tenant-2", memberId: "mem-3", type: "membership_fee", amount: 400, paidAmount: 200, dueDate: "2026-06-01", status: "partially_paid", description: "Teachers Association membership fee", createdAt: "2026-05-01T00:00:00Z", updatedAt: "2026-05-10T00:00:00Z" },
+]
+
+export const mockWithdrawals: Withdrawal[] = [
+  { id: "wd-1", tenantId: "tenant-1", walletId: "wallet-5", walletType: "branch", ownerName: "Accra Central Branch", amount: 2000, fee: 100, netAmount: 1900, status: "completed", reason: "Branch operational expenses", payoutMethod: "bank_account", payoutDestination: "GH-1234567890-ACCRA", lockedAt: "2026-05-01T09:00:00Z", completedAt: "2026-05-03T15:00:00Z", reviewedBy: "Super Admin", referenceNumber: "REF-WD-001", transferId: "TRF-001", proofOfPayment: "proof-001.pdf", createdAt: "2026-05-01T08:00:00Z", updatedAt: "2026-05-03T15:00:00Z" },
+  { id: "wd-2", tenantId: "tenant-1", walletId: "wallet-5", walletType: "branch", ownerName: "Accra Central Branch", amount: 1000, fee: 50, netAmount: 950, status: "under_review", reason: "Quarterly meeting expenses", payoutMethod: "mobile_money", payoutDestination: "233201234567", createdAt: "2026-06-15T10:00:00Z", updatedAt: "2026-06-16T08:00:00Z" },
+  { id: "wd-3", tenantId: "tenant-2", walletId: "wallet-9", walletType: "tenant", ownerName: "Teachers Association", amount: 5000, fee: 250, netAmount: 4750, status: "submitted", reason: "National conference budget", payoutMethod: "bank_account", payoutDestination: "GH-9876543210-ACCRA", createdAt: "2026-06-17T09:00:00Z", updatedAt: "2026-06-17T09:00:00Z" },
+]
+
+export const mockRefunds: Refund[] = [
+  { id: "rfd-1", tenantId: "tenant-1", transactionId: "txn-1", amount: 500, reason: "Member requested cancellation within grace period", status: "completed", requesterId: "user-2", approverId: "user-1", reviewedAt: "2026-04-02T10:00:00Z", createdAt: "2026-04-01T16:00:00Z", updatedAt: "2026-04-02T10:00:00Z" },
+  { id: "rfd-2", tenantId: "tenant-1", transactionId: "txn-2", amount: 300, reason: "Duplicate payment", status: "under_review", requesterId: "user-2", createdAt: "2026-06-10T14:00:00Z", updatedAt: "2026-06-10T14:00:00Z" },
+]
+
+export const mockReceipts: Receipt[] = [
+  { id: "rcpt-1", tenantId: "tenant-1", transactionId: "txn-1", receiptNumber: "RCT-2026-001", amount: 500, payerName: "Kofi Ansah", paymentMethod: "Mobile Money", status: "verified", createdAt: "2026-04-01T10:06:00Z" },
+  { id: "rcpt-2", tenantId: "tenant-1", transactionId: "txn-2", receiptNumber: "RCT-2026-002", amount: 300, payerName: "Akua Serwaa", paymentMethod: "Card", status: "verified", createdAt: "2026-04-15T14:36:00Z" },
+  { id: "rcpt-3", tenantId: "tenant-2", transactionId: "txn-7", receiptNumber: "RCT-2026-003", amount: 200, payerName: "Ama Danso", paymentMethod: "Mobile Money", status: "generated", createdAt: "2026-05-10T11:06:00Z" },
+]
+
+export const mockFinancialSettings: FinancialSettings = {
+  id: "fin-set-1", tenantId: "memsyst", currency: "GHS", withdrawalFeePercent: 5, maxWithdrawalPercent: 80, monthlyWithdrawalLimit: 1, messagingCosts: { emailCost: 0.05, smsCost: 0.30, pushCost: 0.02 }, createdAt: "2026-01-01T00:00:00Z", updatedAt: "2026-01-01T00:00:00Z",
+}
+
+// ============================================
+// STAGE 6 — COMMUNICATION MOCK DATA
+// ============================================
+
+export const mockEmailMessages: EmailMessage[] = [
+  { id: "email-1", tenantId: "tenant-1", senderId: "user-1", senderName: "Kwame Asante", recipientId: "mem-1", recipientEmail: "kofi.ansah@email.com", recipientName: "Kofi Ansah", subject: "Welcome to GHABA", body: "<h1>Welcome!</h1><p>Dear Kofi, welcome to the Ghana Hairdressers and Barbers Association.</p>", templateId: "tpl-1", status: "delivered", sentAt: "2026-04-01T10:00:00Z", deliveredAt: "2026-04-01T10:00:05Z", openedAt: "2026-04-01T10:30:00Z", cost: 0.05, markup: 0.01, totalCharge: 0.06, createdAt: "2026-04-01T09:00:00Z", updatedAt: "2026-04-01T10:00:05Z" },
+  { id: "email-2", tenantId: "tenant-1", senderId: "user-1", senderName: "Kwame Asante", recipientId: "mem-2", recipientEmail: "akua.serwaa@email.com", recipientName: "Akua Serwaa", subject: "Renewal Reminder", body: "<p>Dear Akua, your membership renewal is due soon.</p>", templateId: "tpl-2", status: "sent", sentAt: "2026-06-15T08:00:00Z", cost: 0.05, markup: 0.01, totalCharge: 0.06, createdAt: "2026-06-15T07:00:00Z", updatedAt: "2026-06-15T08:00:00Z" },
+  { id: "email-3", tenantId: "tenant-1", campaignId: "camp-1", senderId: "user-1", senderName: "Kwame Asante", recipientId: "mem-1", recipientEmail: "kofi.ansah@email.com", recipientName: "Kofi Ansah", subject: "Upcoming Training Workshop", body: "<p>Join our upcoming braiding techniques workshop.</p>", status: "queued", cost: 0.05, markup: 0.01, totalCharge: 0.06, createdAt: "2026-06-17T12:00:00Z", updatedAt: "2026-06-17T12:00:00Z" },
+]
+
+export const mockSMSMessages: SMSMessage[] = [
+  { id: "sms-1", tenantId: "tenant-1", senderId: "user-1", recipientId: "mem-1", recipientPhone: "+233201234567", message: "Welcome to GHABA! Your membership is now active.", units: 1, status: "delivered", sentAt: "2026-04-01T10:00:00Z", deliveredAt: "2026-04-01T10:00:03Z", cost: 0.30, markup: 0.05, totalCharge: 0.35, createdAt: "2026-04-01T09:00:00Z", updatedAt: "2026-04-01T10:00:03Z" },
+  { id: "sms-2", tenantId: "tenant-1", senderId: "user-1", recipientId: "mem-2", recipientPhone: "+233205567890", message: "Reminder: Your membership renewal is due in 7 days.", units: 1, status: "sent", sentAt: "2026-06-15T08:00:00Z", cost: 0.30, markup: 0.05, totalCharge: 0.35, createdAt: "2026-06-15T07:00:00Z", updatedAt: "2026-06-15T08:00:00Z" },
+]
+
+export const mockPushNotifications: PushNotificationRecord[] = [
+  { id: "push-1", tenantId: "tenant-1", senderId: "system", recipientId: "mem-1", title: "Welcome!", body: "Welcome to GHABA. Complete your profile to get started.", status: "delivered", sentAt: "2026-04-01T10:00:00Z", deliveredAt: "2026-04-01T10:00:02Z", createdAt: "2026-04-01T09:00:00Z", updatedAt: "2026-04-01T10:00:02Z" },
+  { id: "push-2", tenantId: "tenant-1", senderId: "system", recipientId: "mem-2", title: "Renewal Due", body: "Your membership renewal is due in 7 days.", status: "sent", sentAt: "2026-06-15T08:00:00Z", createdAt: "2026-06-15T07:00:00Z", updatedAt: "2026-06-15T08:00:00Z" },
+]
+
+export const mockCampaigns: Campaign[] = [
+  { id: "camp-1", tenantId: "tenant-1", title: "Membership Drive 2026", description: "Q2 membership recruitment campaign targeting new apprentices", type: "membership_drive", channel: "email", audience: { type: "all_members" }, schedule: { type: "immediate" }, status: "running", templateId: "tpl-1", createdBy: "user-1", sentCount: 150, deliveredCount: 142, openedCount: 89, clickedCount: 45, failedCount: 8, totalCost: 7.50, totalCharge: 9.00, createdAt: "2026-04-01T08:00:00Z", updatedAt: "2026-06-01T08:00:00Z" },
+  { id: "camp-2", tenantId: "tenant-1", title: "Renewal Reminder Campaign", description: "Automated renewal reminders for members due in 30 days", type: "renewal_campaign", channel: "sms", audience: { type: "specific_categories", filters: [{ field: "renewalStatus", operator: "eq", value: "due_soon" }] }, schedule: { type: "scheduled", scheduledAt: "2026-07-01T08:00:00Z" }, status: "draft", createdBy: "user-1", sentCount: 0, deliveredCount: 0, openedCount: 0, clickedCount: 0, failedCount: 0, totalCost: 0, totalCharge: 0, createdAt: "2026-06-10T10:00:00Z", updatedAt: "2026-06-10T10:00:00Z" },
+  { id: "camp-3", tenantId: "tenant-1", title: "Training Workshop Announcement", description: "Promote upcoming braiding techniques workshop", type: "training_campaign", channel: "email", audience: { type: "all_members" }, schedule: { type: "scheduled", scheduledAt: "2026-06-20T09:00:00Z" }, status: "scheduled", templateId: "tpl-3", createdBy: "user-1", sentCount: 0, deliveredCount: 0, openedCount: 0, clickedCount: 0, failedCount: 0, totalCost: 0, totalCharge: 0, createdAt: "2026-06-17T12:00:00Z", updatedAt: "2026-06-17T12:00:00Z" },
+]
+
+export const mockTemplates: Template[] = [
+  { id: "tpl-1", tenantId: "tenant-1", name: "Welcome Email", description: "Welcome message sent to new members", type: "email", subject: "Welcome to {{OrganizationName}}", content: "<h1>Welcome {{MemberName}}!</h1><p>Thank you for joining {{OrganizationName}}. Your membership number is {{MembershipNumber}}.</p>", variables: ["MemberName", "OrganizationName", "MembershipNumber"], status: "active", createdBy: "user-1", createdAt: "2026-01-15T10:00:00Z", updatedAt: "2026-01-15T10:00:00Z" },
+  { id: "tpl-2", tenantId: "tenant-1", name: "Renewal Reminder Email", description: "Reminder for members approaching renewal date", type: "email", subject: "Membership Renewal Reminder", content: "<p>Dear {{MemberName}}, your membership is due for renewal on {{RenewalDate}}. Amount: {{Amount}}.</p>", variables: ["MemberName", "RenewalDate", "Amount"], status: "active", createdBy: "user-1", createdAt: "2026-02-01T10:00:00Z", updatedAt: "2026-02-01T10:00:00Z" },
+  { id: "tpl-3", tenantId: "tenant-1", name: "Training Announcement", description: "Template for training event announcements", type: "email", subject: "Training: {{TrainingName}}", content: "<p>Dear {{MemberName}}, we are pleased to announce {{TrainingName}} on {{TrainingDate}}.</p>", variables: ["MemberName", "TrainingName", "TrainingDate"], status: "active", createdBy: "user-1", createdAt: "2026-03-01T10:00:00Z", updatedAt: "2026-03-10T10:00:00Z" },
+  { id: "tpl-4", tenantId: "tenant-1", name: "SMS Welcome", description: "Short welcome SMS", type: "sms", content: "Welcome to {{OrganizationName}}! Your membership is now active.", variables: ["OrganizationName"], status: "active", createdBy: "user-1", createdAt: "2026-01-15T10:00:00Z", updatedAt: "2026-01-15T10:00:00Z" },
+  { id: "tpl-5", tenantId: "tenant-1", name: "Payment Receipt", description: "Payment confirmation notification", type: "notification", subject: "Payment Received", content: "Your payment of {{Amount}} has been received successfully.", variables: ["Amount"], status: "active", createdBy: "user-1", createdAt: "2026-02-15T10:00:00Z", updatedAt: "2026-02-15T10:00:00Z" },
+]
+
+export const mockSegments: AudienceSegment[] = [
+  { id: "seg-1", tenantId: "tenant-1", name: "Active Members in Accra", description: "All active members in the Accra region", filters: [{ field: "status", operator: "eq", value: "active" }, { field: "region", operator: "eq", value: "Greater Accra" }], estimatedCount: 85, createdBy: "user-1", createdAt: "2026-03-01T10:00:00Z", updatedAt: "2026-03-01T10:00:00Z" },
+  { id: "seg-2", tenantId: "tenant-1", name: "Pending Renewals", description: "Members with renewal due or overdue", filters: [{ field: "renewalStatus", operator: "in", value: ["due_soon", "overdue"] }], estimatedCount: 42, createdBy: "user-1", createdAt: "2026-04-01T10:00:00Z", updatedAt: "2026-04-01T10:00:00Z" },
+  { id: "seg-3", tenantId: "tenant-1", name: "All Apprentices", description: "All active apprentices across all branches", filters: [{ field: "type", operator: "eq", value: "apprentice" }], estimatedCount: 30, createdBy: "user-1", createdAt: "2026-05-01T10:00:00Z", updatedAt: "2026-05-01T10:00:00Z" },
+]
+
+export const mockCommunicationPreferences: CommunicationPreference[] = [
+  { id: "cp-1", tenantId: "tenant-1", userId: "user-2", memberId: "mem-1", email: true, sms: true, push: true, inApp: true, emailAddress: "kofi.ansah@email.com", phoneNumber: "+233201234567", updatedAt: "2026-04-01T10:00:00Z" },
+  { id: "cp-2", tenantId: "tenant-1", userId: "user-3", memberId: "mem-2", email: true, sms: false, push: true, inApp: true, emailAddress: "akua.serwaa@email.com", phoneNumber: "+233205567890", updatedAt: "2026-04-15T14:00:00Z" },
+]
+
+export const mockSubscriptions: Subscription[] = [
+  { id: "sub-1", tenantId: "tenant-1", userId: "user-2", memberId: "mem-1", category: "announcements", subscribed: true, channel: "email", createdAt: "2026-04-01T10:00:00Z", updatedAt: "2026-04-01T10:00:00Z" },
+  { id: "sub-2", tenantId: "tenant-1", userId: "user-2", memberId: "mem-1", category: "events", subscribed: true, channel: "email", createdAt: "2026-04-01T10:00:00Z", updatedAt: "2026-04-01T10:00:00Z" },
+  { id: "sub-3", tenantId: "tenant-1", userId: "user-2", memberId: "mem-1", category: "training", subscribed: true, channel: "sms", createdAt: "2026-04-01T10:00:00Z", updatedAt: "2026-04-01T10:00:00Z" },
+  { id: "sub-4", tenantId: "tenant-1", userId: "user-3", memberId: "mem-2", category: "announcements", subscribed: true, channel: "email", createdAt: "2026-04-15T14:00:00Z", updatedAt: "2026-04-15T14:00:00Z" },
+  { id: "sub-5", tenantId: "tenant-1", userId: "user-3", memberId: "mem-2", category: "events", subscribed: false, channel: "email", createdAt: "2026-04-15T14:00:00Z", updatedAt: "2026-04-15T14:00:00Z" },
+]
+
+export const mockEngagementEvents: EngagementEvent[] = [
+  { id: "ee-1", tenantId: "tenant-1", userId: "user-2", memberId: "mem-1", eventType: "email_opened", sourceId: "email-1", sourceType: "email", timestamp: "2026-04-01T10:30:00Z" },
+  { id: "ee-2", tenantId: "tenant-1", userId: "user-2", memberId: "mem-1", eventType: "notification_read", sourceId: "notif-1", sourceType: "notification", timestamp: "2026-04-01T11:00:00Z" },
+  { id: "ee-3", tenantId: "tenant-1", userId: "user-3", memberId: "mem-2", eventType: "email_opened", sourceId: "email-2", sourceType: "email", timestamp: "2026-06-15T08:30:00Z" },
+]
+
+export const mockDeliveryLogs: DeliveryLog[] = [
+  { id: "dl-1", tenantId: "tenant-1", messageId: "email-1", channel: "email", recipientId: "mem-1", status: "delivered", attempts: 1, maxAttempts: 3, lastAttemptAt: "2026-04-01T10:00:05Z", createdAt: "2026-04-01T09:00:00Z", updatedAt: "2026-04-01T10:00:05Z" },
+  { id: "dl-2", tenantId: "tenant-1", messageId: "sms-1", channel: "sms", recipientId: "mem-1", status: "delivered", attempts: 1, maxAttempts: 3, lastAttemptAt: "2026-04-01T10:00:03Z", createdAt: "2026-04-01T09:00:00Z", updatedAt: "2026-04-01T10:00:03Z" },
+  { id: "dl-3", tenantId: "tenant-1", messageId: "email-2", channel: "email", recipientId: "mem-2", status: "sent", attempts: 1, maxAttempts: 3, lastAttemptAt: "2026-06-15T08:00:00Z", createdAt: "2026-06-15T07:00:00Z", updatedAt: "2026-06-15T08:00:00Z" },
+]
+
+export const mockBroadcastMessages: BroadcastMessage[] = [
+  { id: "bc-1", tenantId: "tenant-1", title: "National Executive Announcement", message: "We are pleased to announce the appointment of new regional executives for the upcoming term.", scope: "national", scopeId: "org-unit-1", channel: ["email", "sms"], senderId: "user-1", senderName: "Kwame Asante", senderRole: "super_admin", status: "completed", sentCount: 250, createdAt: "2026-05-01T10:00:00Z", updatedAt: "2026-05-01T12:00:00Z" },
+  { id: "bc-2", tenantId: "tenant-1", title: "Branch Meeting Notice", message: "Monthly branch meeting scheduled for Friday at 3pm.", scope: "branch", scopeId: "branch-1", channel: ["push", "in_app"], senderId: "user-1", senderName: "Kwame Asante", senderRole: "super_admin", status: "completed", sentCount: 45, createdAt: "2026-06-01T09:00:00Z", updatedAt: "2026-06-01T10:00:00Z" },
+]
+
+export const mockAutomationRules: AutomationRule[] = [
+  { id: "auto-1", tenantId: "tenant-1", name: "Welcome New Member", description: "Send welcome email when member is approved", triggerEvent: "member.approved", actionType: "send_email", templateId: "tpl-1", channel: "email", delayMinutes: 0, isActive: true, createdBy: "user-1", createdAt: "2026-01-15T10:00:00Z", updatedAt: "2026-01-15T10:00:00Z" },
+  { id: "auto-2", tenantId: "tenant-1", name: "Renewal Reminder", description: "Send SMS reminder when renewal is due", triggerEvent: "renewal.due", actionType: "send_sms", templateId: "tpl-4", channel: "sms", delayMinutes: 0, isActive: true, createdBy: "user-1", createdAt: "2026-02-01T10:00:00Z", updatedAt: "2026-02-01T10:00:00Z" },
+  { id: "auto-3", tenantId: "tenant-1", name: "Payment Receipt", description: "Send payment receipt notification", triggerEvent: "payment.successful", actionType: "send_in_app", channel: "in_app", delayMinutes: 0, isActive: false, createdBy: "user-1", createdAt: "2026-03-01T10:00:00Z", updatedAt: "2026-03-01T10:00:00Z" },
+]
+
+export const mockCommunicationAuditLogs: CommunicationAuditLog[] = [
+  { id: "caud-1", tenantId: "tenant-1", actor: "Kwame Asante", action: "campaign_created", channel: "email", audience: "all_members", targetId: "camp-1", details: "Created membership drive campaign", result: "success", createdAt: "2026-04-01T08:00:00Z" },
+  { id: "caud-2", tenantId: "tenant-1", actor: "Kwame Asante", action: "template_modified", channel: "email", targetId: "tpl-3", details: "Updated training announcement template", result: "success", createdAt: "2026-03-10T10:00:00Z" },
+  { id: "caud-3", tenantId: "tenant-1", actor: "System", action: "message_sent", channel: "email", audience: "Kofi Ansah", targetId: "email-1", details: "Welcome email sent to new member", result: "success", createdAt: "2026-04-01T10:00:00Z" },
+  { id: "caud-4", tenantId: "tenant-1", actor: "Ama Osei", action: "preference_changed", channel: "sms", targetId: "cp-2", details: "Disabled SMS notifications", result: "success", createdAt: "2026-04-15T14:00:00Z" },
+  { id: "caud-5", tenantId: "tenant-1", actor: "Kwame Asante", action: "broadcast_sent", channel: "email", audience: "National", targetId: "bc-1", details: "National executive announcement broadcast", result: "success", createdAt: "2026-05-01T10:00:00Z" },
+]

@@ -98,10 +98,14 @@ export default function ContactPage() {
                   <p className="text-sm text-gray-400">{form.subtitle}</p>
                 </div>
                 <form onSubmit={handleSubmit} className="space-y-5">
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div>
                       <label className="form-label">Full Name</label>
                       <input type="text" name="fullName" className="form-input" placeholder="John Doe" required />
+                    </div>
+                    <div>
+                      <label className="form-label">Phone Number</label>
+                      <input type="tel" name="phone" className="form-input" placeholder="+233 50 000 0000" />
                     </div>
                     <div>
                       <label className="form-label">Email Address</label>

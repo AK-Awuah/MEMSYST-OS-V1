@@ -12,6 +12,7 @@ import type { ISessionService } from "./ISessionService"
 import type { ISecurityAuditService } from "./ISecurityAuditService"
 import type { IAccessControlService } from "./IAccessControlService"
 import type { ITenantProvisioningService } from "./ITenantProvisioningService"
+import type { ISettingsService } from "./ISettingsService"
 import type { ITenantManagementService } from "./ITenantManagementService"
 import type { IOrganizationStructureService } from "./IOrganizationStructureService"
 import type { IExecutiveService } from "./IExecutiveService"
@@ -19,6 +20,39 @@ import type { IGovernanceService } from "./IGovernanceService"
 import type { ITenantSettingsService } from "./ITenantSettingsService"
 import type { ITenantDocumentService } from "./ITenantDocumentService"
 import type { ITenantAuditService } from "./ITenantAuditService"
+import type { IMemberService } from "./IMemberService"
+import type { IMemberRegistrationService } from "./IMemberRegistrationService"
+import type { IMemberApprovalService } from "./IMemberApprovalService"
+import type { IApprenticeService } from "./IApprenticeService"
+import type { IRenewalService } from "./IRenewalService"
+import type { IMemberDocumentService } from "./IMemberDocumentService"
+import type { IMemberAnalyticsService } from "./IMemberAnalyticsService"
+import type { IMemberCommunicationService } from "./IMemberCommunicationService"
+import type { IMembershipAuditService } from "./IMembershipAuditService"
+import type { IWalletService } from "./IWalletService"
+import type { ILedgerService } from "./ILedgerService"
+import type { IPaymentService } from "./IPaymentService"
+import type { IRevenueDistributionService } from "./IRevenueDistributionService"
+import type { ICommissionService } from "./ICommissionService"
+import type { IBillingService } from "./IBillingService"
+import type { IWithdrawalService } from "./IWithdrawalService"
+import type { IRefundService } from "./IRefundService"
+import type { IFinancialSettingsService } from "./IFinancialSettingsService"
+import type { IFinancialDashboardService } from "./IFinancialDashboardService"
+import type { INotificationEngineService } from "./INotificationEngineService"
+import type { IEmailService } from "./IEmailService"
+import type { ISMSService } from "./ISMSService"
+import type { IPushNotificationService } from "./IPushNotificationService"
+import type { ICampaignService } from "./ICampaignService"
+import type { ITemplateService } from "./ITemplateService"
+import type { IAudienceSegmentService } from "./IAudienceSegmentService"
+import type { ICommunicationPreferenceService } from "./ICommunicationPreferenceService"
+import type { ISubscriptionService } from "./ISubscriptionService"
+import type { IEngagementService } from "./IEngagementService"
+import type { IDeliveryTrackingService } from "./IDeliveryTrackingService"
+import type { ICommunicationAnalyticsService } from "./ICommunicationAnalyticsService"
+import type { IAutomationService } from "./IAutomationService"
+import type { ICommunicationAuditService } from "./ICommunicationAuditService"
 
 type ServiceInstance =
   | IAuthService
@@ -41,6 +75,40 @@ type ServiceInstance =
   | ITenantSettingsService
   | ITenantDocumentService
   | ITenantAuditService
+  | ISettingsService
+  | IMemberService
+  | IMemberRegistrationService
+  | IMemberApprovalService
+  | IApprenticeService
+  | IRenewalService
+  | IMemberDocumentService
+  | IMemberAnalyticsService
+  | IMemberCommunicationService
+  | IMembershipAuditService
+  | IWalletService
+  | ILedgerService
+  | IPaymentService
+  | IRevenueDistributionService
+  | ICommissionService
+  | IBillingService
+  | IWithdrawalService
+  | IRefundService
+  | IFinancialSettingsService
+  | IFinancialDashboardService
+  | INotificationEngineService
+  | IEmailService
+  | ISMSService
+  | IPushNotificationService
+  | ICampaignService
+  | ITemplateService
+  | IAudienceSegmentService
+  | ICommunicationPreferenceService
+  | ISubscriptionService
+  | IEngagementService
+  | IDeliveryTrackingService
+  | ICommunicationAnalyticsService
+  | IAutomationService
+  | ICommunicationAuditService
 
 const instances = new Map<string, ServiceInstance>()
 
@@ -173,9 +241,8 @@ export async function getTenantManagementService(): Promise<ITenantManagementSer
     const { MockTenantManagementService } = await import("./MockTenantManagementService")
     return createInstance("tenantManagement", new MockTenantManagementService())
   }
-  // Stage 3 full implementation — use Mock for unimplemented methods, backed by Firestore for core tenant ops
-  const { MockTenantManagementService } = await import("./MockTenantManagementService")
-  return createInstance("tenantManagement", new MockTenantManagementService())
+  const { FirebaseTenantManagementService } = await import("./FirebaseTenantManagementService")
+  return createInstance("tenantManagement", new FirebaseTenantManagementService())
 }
 
 export async function getOrganizationStructureService(): Promise<IOrganizationStructureService> {
@@ -183,9 +250,8 @@ export async function getOrganizationStructureService(): Promise<IOrganizationSt
     const { MockOrganizationStructureService } = await import("./MockOrganizationStructureService")
     return createInstance("orgStructure", new MockOrganizationStructureService())
   }
-  // Stage 3 — use mock until Firebase impl is built
-  const { MockOrganizationStructureService } = await import("./MockOrganizationStructureService")
-  return createInstance("orgStructure", new MockOrganizationStructureService())
+  const { FirebaseOrganizationStructureService } = await import("./FirebaseOrganizationStructureService")
+  return createInstance("orgStructure", new FirebaseOrganizationStructureService())
 }
 
 export async function getExecutiveService(): Promise<IExecutiveService> {
@@ -193,9 +259,8 @@ export async function getExecutiveService(): Promise<IExecutiveService> {
     const { MockExecutiveService } = await import("./MockExecutiveService")
     return createInstance("executive", new MockExecutiveService())
   }
-  // Stage 3 — use mock until Firebase impl is built
-  const { MockExecutiveService } = await import("./MockExecutiveService")
-  return createInstance("executive", new MockExecutiveService())
+  const { FirebaseExecutiveService } = await import("./FirebaseExecutiveService")
+  return createInstance("executive", new FirebaseExecutiveService())
 }
 
 export async function getGovernanceService(): Promise<IGovernanceService> {
@@ -203,9 +268,8 @@ export async function getGovernanceService(): Promise<IGovernanceService> {
     const { MockGovernanceService } = await import("./MockGovernanceService")
     return createInstance("governance", new MockGovernanceService())
   }
-  // Stage 3 — use mock until Firebase impl is built
-  const { MockGovernanceService } = await import("./MockGovernanceService")
-  return createInstance("governance", new MockGovernanceService())
+  const { FirebaseGovernanceService } = await import("./FirebaseGovernanceService")
+  return createInstance("governance", new FirebaseGovernanceService())
 }
 
 export async function getTenantSettingsService(): Promise<ITenantSettingsService> {
@@ -213,9 +277,8 @@ export async function getTenantSettingsService(): Promise<ITenantSettingsService
     const { MockTenantSettingsService } = await import("./MockTenantSettingsService")
     return createInstance("tenantSettings", new MockTenantSettingsService())
   }
-  // Stage 3 — use mock until Firebase impl is built
-  const { MockTenantSettingsService } = await import("./MockTenantSettingsService")
-  return createInstance("tenantSettings", new MockTenantSettingsService())
+  const { FirebaseTenantSettingsService } = await import("./FirebaseTenantSettingsService")
+  return createInstance("tenantSettings", new FirebaseTenantSettingsService())
 }
 
 export async function getTenantDocumentService(): Promise<ITenantDocumentService> {
@@ -223,9 +286,8 @@ export async function getTenantDocumentService(): Promise<ITenantDocumentService
     const { MockTenantDocumentService } = await import("./MockTenantDocumentService")
     return createInstance("tenantDocuments", new MockTenantDocumentService())
   }
-  // Stage 3 — use mock until Firebase impl is built
-  const { MockTenantDocumentService } = await import("./MockTenantDocumentService")
-  return createInstance("tenantDocuments", new MockTenantDocumentService())
+  const { FirebaseTenantDocumentService } = await import("./FirebaseTenantDocumentService")
+  return createInstance("tenantDocuments", new FirebaseTenantDocumentService())
 }
 
 export async function getTenantAuditService(): Promise<ITenantAuditService> {
@@ -233,9 +295,314 @@ export async function getTenantAuditService(): Promise<ITenantAuditService> {
     const { MockTenantAuditService } = await import("./MockTenantAuditService")
     return createInstance("tenantAudit", new MockTenantAuditService())
   }
-  // Stage 3 — use mock until Firebase impl is built
-  const { MockTenantAuditService } = await import("./MockTenantAuditService")
-  return createInstance("tenantAudit", new MockTenantAuditService())
+  const { FirebaseTenantAuditService } = await import("./FirebaseTenantAuditService")
+  return createInstance("tenantAudit", new FirebaseTenantAuditService())
+}
+
+export async function getSettingsService(): Promise<ISettingsService> {
+  if (USE_MOCK_SERVICES) {
+    const { MockSettingsService } = await import("./MockSettingsService")
+    return createInstance("settings", new MockSettingsService())
+  }
+  const { FirebaseSettingsService } = await import("./FirebaseSettingsService")
+  return createInstance("settings", new FirebaseSettingsService())
+}
+
+export async function getMemberService(): Promise<IMemberService> {
+  if (USE_MOCK_SERVICES) {
+    const { MockMemberService } = await import("./MockMemberService")
+    return createInstance("member", new MockMemberService())
+  }
+  const { FirebaseMemberService } = await import("./FirebaseMemberService")
+  return createInstance("member", new FirebaseMemberService())
+}
+
+export async function getMemberRegistrationService(): Promise<IMemberRegistrationService> {
+  if (USE_MOCK_SERVICES) {
+    const { MockMemberRegistrationService } = await import("./MockMemberRegistrationService")
+    return createInstance("memberRegistration", new MockMemberRegistrationService())
+  }
+  const { FirebaseMemberRegistrationService } = await import("./FirebaseMemberRegistrationService")
+  return createInstance("memberRegistration", new FirebaseMemberRegistrationService())
+}
+
+export async function getMemberApprovalService(): Promise<IMemberApprovalService> {
+  if (USE_MOCK_SERVICES) {
+    const { MockMemberApprovalService } = await import("./MockMemberApprovalService")
+    return createInstance("memberApproval", new MockMemberApprovalService())
+  }
+  const { FirebaseMemberApprovalService } = await import("./FirebaseMemberApprovalService")
+  return createInstance("memberApproval", new FirebaseMemberApprovalService())
+}
+
+export async function getApprenticeService(): Promise<IApprenticeService> {
+  if (USE_MOCK_SERVICES) {
+    const { MockApprenticeService } = await import("./MockApprenticeService")
+    return createInstance("apprentice", new MockApprenticeService())
+  }
+  const { FirebaseApprenticeService } = await import("./FirebaseApprenticeService")
+  return createInstance("apprentice", new FirebaseApprenticeService())
+}
+
+export async function getRenewalService(): Promise<IRenewalService> {
+  if (USE_MOCK_SERVICES) {
+    const { MockRenewalService } = await import("./MockRenewalService")
+    return createInstance("renewal", new MockRenewalService())
+  }
+  const { FirebaseRenewalService } = await import("./FirebaseRenewalService")
+  return createInstance("renewal", new FirebaseRenewalService())
+}
+
+export async function getMemberDocumentService(): Promise<IMemberDocumentService> {
+  if (USE_MOCK_SERVICES) {
+    const { MockMemberDocumentService } = await import("./MockMemberDocumentService")
+    return createInstance("memberDocuments", new MockMemberDocumentService())
+  }
+  const { FirebaseMemberDocumentService } = await import("./FirebaseMemberDocumentService")
+  return createInstance("memberDocuments", new FirebaseMemberDocumentService())
+}
+
+export async function getMemberAnalyticsService(): Promise<IMemberAnalyticsService> {
+  if (USE_MOCK_SERVICES) {
+    const { MockMemberAnalyticsService } = await import("./MockMemberAnalyticsService")
+    return createInstance("memberAnalytics", new MockMemberAnalyticsService())
+  }
+  const { FirebaseMemberAnalyticsService } = await import("./FirebaseMemberAnalyticsService")
+  return createInstance("memberAnalytics", new FirebaseMemberAnalyticsService())
+}
+
+export async function getMemberCommunicationService(): Promise<IMemberCommunicationService> {
+  if (USE_MOCK_SERVICES) {
+    const { MockMemberCommunicationService } = await import("./MockMemberCommunicationService")
+    return createInstance("memberCommunication", new MockMemberCommunicationService())
+  }
+  const { FirebaseMemberCommunicationService } = await import("./FirebaseMemberCommunicationService")
+  return createInstance("memberCommunication", new FirebaseMemberCommunicationService())
+}
+
+export async function getMembershipAuditService(): Promise<IMembershipAuditService> {
+  if (USE_MOCK_SERVICES) {
+    const { MockMembershipAuditService } = await import("./MockMembershipAuditService")
+    return createInstance("membershipAudit", new MockMembershipAuditService())
+  }
+  const { FirebaseMembershipAuditService } = await import("./FirebaseMembershipAuditService")
+  return createInstance("membershipAudit", new FirebaseMembershipAuditService())
+}
+
+export async function getWalletService(): Promise<IWalletService> {
+  if (USE_MOCK_SERVICES) {
+    const { MockWalletService } = await import("./MockWalletService")
+    return createInstance("wallet", new MockWalletService())
+  }
+  const { FirebaseWalletService } = await import("./FirebaseWalletService")
+  return createInstance("wallet", new FirebaseWalletService())
+}
+
+export async function getLedgerService(): Promise<ILedgerService> {
+  if (USE_MOCK_SERVICES) {
+    const { MockLedgerService } = await import("./MockLedgerService")
+    return createInstance("ledger", new MockLedgerService())
+  }
+  const { FirebaseLedgerService } = await import("./FirebaseLedgerService")
+  return createInstance("ledger", new FirebaseLedgerService())
+}
+
+export async function getPaymentService(): Promise<IPaymentService> {
+  if (USE_MOCK_SERVICES) {
+    const { MockPaymentService } = await import("./MockPaymentService")
+    return createInstance("payment", new MockPaymentService())
+  }
+  const { FirebasePaymentService } = await import("./FirebasePaymentService")
+  return createInstance("payment", new FirebasePaymentService())
+}
+
+export async function getRevenueDistributionService(): Promise<IRevenueDistributionService> {
+  if (USE_MOCK_SERVICES) {
+    const { MockRevenueDistributionService } = await import("./MockRevenueDistributionService")
+    return createInstance("revenueDistribution", new MockRevenueDistributionService())
+  }
+  const { FirebaseRevenueDistributionService } = await import("./FirebaseRevenueDistributionService")
+  return createInstance("revenueDistribution", new FirebaseRevenueDistributionService())
+}
+
+export async function getCommissionService(): Promise<ICommissionService> {
+  if (USE_MOCK_SERVICES) {
+    const { MockCommissionService } = await import("./MockCommissionService")
+    return createInstance("commission", new MockCommissionService())
+  }
+  const { FirebaseCommissionService } = await import("./FirebaseCommissionService")
+  return createInstance("commission", new FirebaseCommissionService())
+}
+
+export async function getBillingService(): Promise<IBillingService> {
+  if (USE_MOCK_SERVICES) {
+    const { MockBillingService } = await import("./MockBillingService")
+    return createInstance("billing", new MockBillingService())
+  }
+  const { FirebaseBillingService } = await import("./FirebaseBillingService")
+  return createInstance("billing", new FirebaseBillingService())
+}
+
+export async function getWithdrawalService(): Promise<IWithdrawalService> {
+  if (USE_MOCK_SERVICES) {
+    const { MockWithdrawalService } = await import("./MockWithdrawalService")
+    return createInstance("withdrawal", new MockWithdrawalService())
+  }
+  const { FirebaseWithdrawalService } = await import("./FirebaseWithdrawalService")
+  return createInstance("withdrawal", new FirebaseWithdrawalService())
+}
+
+export async function getRefundService(): Promise<IRefundService> {
+  if (USE_MOCK_SERVICES) {
+    const { MockRefundService } = await import("./MockRefundService")
+    return createInstance("refund", new MockRefundService())
+  }
+  const { FirebaseRefundService } = await import("./FirebaseRefundService")
+  return createInstance("refund", new FirebaseRefundService())
+}
+
+export async function getFinancialSettingsService(): Promise<IFinancialSettingsService> {
+  if (USE_MOCK_SERVICES) {
+    const { MockFinancialSettingsService } = await import("./MockFinancialSettingsService")
+    return createInstance("financialSettings", new MockFinancialSettingsService())
+  }
+  const { FirebaseFinancialSettingsService } = await import("./FirebaseFinancialSettingsService")
+  return createInstance("financialSettings", new FirebaseFinancialSettingsService())
+}
+
+export async function getFinancialDashboardService(): Promise<IFinancialDashboardService> {
+  if (USE_MOCK_SERVICES) {
+    const { MockFinancialDashboardService } = await import("./MockFinancialDashboardService")
+    return createInstance("financialDashboard", new MockFinancialDashboardService())
+  }
+  const { FirebaseFinancialDashboardService } = await import("./FirebaseFinancialDashboardService")
+  return createInstance("financialDashboard", new FirebaseFinancialDashboardService())
+}
+
+export async function getNotificationEngineService(): Promise<INotificationEngineService> {
+  if (USE_MOCK_SERVICES) {
+    const { MockNotificationEngineService } = await import("./MockNotificationEngineService")
+    return createInstance("notificationEngine", new MockNotificationEngineService())
+  }
+  const { FirebaseNotificationEngineService } = await import("./FirebaseNotificationEngineService")
+  return createInstance("notificationEngine", new FirebaseNotificationEngineService())
+}
+
+export async function getEmailService(): Promise<IEmailService> {
+  if (USE_MOCK_SERVICES) {
+    const { MockEmailService } = await import("./MockEmailService")
+    return createInstance("email", new MockEmailService())
+  }
+  const { FirebaseEmailService } = await import("./FirebaseEmailService")
+  return createInstance("email", new FirebaseEmailService())
+}
+
+export async function getSMSService(): Promise<ISMSService> {
+  if (USE_MOCK_SERVICES) {
+    const { MockSMSService } = await import("./MockSMSService")
+    return createInstance("sms", new MockSMSService())
+  }
+  const { FirebaseSMSService } = await import("./FirebaseSMSService")
+  return createInstance("sms", new FirebaseSMSService())
+}
+
+export async function getPushNotificationService(): Promise<IPushNotificationService> {
+  if (USE_MOCK_SERVICES) {
+    const { MockPushNotificationService } = await import("./MockPushNotificationService")
+    return createInstance("push", new MockPushNotificationService())
+  }
+  const { FirebasePushNotificationService } = await import("./FirebasePushNotificationService")
+  return createInstance("push", new FirebasePushNotificationService())
+}
+
+export async function getCampaignService(): Promise<ICampaignService> {
+  if (USE_MOCK_SERVICES) {
+    const { MockCampaignService } = await import("./MockCampaignService")
+    return createInstance("campaign", new MockCampaignService())
+  }
+  const { FirebaseCampaignService } = await import("./FirebaseCampaignService")
+  return createInstance("campaign", new FirebaseCampaignService())
+}
+
+export async function getTemplateService(): Promise<ITemplateService> {
+  if (USE_MOCK_SERVICES) {
+    const { MockTemplateService } = await import("./MockTemplateService")
+    return createInstance("template", new MockTemplateService())
+  }
+  const { FirebaseTemplateService } = await import("./FirebaseTemplateService")
+  return createInstance("template", new FirebaseTemplateService())
+}
+
+export async function getAudienceSegmentService(): Promise<IAudienceSegmentService> {
+  if (USE_MOCK_SERVICES) {
+    const { MockAudienceSegmentService } = await import("./MockAudienceSegmentService")
+    return createInstance("audienceSegment", new MockAudienceSegmentService())
+  }
+  const { FirebaseAudienceSegmentService } = await import("./FirebaseAudienceSegmentService")
+  return createInstance("audienceSegment", new FirebaseAudienceSegmentService())
+}
+
+export async function getCommunicationPreferenceService(): Promise<ICommunicationPreferenceService> {
+  if (USE_MOCK_SERVICES) {
+    const { MockCommunicationPreferenceService } = await import("./MockCommunicationPreferenceService")
+    return createInstance("commPreference", new MockCommunicationPreferenceService())
+  }
+  const { FirebaseCommunicationPreferenceService } = await import("./FirebaseCommunicationPreferenceService")
+  return createInstance("commPreference", new FirebaseCommunicationPreferenceService())
+}
+
+export async function getSubscriptionService(): Promise<ISubscriptionService> {
+  if (USE_MOCK_SERVICES) {
+    const { MockSubscriptionService } = await import("./MockSubscriptionService")
+    return createInstance("subscription", new MockSubscriptionService())
+  }
+  const { FirebaseSubscriptionService } = await import("./FirebaseSubscriptionService")
+  return createInstance("subscription", new FirebaseSubscriptionService())
+}
+
+export async function getEngagementService(): Promise<IEngagementService> {
+  if (USE_MOCK_SERVICES) {
+    const { MockEngagementService } = await import("./MockEngagementService")
+    return createInstance("engagement", new MockEngagementService())
+  }
+  const { FirebaseEngagementService } = await import("./FirebaseEngagementService")
+  return createInstance("engagement", new FirebaseEngagementService())
+}
+
+export async function getDeliveryTrackingService(): Promise<IDeliveryTrackingService> {
+  if (USE_MOCK_SERVICES) {
+    const { MockDeliveryTrackingService } = await import("./MockDeliveryTrackingService")
+    return createInstance("deliveryTracking", new MockDeliveryTrackingService())
+  }
+  const { FirebaseDeliveryTrackingService } = await import("./FirebaseDeliveryTrackingService")
+  return createInstance("deliveryTracking", new FirebaseDeliveryTrackingService())
+}
+
+export async function getCommunicationAnalyticsService(): Promise<ICommunicationAnalyticsService> {
+  if (USE_MOCK_SERVICES) {
+    const { MockCommunicationAnalyticsService } = await import("./MockCommunicationAnalyticsService")
+    return createInstance("commAnalytics", new MockCommunicationAnalyticsService())
+  }
+  const { FirebaseCommunicationAnalyticsService } = await import("./FirebaseCommunicationAnalyticsService")
+  return createInstance("commAnalytics", new FirebaseCommunicationAnalyticsService())
+}
+
+export async function getAutomationService(): Promise<IAutomationService> {
+  if (USE_MOCK_SERVICES) {
+    const { MockAutomationService } = await import("./MockAutomationService")
+    return createInstance("automation", new MockAutomationService())
+  }
+  const { FirebaseAutomationService } = await import("./FirebaseAutomationService")
+  return createInstance("automation", new FirebaseAutomationService())
+}
+
+export async function getCommunicationAuditService(): Promise<ICommunicationAuditService> {
+  if (USE_MOCK_SERVICES) {
+    const { MockCommunicationAuditService } = await import("./MockCommunicationAuditService")
+    return createInstance("commAudit", new MockCommunicationAuditService())
+  }
+  const { FirebaseCommunicationAuditService } = await import("./FirebaseCommunicationAuditService")
+  return createInstance("commAudit", new FirebaseCommunicationAuditService())
 }
 
 export type {
@@ -259,5 +626,38 @@ export type {
   ITenantSettingsService,
   ITenantDocumentService,
   ITenantAuditService,
+  IMemberService,
+  IMemberRegistrationService,
+  IMemberApprovalService,
+  IApprenticeService,
+  IRenewalService,
+  IMemberDocumentService,
+  IMemberAnalyticsService,
+  IMemberCommunicationService,
+  IMembershipAuditService,
+  IWalletService,
+  ILedgerService,
+  IPaymentService,
+  IRevenueDistributionService,
+  ICommissionService,
+  IBillingService,
+  IWithdrawalService,
+  IRefundService,
+  IFinancialSettingsService,
+  IFinancialDashboardService,
+  INotificationEngineService,
+  IEmailService,
+  ISMSService,
+  IPushNotificationService,
+  ICampaignService,
+  ITemplateService,
+  IAudienceSegmentService,
+  ICommunicationPreferenceService,
+  ISubscriptionService,
+  IEngagementService,
+  IDeliveryTrackingService,
+  ICommunicationAnalyticsService,
+  IAutomationService,
+  ICommunicationAuditService,
 }
 export type { AuthState } from "./IAuthService"

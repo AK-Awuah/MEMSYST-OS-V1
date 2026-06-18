@@ -2,8 +2,10 @@ import {
   collection,
   doc,
   addDoc,
+  getDoc,
   getDocs,
   updateDoc,
+  deleteDoc,
   query,
   where,
   orderBy,
@@ -81,5 +83,27 @@ export class FirebaseNotificationService implements INotificationService {
     const payload = { ...data, createdAt: now }
     const ref = await addDoc(collection(this.db, COLLECTION), payload)
     return { id: ref.id, ...payload }
+  }
+
+  async deleteNotification(id: string): Promise<void> {
+    await deleteDoc(doc(this.db, COLLECTION, id))
+  }
+
+  async listByType(userId: string, type: string): Promise<Notification[]> {
+    const snap = await getDocs(
+      query(
+        collection(this.db, COLLECTION),
+        where("recipientId", "==", userId),
+        where("type", "==", type),
+        orderBy("createdAt", "desc")
+      )
+    )
+    return snap.docs.map((d) => toNotification(d.id, d.data() as Record<string, unknown>))
+  }
+
+  async getNotificationById(id: string): Promise<Notification | null> {
+    const snap = await getDoc(doc(this.db, COLLECTION, id))
+    if (!snap.exists()) return null
+    return toNotification(snap.id, snap.data() as Record<string, unknown>)
   }
 }

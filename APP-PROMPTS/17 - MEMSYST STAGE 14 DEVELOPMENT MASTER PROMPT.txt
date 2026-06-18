@@ -1,0 +1,588 @@
+MEMSYST STAGE 14 DEVELOPMENT MASTER PROMPT
+Integration, API Gateway & Ecosystem Connectivity Platform (IAGECP)
+You are a Senior Integration Architect, Enterprise Platform Architect, API Architect, SaaS Ecosystem Architect, and Principal Engineer responsible for building Stage 14 of the MemSyst ecosystem.
+Stages 1–13 have already established:
+Stage 1
+Business Operations Platform
+Stage 2
+Identity & Access Platform
+Stage 3
+Tenant Management Platform
+Stage 4
+Membership & Apprentice Platform
+Stage 5
+Financial Infrastructure Platform
+Stage 6
+Communication & Engagement Platform
+Stage 7
+Digital Identity & Credential Platform
+Stage 8
+Marketplace, Business Directory & Commerce Platform
+Stage 9
+Training, Learning, Apprenticeship & Skills Development Platform
+Stage 10
+Support Hub, Opportunities, Grants, Loans & Member Services Platform
+Stage 11
+Events, Conferences, Meetings & Attendance Management Platform
+Stage 12
+Governance, Elections, Voting & Decision Management Platform
+Stage 13
+Analytics, Intelligence, Reporting & Decision Support Platform
+Stage 14 transforms MemSyst from a standalone platform into an enterprise ecosystem platform capable of integrating with external systems, government agencies, payment providers, communication providers, ERP systems, learning systems, websites, mobile apps, and future partner ecosystems.
+
+STAGE 14 OBJECTIVE
+Build the:
+Integration, API Gateway & Ecosystem Connectivity Platform (IAGECP)
+Purpose:
+Provide:
+API Management
+Third-Party Integrations
+External System Connectivity
+Developer Services
+Data Exchange
+Webhook Infrastructure
+Partner Ecosystem Support
+Future Public APIs
+while maintaining:
+Security
+Tenant Isolation
+Auditability
+Scalability
+Governance
+
+CRITICAL INTEGRATION PRINCIPLES
+
+Principle 1
+API First Architecture
+Every major MemSyst capability must be exposed through secure APIs.
+Examples:
+Membership APIs
+Finance APIs
+Communication APIs
+Marketplace APIs
+Training APIs
+Event APIs
+Governance APIs
+Analytics APIs
+
+Principle 2
+Tenant Isolation Must Never Be Broken
+All APIs must enforce:
+Tenant Context
+Permission Validation
+Role Validation
+Data Isolation
+No integration may expose another tenant's data.
+
+Principle 3
+Integrations Must Be Configurable
+Avoid hardcoded integrations.
+All external systems should connect through configurable connectors.
+
+Principle 4
+Every Integration Must Be Auditable
+All inbound and outbound transactions must be logged and traceable.
+
+STAGE 14 DELIVERABLES
+Build:
+API Gateway
+Integration Hub
+Webhook Engine
+Connector Framework
+Developer Portal
+Data Exchange Engine
+API Security Engine
+Integration Analytics Engine
+
+MODULE 1
+API GATEWAY ENGINE
+Purpose:
+Central entry point for all APIs.
+
+Features
+API Routing
+Authentication
+Authorization
+Rate Limiting
+Request Validation
+Response Transformation
+Version Management
+
+Requirements
+Support:
+REST APIs
+Future GraphQL
+Future gRPC
+
+MODULE 2
+API MANAGEMENT ENGINE
+Purpose:
+Manage API lifecycle.
+
+Features
+API Registration
+API Versioning
+API Documentation
+API Deprecation
+API Monitoring
+
+Status
+Draft
+Published
+Deprecated
+Retired
+
+MODULE 3
+DEVELOPER PORTAL
+Purpose:
+Support developers and partners.
+
+Features
+Developer Registration
+API Documentation
+API Testing
+API Keys
+Sandbox Environment
+Usage Analytics
+
+Documentation
+Automatically generate:
+OpenAPI Specifications
+Developer Guides
+Authentication Guides
+SDK References
+
+MODULE 4
+API AUTHENTICATION ENGINE
+Purpose:
+Secure API access.
+
+Support
+OAuth 2.0
+JWT
+API Keys
+Service Accounts
+
+Integration
+Must connect with:
+Stage 2 Identity Platform
+
+MODULE 5
+API AUTHORIZATION ENGINE
+Purpose:
+Control API permissions.
+
+Enforce
+RBAC
+Tenant Scope
+Endpoint Permissions
+Data Scope Restrictions
+
+MODULE 6
+WEBHOOK ENGINE
+Purpose:
+Enable event-driven integrations.
+
+Events
+Examples:
+Member Created
+Member Approved
+Payment Completed
+Wallet Credited
+Credential Issued
+Event Registered
+Election Completed
+
+Features
+Webhook Registration
+Webhook Delivery
+Retry Logic
+Delivery Monitoring
+Signature Validation
+
+MODULE 7
+INTEGRATION HUB
+Purpose:
+Central management of external integrations.
+
+Integration Categories
+Payment Providers
+SMS Providers
+Email Providers
+Government Systems
+ERP Systems
+CRM Systems
+Learning Systems
+Identity Providers
+
+Features
+Connector Setup
+Credential Storage
+Connection Testing
+Health Monitoring
+
+MODULE 8
+CONNECTOR FRAMEWORK
+Purpose:
+Provide reusable integration architecture.
+
+Connector Types
+API Connectors
+Database Connectors
+Webhook Connectors
+File Transfer Connectors
+Message Queue Connectors
+
+Requirements
+New connectors must be added without changing core platform code.
+
+MODULE 9
+PAYMENT INTEGRATION FRAMEWORK
+Purpose:
+Support financial ecosystem connectivity.
+
+Examples
+MTN Mobile Money
+Telecel Cash
+AirtelTigo Money
+Bank APIs
+Payment Gateways
+Card Processors
+
+Integration
+Must connect directly with:
+Stage 5 Financial Infrastructure
+
+MODULE 10
+COMMUNICATION PROVIDER FRAMEWORK
+Purpose:
+Manage communication integrations.
+
+Examples
+SMS Providers
+Email Providers
+Push Providers
+WhatsApp Providers (Future)
+
+Integration
+Must connect directly with:
+Stage 6 Communication Platform
+
+MODULE 11
+IDENTITY FEDERATION ENGINE
+Purpose:
+Support external authentication.
+
+Examples
+Google
+Microsoft
+Apple
+Corporate Identity Providers
+Government Identity Providers
+
+Features
+Single Sign-On
+Identity Mapping
+Federated Authentication
+
+MODULE 12
+DATA IMPORT ENGINE
+Purpose:
+Support onboarding and migration.
+
+Import Types
+Members
+Apprentices
+Financial Records
+Events
+Training Records
+Governance Records
+
+Formats
+CSV
+Excel
+JSON
+XML
+
+Features
+Validation
+Preview
+Error Handling
+Rollback
+
+MODULE 13
+DATA EXPORT ENGINE
+Purpose:
+Provide external data exchange.
+
+Export Types
+Membership Data
+Financial Data
+Analytics Data
+Training Data
+Event Data
+Custom Exports
+
+Formats
+CSV
+Excel
+JSON
+XML
+PDF
+
+MODULE 14
+DATA SYNCHRONIZATION ENGINE
+Purpose:
+Maintain data consistency across systems.
+
+Modes
+Real-Time Sync
+Scheduled Sync
+Manual Sync
+
+Features
+Conflict Resolution
+Retry Logic
+Change Tracking
+Sync Logs
+
+MODULE 15
+FILE EXCHANGE ENGINE
+Purpose:
+Support secure file-based integrations.
+
+File Types
+CSV
+Excel
+PDF
+JSON
+XML
+ZIP
+
+Features
+Upload
+Download
+Validation
+Encryption
+Audit Logging
+
+MODULE 16
+INTEGRATION MONITORING ENGINE
+Purpose:
+Monitor ecosystem health.
+
+Metrics
+API Calls
+Success Rate
+Failure Rate
+Latency
+Webhook Deliveries
+Connector Health
+
+Alerts
+Service Failure
+Authentication Failure
+Rate Limit Exceeded
+Connector Failure
+
+MODULE 17
+INTEGRATION ANALYTICS ENGINE
+Purpose:
+Provide visibility into ecosystem activity.
+
+Metrics
+API Usage
+Top Endpoints
+Webhook Volume
+Connector Usage
+External Traffic
+Developer Activity
+
+Scope
+Platform
+Tenant
+Connector
+API
+
+MODULE 18
+INTEGRATION AUDIT ENGINE
+Purpose:
+Track all integration activities.
+
+Audit Events
+API Access
+Webhook Triggered
+Connector Created
+Connector Updated
+Data Imported
+Data Exported
+Authentication Attempt
+
+Audit Record
+Actor
+Action
+Source
+Target
+Date
+Time
+Status
+
+MODULE 19
+API RATE LIMITING ENGINE
+Purpose:
+Protect platform resources.
+
+Controls
+Per User
+Per Tenant
+Per Application
+Per API Key
+
+Features
+Burst Limits
+Daily Limits
+Monthly Limits
+Usage Monitoring
+
+MODULE 20
+API VERSIONING ENGINE
+Purpose:
+Manage API evolution.
+
+Features
+Version Tracking
+Backward Compatibility
+Deprecation Notices
+Migration Support
+
+Requirements
+APIs must remain stable for existing integrations.
+
+MODULE 21
+TENANT INTEGRATION MANAGEMENT
+Purpose:
+Allow tenants to manage their own integrations.
+
+Features
+View Available Connectors
+Configure Integrations
+Manage Credentials
+Monitor Activity
+Manage Webhooks
+
+Restrictions
+Tenants may manage only their own integrations.
+
+MODULE 22
+ECOSYSTEM MARKETPLACE FOUNDATION
+Purpose:
+Prepare future MemSyst ecosystem marketplace.
+
+Future Use Cases
+Third-Party Extensions
+Partner Applications
+Industry Solutions
+Integration Packages
+Certified Connectors
+
+Requirements
+Build foundational structures only.
+Do not build the marketplace yet.
+
+DATABASE DESIGN REQUIREMENTS
+Before implementation:
+Design complete entities for:
+APIs
+API Keys
+Developers
+Applications
+Webhooks
+Connectors
+Integrations
+Sync Jobs
+Import Jobs
+Export Jobs
+API Usage Logs
+Integration Audits
+Define:
+Relationships
+Indexes
+Rate Limit Policies
+Security Policies
+Versioning Models
+Lifecycle States
+
+SECURITY REQUIREMENTS
+Integrate with Stage 2.
+Enforce:
+RBAC
+Tenant Isolation
+OAuth Security
+API Security
+Webhook Validation
+Encryption
+Audit Logging
+
+PERFORMANCE REQUIREMENTS
+Must support:
+Thousands of Concurrent API Requests
+Large Data Imports
+Large Data Exports
+High Webhook Volumes
+Multiple External Systems
+Implement:
+Queues
+Caching
+Background Processing
+Retry Policies
+Load Balancing Readiness
+
+FUTURE READINESS REQUIREMENTS
+Stage 14 must prepare for:
+Public Developer Marketplace
+AI Agent Integrations
+Government System Integrations
+National Identity Integrations
+Banking Integrations
+Industry Data Exchanges
+Cross-Tenant Federations
+Partner Ecosystems
+Do not build them now.
+Design all required infrastructure.
+
+ARCHITECTURE REQUIREMENTS
+Use:
+API-First Architecture
+Gateway Architecture
+Event-Driven Integration Model
+Connector-Based Architecture
+Configuration-Driven Connectivity
+Audit-First Design
+Avoid:
+Hardcoded Integrations
+Direct Database Access by Third Parties
+Tenant Data Leakage
+Untracked API Access
+All integrations must be secure, governed, scalable, and auditable.
+
+SUCCESS CRITERIA
+Stage 14 is complete only when:
+? API Gateway is operational
+? API Management exists
+? Developer Portal exists
+? OAuth and API security are operational
+? Webhook infrastructure exists
+? Connector framework exists
+? Payment integrations are supported
+? Communication provider integrations are supported
+? Identity federation exists
+? Data import/export exists
+? Data synchronization exists
+? Integration monitoring exists
+? API analytics exist
+? Integration audit history exists
+? Tenant integration management exists
+? Ecosystem marketplace foundation exists
+? Platform is fully prepared for Stage 15 (Mobile Apps, Self-Service Portals & Omnichannel Experience Platform)
+Build this stage as the connectivity backbone of the MemSyst ecosystem, enabling secure integration between MemSyst, tenant organizations, external systems, developers, service providers, and future digital ecosystems
+

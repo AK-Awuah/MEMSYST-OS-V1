@@ -3,15 +3,31 @@
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { LogIn, Loader2 } from "lucide-react";
+import { getAuthService } from "@/lib/services";
 
 export default function SignInPage() {
   const [submitted, setSubmitted] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const router = useRouter();
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    setError("");
     setSubmitted(true);
+
+    try {
+      const authService = await getAuthService();
+      await authService.login(email, password);
+      router.push("/app/dashboard");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Login failed. Please check your credentials.");
+      setSubmitted(false);
+    }
   }
 
   return (
@@ -44,6 +60,11 @@ export default function SignInPage() {
           </div>
         ) : (
           <div className="p-8 rounded-2xl border border-[var(--border)] bg-[var(--secondary)]/30 glass-effect shadow-2xl card-glow">
+            {error && (
+              <div className="mb-6 rounded-lg border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-400">
+                {error}
+              </div>
+            )}
             <form onSubmit={handleSubmit} className="space-y-5">
               <div>
                 <label className="form-label">Email Address</label>
@@ -51,6 +72,8 @@ export default function SignInPage() {
                   type="email"
                   className="form-input"
                   placeholder="you@yourorganization.org"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   required
                 />
               </div>
@@ -65,6 +88,8 @@ export default function SignInPage() {
                   type="password"
                   className="form-input"
                   placeholder="••••••••"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   required
                 />
               </div>

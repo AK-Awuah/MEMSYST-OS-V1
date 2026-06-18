@@ -1,5 +1,8 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 
 const footerLinks = {
   platform: {
@@ -32,6 +35,10 @@ const footerLinks = {
 };
 
 export default function Footer() {
+  const pathname = usePathname();
+
+  if (pathname === "/signin" || pathname === "/app/login") return null;
+
   return (
     <footer className="border-t border-[var(--border)] bg-[var(--secondary)]/40">
       <div className="container px-4 md:px-6 py-16">

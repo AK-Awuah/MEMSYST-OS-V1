@@ -68,9 +68,13 @@ export function TopNav() {
         <div className="relative" ref={profileRef}>
           <button
             onClick={() => setShowProfile(!showProfile)}
-            className="flex h-8 w-8 items-center justify-center rounded-full bg-[#3CA4F9]/20 text-sm font-semibold text-[#3CA4F9] hover:bg-[#3CA4F9]/30"
+            className="flex h-8 w-8 items-center justify-center overflow-hidden rounded-full bg-[#3CA4F9]/20 text-sm font-semibold text-[#3CA4F9] hover:bg-[#3CA4F9]/30"
           >
-            {user ? `${user.firstName[0]}${user.lastName[0]}` : "?"}
+            {user?.photoURL ? (
+              <img src={user.photoURL} alt="" className="h-full w-full object-cover" />
+            ) : (
+              user ? `${user.firstName[0]}${user.lastName[0]}` : "?"
+            )}
           </button>
 
           {showProfile && (

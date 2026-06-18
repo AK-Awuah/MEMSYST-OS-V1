@@ -1,0 +1,602 @@
+MEMSYST STAGE 12 DEVELOPMENT MASTER PROMPT
+Governance, Elections, Voting & Decision Management Platform (GEVDMP)
+You are a Senior Governance Systems Architect, Election Technology Architect, Membership Technology Architect, Enterprise SaaS Architect, and Principal Engineer responsible for building Stage 12 of the MemSyst ecosystem.
+Stages 1–11 have already established:
+Stage 1
+Business Operations Platform
+Stage 2
+Identity & Access Platform
+Stage 3
+Tenant Management Platform
+Stage 4
+Membership & Apprentice Platform
+Stage 5
+Financial Infrastructure Platform
+Stage 6
+Communication & Engagement Platform
+Stage 7
+Digital Identity & Credential Platform
+Stage 8
+Marketplace, Business Directory & Commerce Platform
+Stage 9
+Training, Learning, Apprenticeship & Skills Development Platform
+Stage 10
+Support Hub, Opportunities, Grants, Loans & Member Services Platform
+Stage 11
+Events, Conferences, Meetings & Attendance Management Platform
+Stage 12 introduces the governance and democratic decision-making layer of the MemSyst ecosystem.
+This stage enables organizations to manage:
+Elections
+Voting
+Nominations
+Appointments
+Resolutions
+Constitutional Decisions
+Committees
+Governance Workflows
+while ensuring transparency, accountability, auditability, and compliance with organizational constitutions.
+
+STAGE 12 OBJECTIVE
+Build the:
+Governance, Elections, Voting & Decision Management Platform (GEVDMP)
+Purpose:
+Enable organizations to:
+Conduct Elections
+Manage Nominations
+Run Voting Processes
+Manage Committees
+Record Resolutions
+Track Governance Decisions
+Manage Executive Terms
+Support Democratic Governance
+while integrating with membership, credentials, events, communications, and audit systems.
+
+CRITICAL GOVERNANCE PRINCIPLES
+
+Principle 1
+Governance Is Tenant Controlled
+Every tenant controls:
+Governance Structure
+Executive Positions
+Election Rules
+Voting Rules
+Nomination Rules
+Committee Structures
+Approval Structures
+No governance model should be hardcoded.
+
+Principle 2
+Only Eligible Members Can Participate
+Voting rights must be determined through configurable eligibility rules.
+Examples:
+Active Membership
+Membership Duration
+Membership Category
+Fee Compliance
+Branch Membership
+Executive Status
+
+Principle 3
+Every Vote Must Be Auditable
+All voting activities must be:
+Traceable
+Auditable
+Verifiable
+Tamper Resistant
+while supporting configurable anonymity rules.
+
+Principle 4
+Governance History Is Permanent
+No governance records may be deleted.
+Historical records become part of the organization's institutional memory.
+
+STAGE 12 DELIVERABLES
+Build:
+Governance Structure Engine
+Executive Position Engine
+Nomination Engine
+Election Engine
+Voting Engine
+Committee Engine
+Resolution Engine
+Governance Analytics Engine
+
+MODULE 1
+GOVERNANCE STRUCTURE ENGINE
+Purpose:
+Define organizational governance.
+
+Governance Levels
+Examples:
+National
+Regional
+Branch
+Committee
+Chapter
+Council
+
+Features
+Create Governance Units
+Define Authority Levels
+Assign Reporting Relationships
+Configure Governance Rules
+
+Requirements
+Governance structures must be:
+Tenant Specific
+Configurable
+Version Controlled
+
+MODULE 2
+EXECUTIVE POSITION MANAGEMENT
+Purpose:
+Manage leadership positions.
+
+Examples
+President
+Vice President
+Secretary
+Treasurer
+Chairperson
+Organizer
+Committee Member
+
+Position Record
+Position ID
+Title
+Governance Level
+Term Length
+Eligibility Rules
+Status
+
+Features
+Create Position
+Edit Position
+Retire Position
+Assign Position
+Track Terms
+
+MODULE 3
+NOMINATION MANAGEMENT ENGINE
+Purpose:
+Manage candidate nominations.
+
+Nomination Sources
+Self Nomination
+Member Nomination
+Executive Nomination
+Committee Nomination
+
+Nomination Record
+Nominee
+Position
+Nominator
+Date
+Status
+
+Status
+Draft
+Submitted
+Under Review
+Approved
+Rejected
+Withdrawn
+
+MODULE 4
+CANDIDATE MANAGEMENT ENGINE
+Purpose:
+Manage election candidates.
+
+Candidate Profile
+Candidate
+Position
+Biography
+Manifesto
+Photo
+Status
+
+Features
+Publish Candidate
+Manage Manifesto
+Manage Campaign Profile
+Track Eligibility
+
+MODULE 5
+ELECTION MANAGEMENT ENGINE
+Purpose:
+Manage elections.
+
+Election Types
+National Election
+Regional Election
+Branch Election
+Committee Election
+Referendum
+Special Election
+
+Election Record
+Election ID
+Title
+Description
+Election Type
+Start Date
+End Date
+Status
+
+Status
+Draft
+Scheduled
+Open
+Closed
+Certified
+Archived
+
+MODULE 6
+VOTER ELIGIBILITY ENGINE
+Purpose:
+Determine voting rights.
+
+Eligibility Rules
+Examples:
+Active Membership
+Membership Duration
+Fee Compliance
+Branch Membership
+Position Eligibility
+
+Requirements
+Rules must be:
+Configurable
+Auditable
+Version Controlled
+
+MODULE 7
+DIGITAL VOTING ENGINE
+Purpose:
+Provide secure voting.
+
+Voting Types
+Single Choice
+Multiple Choice
+Ranked Choice
+Yes/No
+Referendum
+Resolution Voting
+
+Voting Record
+Election
+Voter
+Vote Timestamp
+Verification Status
+
+Features
+Cast Vote
+Verify Vote
+Prevent Duplicate Voting
+Close Voting
+Count Votes
+
+MODULE 8
+ANONYMOUS VOTING FRAMEWORK
+Purpose:
+Support confidential elections.
+
+Modes
+Anonymous Voting
+Identified Voting
+Hybrid Voting
+
+Requirements
+Maintain:
+Vote Integrity
+Auditability
+Election Transparency
+
+MODULE 9
+RESULT MANAGEMENT ENGINE
+Purpose:
+Manage election outcomes.
+
+Features
+Vote Counting
+Result Certification
+Winner Declaration
+Result Publication
+
+Result Record
+Candidate
+Votes Received
+Percentage
+Position
+Status
+
+MODULE 10
+EXECUTIVE APPOINTMENT ENGINE
+Purpose:
+Support non-election appointments.
+
+Examples
+Committee Appointments
+Interim Executives
+Board Appointments
+Special Appointments
+
+Features
+Create Appointment
+Approve Appointment
+Track Appointment Term
+Issue Credentials
+
+Integration
+Must connect to:
+Stage 7 Credential Platform
+for executive credentials and appointment certificates.
+
+MODULE 11
+COMMITTEE MANAGEMENT ENGINE
+Purpose:
+Manage committees and working groups.
+
+Committee Record
+Committee ID
+Name
+Purpose
+Chairperson
+Members
+Status
+
+Features
+Create Committee
+Assign Members
+Manage Terms
+Track Meetings
+Track Decisions
+
+MODULE 12
+RESOLUTION MANAGEMENT ENGINE
+Purpose:
+Manage organizational decisions.
+
+Resolution Types
+Policy Resolution
+Financial Resolution
+Constitutional Amendment
+Governance Resolution
+Special Resolution
+
+Workflow
+Create Resolution
+Review
+Vote
+Approve
+Archive
+
+Status
+Draft
+Under Review
+Voting
+Approved
+Rejected
+Archived
+
+MODULE 13
+GOVERNANCE MEETING INTEGRATION
+Purpose:
+Connect governance with Stage 11 events.
+
+Examples
+AGM
+National Congress
+Council Meeting
+Executive Meeting
+Election Congress
+
+Integration
+Must support:
+Attendance Verification
+Voting Eligibility
+Resolution Voting
+Election Participation
+
+MODULE 14
+GOVERNANCE COMMUNICATION INTEGRATION
+Purpose:
+Connect governance activities with Stage 6.
+
+Notifications
+Election Announced
+Nomination Opened
+Voting Started
+Voting Closing Soon
+Election Results Published
+Appointment Confirmed
+Resolution Approved
+
+Channels
+Email
+SMS
+Push
+In-App
+
+MODULE 15
+GOVERNANCE CREDENTIAL INTEGRATION
+Purpose:
+Issue governance credentials.
+
+Examples
+Executive ID Cards
+Appointment Certificates
+Committee Certificates
+Leadership Credentials
+
+Integration
+Must use:
+Stage 7 Credential Platform
+
+MODULE 16
+TERM & TENURE MANAGEMENT ENGINE
+Purpose:
+Track leadership terms.
+
+Features
+Term Start
+Term End
+Term Renewal
+Term Expiration
+Succession Tracking
+
+Alerts
+Notify before:
+Term Expiration
+Election Due Date
+Appointment Expiration
+
+MODULE 17
+GOVERNANCE ANALYTICS ENGINE
+Purpose:
+Provide governance insights.
+
+Metrics
+Election Participation
+Voting Turnout
+Executive Positions
+Committee Activity
+Resolution Activity
+Governance Compliance
+
+Scope
+Platform
+Tenant
+National
+Regional
+Branch
+
+MODULE 18
+GOVERNANCE AUDIT ENGINE
+Purpose:
+Provide complete governance accountability.
+
+Audit Events
+Nomination Submitted
+Candidate Approved
+Vote Cast
+Election Closed
+Result Certified
+Appointment Made
+Resolution Approved
+
+Audit Record
+Actor
+Action
+Record
+Date
+Time
+Before
+After
+
+MODULE 19
+GOVERNANCE SETTINGS MANAGEMENT
+Purpose:
+Tenant-level governance configuration.
+
+Settings
+Election Rules
+Nomination Rules
+Voting Rules
+Eligibility Rules
+Committee Rules
+Term Rules
+Resolution Rules
+
+Requirements
+Everything must be configurable.
+No hardcoded governance workflows.
+
+DATABASE DESIGN REQUIREMENTS
+Before implementation:
+Design complete entities for:
+Governance Structures
+Executive Positions
+Nominations
+Candidates
+Elections
+Votes
+Committees
+Appointments
+Resolutions
+Terms
+Governance Audits
+Define:
+Relationships
+Indexes
+Validation Rules
+Eligibility Rules
+Election Rules
+Lifecycle States
+
+SECURITY REQUIREMENTS
+Integrate with Stage 2.
+Enforce:
+RBAC
+Tenant Isolation
+Voting Permissions
+Election Permissions
+Governance Permissions
+Audit Logging
+
+COMPLIANCE REQUIREMENTS
+All governance activities must support:
+Transparency
+Auditability
+Election Integrity
+Historical Preservation
+Decision Traceability
+No governance records may be deleted.
+
+FUTURE READINESS REQUIREMENTS
+Stage 12 must prepare for:
+Electronic AGM
+Remote Voting
+Mobile Voting
+Constitution Management
+Policy Management
+Parliamentary Procedures
+AI Governance Assistance
+National Federation Governance
+Do not build them now.
+Design all supporting structures and relationships.
+
+ARCHITECTURE REQUIREMENTS
+Use:
+Governance Domain Architecture
+Workflow-Driven Processes
+Election Integrity Controls
+Configuration-Driven Rules
+Audit-First Design
+Avoid:
+Hardcoded Governance Structures
+Hardcoded Election Rules
+Manual Vote Counting
+Deleting Governance Records
+All governance activities must be transparent, auditable, and historically preserved.
+
+SUCCESS CRITERIA
+Stage 12 is complete only when:
+? Governance structures can be configured
+? Executive positions can be managed
+? Nominations can be submitted and reviewed
+? Elections can be conducted digitally
+? Voting eligibility can be enforced
+? Anonymous voting can be supported
+? Election results can be certified
+? Executive appointments can be managed
+? Committees can be managed
+? Resolutions can be proposed and voted on
+? Governance events integrate with Stage 11
+? Governance communications integrate with Stage 6
+? Governance credentials integrate with Stage 7
+? Governance analytics exist
+? Governance audit history is immutable
+? Platform is fully prepared for Stage 13 (Analytics, Intelligence, Reporting & Decision Support Platform)
+Build this stage as the democratic governance infrastructure of the MemSyst ecosystem, enabling membership organizations to govern transparently, conduct elections securely, manage leadership structures, and preserve institutional decision-making history
+
