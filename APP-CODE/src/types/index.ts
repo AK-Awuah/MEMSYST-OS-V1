@@ -1324,3 +1324,437 @@ export interface CommunicationAuditLog {
   result: "success" | "failure"
   createdAt: string
 }
+
+// ============================================
+// STAGE 7 — DIGITAL IDENTITY, ID CARDS, CERTIFICATES & CREDENTIAL MANAGEMENT PLATFORM (DICP)
+// ============================================
+
+// --- Module 1: ID Card ---
+export type IDCardType = "member" | "apprentice" | "executive" | "staff" | "custom"
+export type IDCardStatus = "active" | "unprinted" | "printed" | "ordered" | "reprinted" | "cancelled" | "expired"
+
+export interface IDCard {
+  id: string
+  tenantId: string
+  ownerId: string
+  ownerType: IDCardType
+  cardNumber: string
+  credentialNumber: string
+  status: IDCardStatus
+  issueDate: string
+  expiryDate: string
+  fullName: string
+  membershipNumber: string
+  category: string
+  organization: string
+  branch: string
+  region: string
+  photo: string
+  qrCode: string
+  verificationCode: string
+  reprintCount: number
+  lastPrintedAt?: string
+  cancelledAt?: string
+  cancellationReason?: string
+  createdAt: string
+  updatedAt: string
+}
+
+// --- Module 3: Certificate ---
+export type CertificateType = "membership" | "training" | "completion" | "executive_appointment" | "recognition" | "custom"
+export type CertificateStatus = "active" | "unprinted" | "printed" | "ordered" | "reprinted" | "cancelled" | "expired"
+
+export interface Certificate {
+  id: string
+  tenantId: string
+  ownerId: string
+  certificateType: CertificateType
+  certificateNumber: string
+  credentialNumber: string
+  status: CertificateStatus
+  issueDate: string
+  expiryDate?: string
+  recipientName: string
+  organization: string
+  program: string
+  verificationCode: string
+  qrCode: string
+  reprintCount: number
+  lastPrintedAt?: string
+  cancelledAt?: string
+  cancellationReason?: string
+  createdAt: string
+  updatedAt: string
+}
+
+// --- Module 2: Credential Template ---
+export type CredentialTemplateType = "id_card_front" | "id_card_back" | "certificate"
+export type CredentialTemplateStatus = "draft" | "active" | "archived"
+
+export interface CredentialTemplateField {
+  id: string
+  label: string
+  key: string
+  x: number
+  y: number
+  fontSize: number
+  fontWeight: string
+  color: string
+}
+
+export interface CredentialTemplate {
+  id: string
+  tenantId: string
+  name: string
+  description: string
+  type: CredentialTemplateType
+  logo: string
+  primaryColor: string
+  secondaryColor: string
+  typography: string
+  fields: CredentialTemplateField[]
+  qrPlacement: { x: number; y: number }
+  signaturePlacement?: { x: number; y: number }
+  backgroundImage?: string
+  version: number
+  status: CredentialTemplateStatus
+  createdBy: string
+  createdAt: string
+  updatedAt: string
+}
+
+// --- Module 5: Print Request ---
+export type PrintRequestStatus = "pending" | "approved" | "processing" | "completed" | "rejected" | "cancelled"
+
+export interface PrintRequest {
+  id: string
+  tenantId: string
+  credentialId: string
+  credentialType: "id_card" | "certificate"
+  requestType: "print" | "reprint" | "order"
+  status: PrintRequestStatus
+  requestedBy: string
+  requestedById: string
+  reason?: string
+  fee?: number
+  billingId?: string
+  reprintCount?: number
+  completedAt?: string
+  createdAt: string
+  updatedAt: string
+}
+
+// --- Module 8: Verification ---
+export type VerificationMethod = "qr_code" | "credential_number" | "verification_code"
+export type PublicVerificationStatus = "valid" | "expired" | "cancelled" | "suspended" | "invalid"
+
+export interface VerificationRecord {
+  id: string
+  credentialId: string
+  credentialType: "id_card" | "certificate"
+  method: VerificationMethod
+  status: PublicVerificationStatus
+  holderName: string
+  organization: string
+  issueDate: string
+  expiryDate?: string
+  verifiedAt: string
+  ipAddress?: string
+}
+
+// --- Module 10: Credential Analytics ---
+export interface CredentialAnalytics {
+  totalCredentials: number
+  totalIDCards: number
+  totalCertificates: number
+  activeCredentials: number
+  totalReprints: number
+  cancelledCredentials: number
+  pendingPrintRequests: number
+  byTenant: { tenantId: string; count: number }[]
+  byType: { type: string; count: number }[]
+  byStatus: { status: string; count: number }[]
+  recentIssuances: { date: string; count: number }[]
+}
+
+// --- Module 13: Credential Audit ---
+export type CredentialAuditAction =
+  | "credential_generated"
+  | "credential_printed"
+  | "credential_ordered"
+  | "credential_reprinted"
+  | "credential_cancelled"
+  | "credential_verified"
+  | "credential_expired"
+
+export interface CredentialAuditLog {
+  id: string
+  tenantId: string
+  credentialId: string
+  credentialType: "id_card" | "certificate"
+  action: CredentialAuditAction
+  actor: string
+  before?: string
+  after?: string
+  details?: string
+  createdAt: string
+}
+
+// --- Module 15: Credential Settings ---
+export interface CredentialSettings {
+  id: string
+  tenantId: string
+  idCardReprintFee: number
+  certificateReprintFee: number
+  idCardExpiryMonths: number
+  certificateExpiryMonths: number
+  autoGenerateOnApproval: boolean
+  autoGenerateOnUpgrade: boolean
+  verificationRequiresAuth: boolean
+  createdAt: string
+  updatedAt: string
+}
+
+// --- Module 9: Credential File ---
+export interface CredentialFile {
+  id: string
+  tenantId: string
+  credentialId: string
+  credentialType: "id_card" | "certificate"
+  fileName: string
+  fileType: string
+  fileSize: number
+  url: string
+  uploadedAt: string
+}
+
+// ============================================
+// STAGE 8 — MARKETPLACE, BUSINESS DIRECTORY & COMMERCE PLATFORM (MBDCP)
+// ============================================
+
+// --- Module 1 & 2: Marketplace Listing ---
+export type MarketplaceListingType = "product" | "service" | "business_promotion" | "opportunity" | "event" | "announcement"
+export type MarketplaceListingStatus = "draft" | "pending_review" | "approved" | "rejected" | "active" | "expired" | "archived"
+
+export interface MarketplaceListing {
+  id: string
+  tenantId: string
+  memberId: string
+  listingType: MarketplaceListingType
+  title: string
+  description: string
+  status: MarketplaceListingStatus
+  price?: number
+  currency?: string
+  location?: string
+  images: string[]
+  videos: string[]
+  documents: string[]
+  categoryId?: string
+  tags: string[]
+  viewCount: number
+  createdDate: string
+  expiryDate?: string
+  publishedAt?: string
+  createdAt: string
+  updatedAt: string
+}
+
+// --- Module 3 & 4: Business Profile ---
+export interface BusinessProfile {
+  id: string
+  tenantId: string
+  memberId: string
+  businessName: string
+  categoryId: string
+  description: string
+  status: "active" | "inactive" | "suspended"
+  verificationStatus: BusinessVerificationStatus
+  verificationType?: BusinessVerificationType
+  verifiedAt?: string
+  verifiedBy?: string
+  address: string
+  phone: string
+  email: string
+  website: string
+  socialMedia: string[]
+  operatingHours: Record<string, string>
+  logo: string
+  gallery: string[]
+  promotionalImages: string[]
+  services: string[]
+  products: string[]
+  createdAt: string
+  updatedAt: string
+}
+
+// --- Module 8: Business Category ---
+export interface BusinessCategory {
+  id: string
+  tenantId: string
+  name: string
+  description: string
+  parentId?: string
+  sortOrder: number
+  status: "active" | "inactive"
+  createdAt: string
+  updatedAt: string
+}
+
+// --- Module 14: Business Verification ---
+export type BusinessVerificationType = "verified_member_business" | "verified_training_center" | "verified_vendor" | "verified_service_provider"
+export type BusinessVerificationStatus = "unverified" | "pending" | "verified" | "suspended" | "revoked"
+
+// --- Module 5: Opportunity ---
+export type OpportunityType = "employment" | "apprenticeship" | "partnership" | "tender" | "contract" | "business_opportunity"
+export type OpportunityStatus = "open" | "closed" | "archived"
+
+export interface Opportunity {
+  id: string
+  tenantId: string
+  memberId: string
+  opportunityType: OpportunityType
+  title: string
+  description: string
+  requirements: string[]
+  location: string
+  applicationDeadline?: string
+  status: OpportunityStatus
+  viewCount: number
+  applicationCount: number
+  createdAt: string
+  updatedAt: string
+}
+
+export interface OpportunityApplication {
+  id: string
+  tenantId: string
+  opportunityId: string
+  applicantId: string
+  applicantName: string
+  applicantEmail: string
+  message: string
+  status: "pending" | "reviewed" | "accepted" | "rejected"
+  createdAt: string
+}
+
+// --- Module 6: Marketplace Approval ---
+export interface MarketplaceApproval {
+  id: string
+  tenantId: string
+  listingId: string
+  listingType: "listing" | "business" | "opportunity"
+  status: "pending" | "approved" | "rejected" | "changes_requested"
+  reviewerId?: string
+  reviewerName?: string
+  reviewNotes?: string
+  reviewedAt?: string
+  createdAt: string
+}
+
+// --- Module 11: Marketplace Analytics ---
+export interface MarketplaceAnalytics {
+  totalListings: number
+  activeListings: number
+  totalBusinessProfiles: number
+  verifiedBusinesses: number
+  totalOpportunities: number
+  openOpportunities: number
+  totalListingViews: number
+  memberParticipation: number
+  pendingApprovals: number
+  byListingType: { type: string; count: number }[]
+  byStatus: { status: string; count: number }[]
+  byTenant: { tenantId: string; count: number }[]
+  recentActivity: { date: string; listings: number; businesses: number }[]
+}
+
+// --- Module 12: Compliance & Moderation ---
+export interface MarketplaceModerationRecord {
+  id: string
+  tenantId: string
+  listingId?: string
+  businessId?: string
+  action: "flagged" | "suspended" | "warned" | "removed"
+  reason: string
+  performedBy: string
+  performedById: string
+  createdAt: string
+}
+
+// --- Module 15: Training Center Directory ---
+export interface TrainingCenter {
+  id: string
+  tenantId: string
+  businessId: string
+  name: string
+  ownerId: string
+  ownerName: string
+  location: string
+  coursesOffered: string[]
+  status: "active" | "inactive"
+  createdAt: string
+  updatedAt: string
+}
+
+// --- Module 13: Member Directory Enhancement ---
+export interface MemberDirectoryProfile {
+  id: string
+  tenantId: string
+  memberId: string
+  displayBusinessName: boolean
+  displayProfessionalCategory: boolean
+  displayServices: boolean
+  displayLocation: boolean
+  displayContact: boolean
+  businessName?: string
+  professionalCategory?: string
+  services: string[]
+  location?: string
+  contactInfo?: string
+  createdAt: string
+  updatedAt: string
+}
+
+// --- Module 16: Marketplace Audit ---
+export type MarketplaceAuditAction =
+  | "listing_created"
+  | "listing_updated"
+  | "listing_approved"
+  | "listing_rejected"
+  | "listing_archived"
+  | "business_created"
+  | "business_updated"
+  | "business_verified"
+  | "opportunity_posted"
+  | "opportunity_closed"
+  | "verification_granted"
+  | "moderation_action"
+
+export interface MarketplaceAuditLog {
+  id: string
+  tenantId: string
+  actor: string
+  action: MarketplaceAuditAction
+  recordType: string
+  recordId: string
+  previousValue?: string
+  newValue?: string
+  details?: string
+  createdAt: string
+}
+
+// --- Module 17: Marketplace Settings ---
+export interface MarketplaceSettings {
+  id: string
+  tenantId: string
+  approvalRequired: boolean
+  defaultListingDurationDays: number
+  maxImagesPerListing: number
+  allowMemberDirectoryVisibility: boolean
+  businessVerificationRequired: boolean
+  autoPublishVerifiedBusinesses: boolean
+  marketplaceEnabled: boolean
+  createdAt: string
+  updatedAt: string
+}

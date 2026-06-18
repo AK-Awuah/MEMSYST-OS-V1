@@ -53,6 +53,25 @@ import type { IDeliveryTrackingService } from "./IDeliveryTrackingService"
 import type { ICommunicationAnalyticsService } from "./ICommunicationAnalyticsService"
 import type { IAutomationService } from "./IAutomationService"
 import type { ICommunicationAuditService } from "./ICommunicationAuditService"
+import type { IIDCardService } from "./IIDCardService"
+import type { ICertificateService } from "./ICertificateService"
+import type { ICredentialTemplateService } from "./ICredentialTemplateService"
+import type { ICredentialGenerationService } from "./ICredentialGenerationService"
+import type { IPrintingService } from "./IPrintingService"
+import type { ICredentialVerificationService } from "./ICredentialVerificationService"
+import type { ICredentialRepositoryService } from "./ICredentialRepositoryService"
+import type { ICredentialAnalyticsService } from "./ICredentialAnalyticsService"
+import type { ICredentialAuditService } from "./ICredentialAuditService"
+import type { ICredentialSettingsService } from "./ICredentialSettingsService"
+import type { IMarketplaceListingService } from "./IMarketplaceListingService"
+import type { IBusinessProfileService } from "./IBusinessProfileService"
+import type { IBusinessCategoryService } from "./IBusinessCategoryService"
+import type { IOpportunityService } from "./IOpportunityService"
+import type { IMarketplaceApprovalService } from "./IMarketplaceApprovalService"
+import type { IDirectorySearchService } from "./IDirectorySearchService"
+import type { IMarketplaceAnalyticsService } from "./IMarketplaceAnalyticsService"
+import type { IMarketplaceComplianceService } from "./IMarketplaceComplianceService"
+import type { IMarketplaceAuditService } from "./IMarketplaceAuditService"
 
 type ServiceInstance =
   | IAuthService
@@ -109,6 +128,25 @@ type ServiceInstance =
   | ICommunicationAnalyticsService
   | IAutomationService
   | ICommunicationAuditService
+  | IIDCardService
+  | ICertificateService
+  | ICredentialTemplateService
+  | ICredentialGenerationService
+  | IPrintingService
+  | ICredentialVerificationService
+  | ICredentialRepositoryService
+  | ICredentialAnalyticsService
+  | ICredentialAuditService
+  | ICredentialSettingsService
+  | IMarketplaceListingService
+  | IBusinessProfileService
+  | IBusinessCategoryService
+  | IOpportunityService
+  | IMarketplaceApprovalService
+  | IDirectorySearchService
+  | IMarketplaceAnalyticsService
+  | IMarketplaceComplianceService
+  | IMarketplaceAuditService
 
 const instances = new Map<string, ServiceInstance>()
 
@@ -605,6 +643,177 @@ export async function getCommunicationAuditService(): Promise<ICommunicationAudi
   return createInstance("commAudit", new FirebaseCommunicationAuditService())
 }
 
+export async function getIDCardService(): Promise<IIDCardService> {
+  if (USE_MOCK_SERVICES) {
+    const { MockIDCardService } = await import("./MockIDCardService")
+    return createInstance("idCard", new MockIDCardService())
+  }
+  const { FirebaseIDCardService } = await import("./FirebaseIDCardService")
+  return createInstance("idCard", new FirebaseIDCardService())
+}
+
+export async function getCertificateService(): Promise<ICertificateService> {
+  if (USE_MOCK_SERVICES) {
+    const { MockCertificateService } = await import("./MockCertificateService")
+    return createInstance("certificate", new MockCertificateService())
+  }
+  const { FirebaseCertificateService } = await import("./FirebaseCertificateService")
+  return createInstance("certificate", new FirebaseCertificateService())
+}
+
+export async function getCredentialTemplateService(): Promise<ICredentialTemplateService> {
+  if (USE_MOCK_SERVICES) {
+    const { MockCredentialTemplateService } = await import("./MockCredentialTemplateService")
+    return createInstance("credentialTemplate", new MockCredentialTemplateService())
+  }
+  const { FirebaseCredentialTemplateService } = await import("./FirebaseCredentialTemplateService")
+  return createInstance("credentialTemplate", new FirebaseCredentialTemplateService())
+}
+
+export async function getCredentialGenerationService(): Promise<ICredentialGenerationService> {
+  if (USE_MOCK_SERVICES) {
+    const { MockCredentialGenerationService } = await import("./MockCredentialGenerationService")
+    return createInstance("credentialGeneration", new MockCredentialGenerationService())
+  }
+  const { FirebaseCredentialGenerationService } = await import("./FirebaseCredentialGenerationService")
+  return createInstance("credentialGeneration", new FirebaseCredentialGenerationService())
+}
+
+export async function getPrintingService(): Promise<IPrintingService> {
+  if (USE_MOCK_SERVICES) {
+    const { MockPrintingService } = await import("./MockPrintingService")
+    return createInstance("printing", new MockPrintingService())
+  }
+  const { FirebasePrintingService } = await import("./FirebasePrintingService")
+  return createInstance("printing", new FirebasePrintingService())
+}
+
+export async function getCredentialVerificationService(): Promise<ICredentialVerificationService> {
+  if (USE_MOCK_SERVICES) {
+    const { MockCredentialVerificationService } = await import("./MockCredentialVerificationService")
+    return createInstance("credentialVerification", new MockCredentialVerificationService())
+  }
+  const { FirebaseCredentialVerificationService } = await import("./FirebaseCredentialVerificationService")
+  return createInstance("credentialVerification", new FirebaseCredentialVerificationService())
+}
+
+export async function getCredentialRepositoryService(): Promise<ICredentialRepositoryService> {
+  if (USE_MOCK_SERVICES) {
+    const { MockCredentialRepositoryService } = await import("./MockCredentialRepositoryService")
+    return createInstance("credentialRepository", new MockCredentialRepositoryService())
+  }
+  const { FirebaseCredentialRepositoryService } = await import("./FirebaseCredentialRepositoryService")
+  return createInstance("credentialRepository", new FirebaseCredentialRepositoryService())
+}
+
+export async function getCredentialAnalyticsService(): Promise<ICredentialAnalyticsService> {
+  if (USE_MOCK_SERVICES) {
+    const { MockCredentialAnalyticsService } = await import("./MockCredentialAnalyticsService")
+    return createInstance("credentialAnalytics", new MockCredentialAnalyticsService())
+  }
+  const { FirebaseCredentialAnalyticsService } = await import("./FirebaseCredentialAnalyticsService")
+  return createInstance("credentialAnalytics", new FirebaseCredentialAnalyticsService())
+}
+
+export async function getCredentialAuditService(): Promise<ICredentialAuditService> {
+  if (USE_MOCK_SERVICES) {
+    const { MockCredentialAuditService } = await import("./MockCredentialAuditService")
+    return createInstance("credentialAudit", new MockCredentialAuditService())
+  }
+  const { FirebaseCredentialAuditService } = await import("./FirebaseCredentialAuditService")
+  return createInstance("credentialAudit", new FirebaseCredentialAuditService())
+}
+
+export async function getCredentialSettingsService(): Promise<ICredentialSettingsService> {
+  if (USE_MOCK_SERVICES) {
+    const { MockCredentialSettingsService } = await import("./MockCredentialSettingsService")
+    return createInstance("credentialSettings", new MockCredentialSettingsService())
+  }
+  const { FirebaseCredentialSettingsService } = await import("./FirebaseCredentialSettingsService")
+  return createInstance("credentialSettings", new FirebaseCredentialSettingsService())
+}
+
+export async function getMarketplaceListingService(): Promise<IMarketplaceListingService> {
+  if (USE_MOCK_SERVICES) {
+    const { MockMarketplaceListingService } = await import("./MockMarketplaceListingService")
+    return createInstance("marketplaceListing", new MockMarketplaceListingService())
+  }
+  const { FirebaseMarketplaceListingService } = await import("./FirebaseMarketplaceListingService")
+  return createInstance("marketplaceListing", new FirebaseMarketplaceListingService())
+}
+
+export async function getBusinessProfileService(): Promise<IBusinessProfileService> {
+  if (USE_MOCK_SERVICES) {
+    const { MockBusinessProfileService } = await import("./MockBusinessProfileService")
+    return createInstance("businessProfile", new MockBusinessProfileService())
+  }
+  const { FirebaseBusinessProfileService } = await import("./FirebaseBusinessProfileService")
+  return createInstance("businessProfile", new FirebaseBusinessProfileService())
+}
+
+export async function getBusinessCategoryService(): Promise<IBusinessCategoryService> {
+  if (USE_MOCK_SERVICES) {
+    const { MockBusinessCategoryService } = await import("./MockBusinessCategoryService")
+    return createInstance("businessCategory", new MockBusinessCategoryService())
+  }
+  const { FirebaseBusinessCategoryService } = await import("./FirebaseBusinessCategoryService")
+  return createInstance("businessCategory", new FirebaseBusinessCategoryService())
+}
+
+export async function getOpportunityService(): Promise<IOpportunityService> {
+  if (USE_MOCK_SERVICES) {
+    const { MockOpportunityService } = await import("./MockOpportunityService")
+    return createInstance("opportunity", new MockOpportunityService())
+  }
+  const { FirebaseOpportunityService } = await import("./FirebaseOpportunityService")
+  return createInstance("opportunity", new FirebaseOpportunityService())
+}
+
+export async function getMarketplaceApprovalService(): Promise<IMarketplaceApprovalService> {
+  if (USE_MOCK_SERVICES) {
+    const { MockMarketplaceApprovalService } = await import("./MockMarketplaceApprovalService")
+    return createInstance("marketplaceApproval", new MockMarketplaceApprovalService())
+  }
+  const { FirebaseMarketplaceApprovalService } = await import("./FirebaseMarketplaceApprovalService")
+  return createInstance("marketplaceApproval", new FirebaseMarketplaceApprovalService())
+}
+
+export async function getDirectorySearchService(): Promise<IDirectorySearchService> {
+  if (USE_MOCK_SERVICES) {
+    const { MockDirectorySearchService } = await import("./MockDirectorySearchService")
+    return createInstance("directorySearch", new MockDirectorySearchService())
+  }
+  const { FirebaseDirectorySearchService } = await import("./FirebaseDirectorySearchService")
+  return createInstance("directorySearch", new FirebaseDirectorySearchService())
+}
+
+export async function getMarketplaceAnalyticsService(): Promise<IMarketplaceAnalyticsService> {
+  if (USE_MOCK_SERVICES) {
+    const { MockMarketplaceAnalyticsService } = await import("./MockMarketplaceAnalyticsService")
+    return createInstance("marketplaceAnalytics", new MockMarketplaceAnalyticsService())
+  }
+  const { FirebaseMarketplaceAnalyticsService } = await import("./FirebaseMarketplaceAnalyticsService")
+  return createInstance("marketplaceAnalytics", new FirebaseMarketplaceAnalyticsService())
+}
+
+export async function getMarketplaceComplianceService(): Promise<IMarketplaceComplianceService> {
+  if (USE_MOCK_SERVICES) {
+    const { MockMarketplaceComplianceService } = await import("./MockMarketplaceComplianceService")
+    return createInstance("marketplaceCompliance", new MockMarketplaceComplianceService())
+  }
+  const { FirebaseMarketplaceComplianceService } = await import("./FirebaseMarketplaceComplianceService")
+  return createInstance("marketplaceCompliance", new FirebaseMarketplaceComplianceService())
+}
+
+export async function getMarketplaceAuditService(): Promise<IMarketplaceAuditService> {
+  if (USE_MOCK_SERVICES) {
+    const { MockMarketplaceAuditService } = await import("./MockMarketplaceAuditService")
+    return createInstance("marketplaceAudit", new MockMarketplaceAuditService())
+  }
+  const { FirebaseMarketplaceAuditService } = await import("./FirebaseMarketplaceAuditService")
+  return createInstance("marketplaceAudit", new FirebaseMarketplaceAuditService())
+}
+
 export type {
   IAuthService,
   IFormsService,
@@ -659,5 +868,24 @@ export type {
   ICommunicationAnalyticsService,
   IAutomationService,
   ICommunicationAuditService,
+  IIDCardService,
+  ICertificateService,
+  ICredentialTemplateService,
+  ICredentialGenerationService,
+  IPrintingService,
+  ICredentialVerificationService,
+  ICredentialRepositoryService,
+  ICredentialAnalyticsService,
+  ICredentialAuditService,
+  ICredentialSettingsService,
+  IMarketplaceListingService,
+  IBusinessProfileService,
+  IBusinessCategoryService,
+  IOpportunityService,
+  IMarketplaceApprovalService,
+  IDirectorySearchService,
+  IMarketplaceAnalyticsService,
+  IMarketplaceComplianceService,
+  IMarketplaceAuditService,
 }
 export type { AuthState } from "./IAuthService"

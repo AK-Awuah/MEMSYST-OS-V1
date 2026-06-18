@@ -175,6 +175,33 @@ export const ROUTE_PERMISSIONS: Record<string, string | null> = {
   "/app/communication/email": "communication:write",
   "/app/communication/sms": "communication:write",
   "/app/communication/push": "communication:write",
+  "/app/credentials": "communication:read",
+  "/app/credentials/id-cards": "communication:read",
+  "/app/credentials/id-cards/new": "communication:write",
+  "/app/credentials/certificates": "communication:read",
+  "/app/credentials/certificates/new": "communication:write",
+  "/app/credentials/templates": "communication:read",
+  "/app/credentials/templates/new": "communication:write",
+  "/app/credentials/printing": "communication:read",
+  "/app/credentials/repository": "communication:read",
+  "/app/credentials/analytics": "communication:read",
+  "/app/credentials/audit": "communication:read",
+  "/app/credentials/settings": "communication:write",
+  "/app/marketplace": "marketplace:read",
+  "/app/marketplace/listings": "marketplace:read",
+  "/app/marketplace/listings/new": "marketplace:write",
+  "/app/marketplace/businesses": "marketplace:read",
+  "/app/marketplace/businesses/new": "marketplace:write",
+  "/app/marketplace/categories": "marketplace:write",
+  "/app/marketplace/opportunities": "marketplace:read",
+  "/app/marketplace/opportunities/new": "marketplace:write",
+  "/app/marketplace/approvals": "marketplace:write",
+  "/app/marketplace/search": "marketplace:read",
+  "/app/marketplace/analytics": "marketplace:read",
+  "/app/marketplace/compliance": "admin:write",
+  "/app/marketplace/audit": "marketplace:read",
+  "/app/marketplace/settings": "marketplace:write",
+  "/app/marketplace/training-centers": "marketplace:read",
 }
 
 export const PIPELINE_STAGES: CRMStage[] = [
@@ -528,6 +555,202 @@ export const COMMUNICATION_AUDIT_ACTION_LABELS: Record<CommunicationAuditAction,
   automation_created: "Automation Created",
   automation_modified: "Automation Modified",
   automation_toggled: "Automation Toggled",
+}
+
+// ============================================
+// STAGE 7 — DIGITAL IDENTITY, ID CARDS, CERTIFICATES & CREDENTIAL MANAGEMENT (DICP)
+// ============================================
+
+export const ID_CARD_TYPES = ["member", "apprentice", "executive", "staff", "custom"] as const
+export type IDCardType = (typeof ID_CARD_TYPES)[number]
+export const ID_CARD_TYPE_LABELS: Record<IDCardType, string> = {
+  member: "Member",
+  apprentice: "Apprentice",
+  executive: "Executive",
+  staff: "Staff",
+  custom: "Custom",
+}
+
+export const ID_CARD_STATUSES = ["active", "unprinted", "printed", "ordered", "reprinted", "cancelled", "expired"] as const
+export type IDCardStatus = (typeof ID_CARD_STATUSES)[number]
+export const ID_CARD_STATUS_LABELS: Record<IDCardStatus, string> = {
+  active: "Active",
+  unprinted: "Unprinted",
+  printed: "Printed",
+  ordered: "Ordered",
+  reprinted: "Reprinted",
+  cancelled: "Cancelled",
+  expired: "Expired",
+}
+
+export const CERTIFICATE_TYPES = ["membership", "training", "completion", "executive_appointment", "recognition", "custom"] as const
+export type CertificateType = (typeof CERTIFICATE_TYPES)[number]
+export const CERTIFICATE_TYPE_LABELS: Record<CertificateType, string> = {
+  membership: "Membership",
+  training: "Training",
+  completion: "Completion",
+  executive_appointment: "Executive Appointment",
+  recognition: "Recognition",
+  custom: "Custom",
+}
+
+export const CERTIFICATE_STATUSES = ["active", "unprinted", "printed", "ordered", "reprinted", "cancelled", "expired"] as const
+export type CertificateStatus = (typeof CERTIFICATE_STATUSES)[number]
+export const CERTIFICATE_STATUS_LABELS: Record<CertificateStatus, string> = {
+  active: "Active",
+  unprinted: "Unprinted",
+  printed: "Printed",
+  ordered: "Ordered",
+  reprinted: "Reprinted",
+  cancelled: "Cancelled",
+  expired: "Expired",
+}
+
+export const CREDENTIAL_TEMPLATE_TYPES = ["id_card_front", "id_card_back", "certificate"] as const
+export type CredentialTemplateType = (typeof CREDENTIAL_TEMPLATE_TYPES)[number]
+export const CREDENTIAL_TEMPLATE_TYPE_LABELS: Record<CredentialTemplateType, string> = {
+  id_card_front: "ID Card Front",
+  id_card_back: "ID Card Back",
+  certificate: "Certificate",
+}
+
+export const CREDENTIAL_TEMPLATE_STATUSES = ["draft", "active", "archived"] as const
+export type CredentialTemplateStatus = (typeof CREDENTIAL_TEMPLATE_STATUSES)[number]
+export const CREDENTIAL_TEMPLATE_STATUS_LABELS: Record<CredentialTemplateStatus, string> = {
+  draft: "Draft",
+  active: "Active",
+  archived: "Archived",
+}
+
+export const PRINT_REQUEST_STATUSES = ["pending", "approved", "processing", "completed", "rejected", "cancelled"] as const
+export type PrintRequestStatus = (typeof PRINT_REQUEST_STATUSES)[number]
+export const PRINT_REQUEST_STATUS_LABELS: Record<PrintRequestStatus, string> = {
+  pending: "Pending",
+  approved: "Approved",
+  processing: "Processing",
+  completed: "Completed",
+  rejected: "Rejected",
+  cancelled: "Cancelled",
+}
+
+export const VERIFICATION_METHODS = ["qr_code", "credential_number", "verification_code"] as const
+export type VerificationMethod = (typeof VERIFICATION_METHODS)[number]
+export const VERIFICATION_METHOD_LABELS: Record<VerificationMethod, string> = {
+  qr_code: "QR Code",
+  credential_number: "Credential Number",
+  verification_code: "Verification Code",
+}
+
+export const PUBLIC_VERIFICATION_STATUSES = ["valid", "expired", "cancelled", "suspended", "invalid"] as const
+export type PublicVerificationStatus = (typeof PUBLIC_VERIFICATION_STATUSES)[number]
+export const PUBLIC_VERIFICATION_STATUS_LABELS: Record<PublicVerificationStatus, string> = {
+  valid: "Valid",
+  expired: "Expired",
+  cancelled: "Cancelled",
+  suspended: "Suspended",
+  invalid: "Invalid",
+}
+
+export const CREDENTIAL_AUDIT_ACTIONS = [
+  "credential_generated", "credential_printed", "credential_ordered",
+  "credential_reprinted", "credential_cancelled", "credential_verified",
+  "credential_expired",
+] as const
+export type CredentialAuditAction = (typeof CREDENTIAL_AUDIT_ACTIONS)[number]
+export const CREDENTIAL_AUDIT_ACTION_LABELS: Record<CredentialAuditAction, string> = {
+  credential_generated: "Credential Generated",
+  credential_printed: "Credential Printed",
+  credential_ordered: "Credential Ordered",
+  credential_reprinted: "Credential Reprinted",
+  credential_cancelled: "Credential Cancelled",
+  credential_verified: "Credential Verified",
+  credential_expired: "Credential Expired",
+}
+
+// ============================================
+// STAGE 8 — MARKETPLACE, BUSINESS DIRECTORY & COMMERCE (MBDCP)
+// ============================================
+
+export const MARKETPLACE_LISTING_TYPES = ["product", "service", "business_promotion", "opportunity", "event", "announcement"] as const
+export type MarketplaceListingType = (typeof MARKETPLACE_LISTING_TYPES)[number]
+export const MARKETPLACE_LISTING_TYPE_LABELS: Record<MarketplaceListingType, string> = {
+  product: "Product",
+  service: "Service",
+  business_promotion: "Business Promotion",
+  opportunity: "Opportunity",
+  event: "Event",
+  announcement: "Announcement",
+}
+
+export const MARKETPLACE_LISTING_STATUSES = ["draft", "pending_review", "approved", "rejected", "active", "expired", "archived"] as const
+export type MarketplaceListingStatus = (typeof MARKETPLACE_LISTING_STATUSES)[number]
+export const MARKETPLACE_LISTING_STATUS_LABELS: Record<MarketplaceListingStatus, string> = {
+  draft: "Draft",
+  pending_review: "Pending Review",
+  approved: "Approved",
+  rejected: "Rejected",
+  active: "Active",
+  expired: "Expired",
+  archived: "Archived",
+}
+
+export const BUSINESS_VERIFICATION_TYPES = ["verified_member_business", "verified_training_center", "verified_vendor", "verified_service_provider"] as const
+export type BusinessVerificationType = (typeof BUSINESS_VERIFICATION_TYPES)[number]
+export const BUSINESS_VERIFICATION_TYPE_LABELS: Record<BusinessVerificationType, string> = {
+  verified_member_business: "Verified Member Business",
+  verified_training_center: "Verified Training Center",
+  verified_vendor: "Verified Vendor",
+  verified_service_provider: "Verified Service Provider",
+}
+
+export const BUSINESS_VERIFICATION_STATUSES = ["unverified", "pending", "verified", "suspended", "revoked"] as const
+export type BusinessVerificationStatus = (typeof BUSINESS_VERIFICATION_STATUSES)[number]
+export const BUSINESS_VERIFICATION_STATUS_LABELS: Record<BusinessVerificationStatus, string> = {
+  unverified: "Unverified",
+  pending: "Pending",
+  verified: "Verified",
+  suspended: "Suspended",
+  revoked: "Revoked",
+}
+
+export const OPPORTUNITY_TYPES = ["employment", "apprenticeship", "partnership", "tender", "contract", "business_opportunity"] as const
+export type OpportunityType = (typeof OPPORTUNITY_TYPES)[number]
+export const OPPORTUNITY_TYPE_LABELS: Record<OpportunityType, string> = {
+  employment: "Employment",
+  apprenticeship: "Apprenticeship",
+  partnership: "Partnership",
+  tender: "Tender",
+  contract: "Contract",
+  business_opportunity: "Business Opportunity",
+}
+
+export const OPPORTUNITY_STATUSES = ["open", "closed", "archived"] as const
+export type OpportunityStatus = (typeof OPPORTUNITY_STATUSES)[number]
+export const OPPORTUNITY_STATUS_LABELS: Record<OpportunityStatus, string> = {
+  open: "Open",
+  closed: "Closed",
+  archived: "Archived",
+}
+
+export const MARKETPLACE_AUDIT_ACTIONS = [
+  "listing_created", "listing_updated", "listing_approved", "listing_rejected",
+  "listing_archived", "business_created", "business_updated", "business_verified",
+  "opportunity_posted", "opportunity_closed", "verification_granted", "moderation_action",
+] as const
+export type MarketplaceAuditAction = (typeof MARKETPLACE_AUDIT_ACTIONS)[number]
+export const MARKETPLACE_AUDIT_ACTION_LABELS: Record<MarketplaceAuditAction, string> = {
+  listing_created: "Listing Created",
+  listing_updated: "Listing Updated",
+  listing_approved: "Listing Approved",
+  listing_rejected: "Listing Rejected",
+  listing_archived: "Listing Archived",
+  business_created: "Business Created",
+  business_updated: "Business Updated",
+  business_verified: "Business Verified",
+  opportunity_posted: "Opportunity Posted",
+  opportunity_closed: "Opportunity Closed",
+  verification_granted: "Verification Granted",
+  moderation_action: "Moderation Action",
 }
 
 
