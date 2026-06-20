@@ -399,6 +399,305 @@ service cloud.firestore {
     }
 
     // ============================================
+    // EVENTS
+    // /events/{docId}, /eventRegistrations/{docId}, /eventCertificates/{docId}, /workshops/{docId}, /eventsAuditLogs/{docId}
+    // ============================================
+    match /events/{docId} {
+      allow read: if isAuthenticated() && (isSuperAdmin() || hasPermission('events:read'));
+      allow create: if hasPermission('events:write');
+      allow update: if hasPermission('events:write');
+      allow delete: if isSuperAdmin();
+    }
+    match /eventRegistrations/{docId} {
+      allow read: if isAuthenticated() && (isSuperAdmin() || hasPermission('events:read'));
+      allow create: if hasPermission('events:write');
+      allow update: if hasPermission('events:write');
+      allow delete: if isSuperAdmin();
+    }
+    match /eventCertificates/{docId} {
+      allow read: if isAuthenticated() && (isSuperAdmin() || hasPermission('events:read'));
+      allow create: if hasPermission('events:write');
+      allow update: if hasPermission('events:write');
+      allow delete: if isSuperAdmin();
+    }
+    match /workshops/{docId} {
+      allow read: if isAuthenticated() && (isSuperAdmin() || hasPermission('events:read'));
+      allow create: if hasPermission('events:write');
+      allow update: if hasPermission('events:write');
+      allow delete: if isSuperAdmin();
+    }
+    match /eventsAuditLogs/{docId} {
+      allow read: if isAuthenticated() && (isSuperAdmin() || hasPermission('audit:read'));
+      allow create: if isAuthenticated();
+      allow update, delete: if false;
+    }
+
+    // ============================================
+    // GOVERNANCE ENHANCED
+    // /governanceElections, /governanceCandidates, /governanceVotes, /governanceCommittees, /governanceMeetings, /governanceResolutions, /governanceAuditLogs
+    // ============================================
+    match /governanceElections/{docId} {
+      allow read: if isAuthenticated() && (isSuperAdmin() || hasPermission('governance:read'));
+      allow create: if hasPermission('governance:write');
+      allow update: if hasPermission('governance:write');
+      allow delete: if isSuperAdmin();
+    }
+    match /governanceCandidates/{docId} {
+      allow read: if isAuthenticated() && (isSuperAdmin() || hasPermission('governance:read'));
+      allow create: if hasPermission('governance:write');
+      allow update: if hasPermission('governance:write');
+      allow delete: if isSuperAdmin();
+    }
+    match /governanceVotes/{docId} {
+      allow read: if isAuthenticated() && (isSuperAdmin() || hasPermission('governance:read'));
+      allow create: if isAuthenticated();
+      allow update, delete: if false;
+    }
+    match /governanceCommittees/{docId} {
+      allow read: if isAuthenticated() && (isSuperAdmin() || hasPermission('governance:read'));
+      allow create: if hasPermission('governance:write');
+      allow update: if hasPermission('governance:write');
+      allow delete: if isSuperAdmin();
+    }
+    match /governanceMeetings/{docId} {
+      allow read: if isAuthenticated() && (isSuperAdmin() || hasPermission('governance:read'));
+      allow create: if hasPermission('governance:write');
+      allow update: if hasPermission('governance:write');
+      allow delete: if isSuperAdmin();
+    }
+    match /governanceResolutions/{docId} {
+      allow read: if isAuthenticated() && (isSuperAdmin() || hasPermission('governance:read'));
+      allow create: if hasPermission('governance:write');
+      allow update: if hasPermission('governance:write');
+      allow delete: if isSuperAdmin();
+    }
+    match /governanceAuditLogs/{docId} {
+      allow read: if isAuthenticated() && (isSuperAdmin() || hasPermission('audit:read'));
+      allow create: if isAuthenticated();
+      allow update, delete: if false;
+    }
+
+    // ============================================
+    // ANALYTICS & REPORTING
+    // ============================================
+    match /reports/{docId} {
+      allow read: if isAuthenticated() && (isSuperAdmin() || hasPermission('analytics:read'));
+      allow create: if hasPermission('analytics:write');
+      allow update: if hasPermission('analytics:write');
+      allow delete: if isSuperAdmin();
+    }
+    match /report_executions/{docId} {
+      allow read: if isAuthenticated() && (isSuperAdmin() || hasPermission('analytics:read'));
+      allow create: if hasPermission('analytics:write');
+      allow update: if isSuperAdmin();
+      allow delete: if false;
+    }
+    match /dashboards/{docId} {
+      allow read: if isAuthenticated() && (isSuperAdmin() || hasPermission('analytics:read'));
+      allow create: if hasPermission('analytics:write');
+      allow update: if hasPermission('analytics:write');
+      allow delete: if isSuperAdmin();
+    }
+    match /dashboard_widgets/{docId} {
+      allow read: if isAuthenticated() && (isSuperAdmin() || hasPermission('analytics:read'));
+      allow create: if hasPermission('analytics:write');
+      allow update: if hasPermission('analytics:write');
+      allow delete: if isSuperAdmin();
+    }
+    match /analytics_audit_logs/{docId} {
+      allow read: if isAuthenticated() && (isSuperAdmin() || hasPermission('audit:read'));
+      allow create: if isAuthenticated();
+      allow update, delete: if false;
+    }
+
+    // ============================================
+    // INTEGRATION MARKETPLACE
+    // ============================================
+    match /api_keys/{docId} {
+      allow read: if isAuthenticated() && (isSuperAdmin() || hasPermission('integrations:read'));
+      allow create: if hasPermission('integrations:write');
+      allow update: if hasPermission('integrations:write');
+      allow delete: if isSuperAdmin();
+    }
+    match /webhooks/{docId} {
+      allow read: if isAuthenticated() && (isSuperAdmin() || hasPermission('integrations:read'));
+      allow create: if hasPermission('integrations:write');
+      allow update: if hasPermission('integrations:write');
+      allow delete: if isSuperAdmin();
+    }
+    match /webhook_deliveries/{docId} {
+      allow read: if isAuthenticated() && (isSuperAdmin() || hasPermission('integrations:read'));
+      allow create: if true;
+      allow update, delete: if false;
+    }
+    match /integrations/{docId} {
+      allow read: if isAuthenticated() && (isSuperAdmin() || hasPermission('integrations:read'));
+      allow create: if hasPermission('integrations:write');
+      allow update: if hasPermission('integrations:write');
+      allow delete: if isSuperAdmin();
+    }
+    match /integration_audit_logs/{docId} {
+      allow read: if isAuthenticated() && (isSuperAdmin() || hasPermission('audit:read'));
+      allow create: if isAuthenticated();
+      allow update, delete: if false;
+    }
+
+    // ============================================
+    // MOBILE
+    // ============================================
+    match /pwa_configs/{docId} {
+      allow read: if isAuthenticated() && (isSuperAdmin() || hasPermission('mobile:read'));
+      allow write: if hasPermission('mobile:write');
+    }
+    match /offline_cache_rules/{docId} {
+      allow read: if isAuthenticated() && (isSuperAdmin() || hasPermission('mobile:read'));
+      allow create: if hasPermission('mobile:write');
+      allow update: if hasPermission('mobile:write');
+      allow delete: if isSuperAdmin();
+    }
+    match /mobile_versions/{docId} {
+      allow read: if isAuthenticated() && (isSuperAdmin() || hasPermission('mobile:read'));
+      allow create: if hasPermission('mobile:write');
+      allow update: if hasPermission('mobile:write');
+      allow delete: if isSuperAdmin();
+    }
+    match /mobile_audit_logs/{docId} {
+      allow read: if isAuthenticated() && (isSuperAdmin() || hasPermission('audit:read'));
+      allow create: if isAuthenticated();
+      allow update, delete: if false;
+    }
+
+    // ============================================
+    // AI & AUTOMATION
+    // ============================================
+    match /ai_assistants/{docId} {
+      allow read: if isAuthenticated() && (isSuperAdmin() || hasPermission('ai:read'));
+      allow create: if hasPermission('ai:write');
+      allow update: if hasPermission('ai:write');
+      allow delete: if isSuperAdmin();
+    }
+    match /ai_conversations/{docId} {
+      allow read: if isAuthenticated() && (isSuperAdmin() || hasPermission('ai:read'));
+      allow create: if isAuthenticated();
+      allow update, delete: if false;
+    }
+    match /smart_analytics/{docId} {
+      allow read: if isAuthenticated() && (isSuperAdmin() || hasPermission('ai:read'));
+      allow create: if hasPermission('ai:write');
+      allow update: if hasPermission('ai:write');
+      allow delete: if isSuperAdmin();
+    }
+    match /workflow_suggestions/{docId} {
+      allow read: if isAuthenticated() && (isSuperAdmin() || hasPermission('ai:read'));
+      allow create: if hasPermission('ai:write');
+      allow update: if hasPermission('ai:write');
+      allow delete: if isSuperAdmin();
+    }
+    match /ai_audit_logs/{docId} {
+      allow read: if isAuthenticated() && (isSuperAdmin() || hasPermission('audit:read'));
+      allow create: if isAuthenticated();
+      allow update, delete: if false;
+    }
+
+    // ============================================
+    // PLATFORM OPERATIONS
+    // ============================================
+    match /subscription_plans/{docId} {
+      allow read: if isAuthenticated();
+      allow create: if isSuperAdmin();
+      allow update: if isSuperAdmin();
+      allow delete: if isSuperAdmin();
+    }
+    match /tenant_subscriptions/{docId} {
+      allow read: if isAuthenticated() && (isSuperAdmin() || hasPermission('platform:read'));
+      allow create: if hasPermission('platform:write');
+      allow update: if hasPermission('platform:write');
+      allow delete: if isSuperAdmin();
+    }
+    match /invoices/{docId} {
+      allow read: if isAuthenticated() && (isSuperAdmin() || hasPermission('platform:read'));
+      allow create: if hasPermission('platform:write');
+      allow update: if hasPermission('platform:write');
+      allow delete: if false;
+    }
+    match /support_tickets/{docId} {
+      allow read: if isAuthenticated() && (isSuperAdmin() || hasPermission('platform:read'));
+      allow create: if isAuthenticated();
+      allow update: if hasPermission('platform:write');
+      allow delete: if isSuperAdmin();
+    }
+    match /platform_partners/{docId} {
+      allow read: if isAuthenticated() && (isSuperAdmin() || hasPermission('platform:read'));
+      allow create: if hasPermission('platform:write');
+      allow update: if hasPermission('platform:write');
+      allow delete: if isSuperAdmin();
+    }
+    match /partner_tenants/{docId} {
+      allow read: if isAuthenticated() && (isSuperAdmin() || hasPermission('platform:read'));
+      allow create: if hasPermission('platform:write');
+      allow update, delete: if isSuperAdmin();
+    }
+    match /platform_ops_audit_logs/{docId} {
+      allow read: if isAuthenticated() && (isSuperAdmin() || hasPermission('audit:read'));
+      allow create: if isAuthenticated();
+      allow update, delete: if false;
+    }
+
+    // ============================================
+    // ADVERTISING
+    // ============================================
+    match /advertisements/{docId} {
+      allow read: if isAuthenticated() && (isSuperAdmin() || hasPermission('advertising:read'));
+      allow create: if hasPermission('advertising:write');
+      allow update: if hasPermission('advertising:write');
+      allow delete: if isSuperAdmin();
+    }
+    match /ad_campaigns/{docId} {
+      allow read: if isAuthenticated() && (isSuperAdmin() || hasPermission('advertising:read'));
+      allow create: if hasPermission('advertising:write');
+      allow update: if hasPermission('advertising:write');
+      allow delete: if isSuperAdmin();
+    }
+    match /sponsor_deals/{docId} {
+      allow read: if isAuthenticated() && (isSuperAdmin() || hasPermission('advertising:read'));
+      allow create: if hasPermission('advertising:write');
+      allow update: if hasPermission('advertising:write');
+      allow delete: if isSuperAdmin();
+    }
+    match /advertising_audit_logs/{docId} {
+      allow read: if isAuthenticated() && (isSuperAdmin() || hasPermission('audit:read'));
+      allow create: if isAuthenticated();
+      allow update, delete: if false;
+    }
+
+    // ============================================
+    // TIERING & VISIBILITY
+    // ============================================
+    match /premium_accounts/{docId} {
+      allow read: if isAuthenticated() && (isSuperAdmin() || hasPermission('tiering:read'));
+      allow create: if hasPermission('tiering:write');
+      allow update: if hasPermission('tiering:write');
+      allow delete: if isSuperAdmin();
+    }
+    match /premium_listings/{docId} {
+      allow read: if isAuthenticated() && (isSuperAdmin() || hasPermission('tiering:read'));
+      allow create: if hasPermission('tiering:write');
+      allow update: if hasPermission('tiering:write');
+      allow delete: if isSuperAdmin();
+    }
+    match /visibility_rules/{docId} {
+      allow read: if isAuthenticated() && (isSuperAdmin() || hasPermission('tiering:read'));
+      allow create: if hasPermission('tiering:write');
+      allow update: if hasPermission('tiering:write');
+      allow delete: if isSuperAdmin();
+    }
+    match /tiering_audit_logs/{docId} {
+      allow read: if isAuthenticated() && (isSuperAdmin() || hasPermission('audit:read'));
+      allow create: if isAuthenticated();
+      allow update, delete: if false;
+    }
+
+    // ============================================
     // Deny everything else by default
     // ============================================
     match /{document=**} {
