@@ -3,9 +3,9 @@ import type { Tenant, TenantProfile, TenantBranding, TenantAnalytics } from "@/t
 import { mockTenants, mockTenantProfiles, mockTenantBrandings, mockRegions, mockBranches, mockExecutiveAppointments } from "./mock-data"
 import { recordIdentitySecurityEvent } from "./shared-store"
 
-let tenants = [...mockTenants]
-let profiles = [...mockTenantProfiles]
-let brandings = [...mockTenantBrandings]
+const tenants = [...mockTenants]
+const profiles = [...mockTenantProfiles]
+const brandings = [...mockTenantBrandings]
 
 export class MockTenantManagementService implements ITenantManagementService {
   async listTenants(params?: { status?: string; search?: string }): Promise<Tenant[]> {

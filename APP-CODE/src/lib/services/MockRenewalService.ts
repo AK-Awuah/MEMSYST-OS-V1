@@ -3,7 +3,7 @@ import type { RenewalRecord, MemberRenewalStatus } from "@/types"
 import { mockRenewalRecords } from "./mock-data"
 import { delay } from "./shared-store"
 
-let renewals = [...mockRenewalRecords]
+const renewals = [...mockRenewalRecords]
 let nextId = renewals.length + 1
 
 export class MockRenewalService implements IRenewalService {

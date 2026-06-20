@@ -4,48 +4,48 @@ import { delay } from "./shared-store"
 
 const now = new Date().toISOString()
 
-let loans: Loan[] = [
+const loans: Loan[] = [
   { id: "loan-1", tenantId: "tenant-1", memberId: "mem-1", memberName: "Kwame Ansah", loanType: "business", amountRequested: 5000, amountApproved: 4500, interestRate: 5, repaymentPeriod: 12, repaymentFrequency: "monthly", installmentAmount: 393.75, totalRepayable: 4725, amountPaid: 787.50, balance: 3937.50, purpose: "Business expansion", status: "repaying", applicationDate: "2026-01-15T00:00:00Z", approvalDate: "2026-01-20T00:00:00Z", disbursementDate: "2026-01-25T00:00:00Z", expectedCompletionDate: "2027-01-25T00:00:00Z", guarantorName: "Akua Sarpong", createdAt: "2026-01-15T00:00:00Z", updatedAt: "2026-01-25T00:00:00Z" },
   { id: "loan-2", tenantId: "tenant-1", memberId: "mem-2", memberName: "Ama Serwaa", loanType: "personal", amountRequested: 2000, amountApproved: 2000, interestRate: 3, repaymentPeriod: 6, repaymentFrequency: "monthly", installmentAmount: 343.33, totalRepayable: 2060, amountPaid: 0, balance: 2060, purpose: "Medical expenses", status: "approved", applicationDate: "2026-03-01T00:00:00Z", approvalDate: "2026-03-05T00:00:00Z", createdAt: "2026-03-01T00:00:00Z", updatedAt: "2026-03-05T00:00:00Z" },
   { id: "loan-3", tenantId: "tenant-1", memberId: "mem-3", memberName: "Yaw Asante", loanType: "education", amountRequested: 3000, amountApproved: 2500, interestRate: 4, repaymentPeriod: 10, repaymentFrequency: "monthly", installmentAmount: 260, totalRepayable: 2600, amountPaid: 260, balance: 2340, purpose: "Tuition fees", status: "disbursed", applicationDate: "2026-02-10T00:00:00Z", approvalDate: "2026-02-15T00:00:00Z", disbursementDate: "2026-02-20T00:00:00Z", expectedCompletionDate: "2026-12-20T00:00:00Z", createdAt: "2026-02-10T00:00:00Z", updatedAt: "2026-02-20T00:00:00Z" },
 ]
 
-let repayments: LoanRepayment[] = [
+const repayments: LoanRepayment[] = [
   { id: "rep-1", loanId: "loan-1", tenantId: "tenant-1", memberId: "mem-1", amount: 393.75, principalPortion: 375, interestPortion: 18.75, dueDate: "2026-02-25T00:00:00Z", paidDate: "2026-02-24T00:00:00Z", status: "paid", transactionId: "txn-1", createdAt: "2026-02-24T00:00:00Z" },
   { id: "rep-2", loanId: "loan-1", tenantId: "tenant-1", memberId: "mem-1", amount: 393.75, principalPortion: 375, interestPortion: 18.75, dueDate: "2026-03-25T00:00:00Z", paidDate: "2026-03-23T00:00:00Z", status: "paid", transactionId: "txn-2", createdAt: "2026-03-23T00:00:00Z" },
 ]
 
-let scholarships: Scholarship[] = [
+const scholarships: Scholarship[] = [
   { id: "schol-1", tenantId: "tenant-1", title: "Future Leaders Scholarship", description: "For outstanding young professionals in business and leadership", scholarshipType: "merit", provider: "Memsyst Foundation", amount: 10000, totalSlots: 5, slotsFilled: 2, eligibilityCriteria: ["Age 20-35", "Active member for 2+ years", "Minimum GPA 3.5"], requirements: ["Application form", "Academic transcripts", "Recommendation letter", "Personal statement"], applicationDeadline: "2026-07-31T00:00:00Z", status: "accepting_applications", createdAt: "2026-01-01T00:00:00Z", updatedAt: "2026-01-01T00:00:00Z" },
   { id: "schol-2", tenantId: "tenant-1", title: "Women in STEM Grant", description: "Supporting women pursuing science and technology careers", scholarshipType: "need_based", provider: "Tech Her Foundation", amount: 8000, totalSlots: 3, slotsFilled: 3, eligibilityCriteria: ["Female members", "Enrolled in STEM program", "Demonstrated financial need"], requirements: ["Application", "Proof of enrollment", "Financial statement"], applicationDeadline: "2026-05-15T00:00:00Z", status: "awarded", createdAt: "2026-02-01T00:00:00Z", updatedAt: "2026-06-01T00:00:00Z" },
 ]
 
-let scholarshipApplications: ScholarshipApplication[] = [
+const scholarshipApplications: ScholarshipApplication[] = [
   { id: "app-1", scholarshipId: "schol-1", tenantId: "tenant-1", memberId: "mem-4", memberName: "Esi Mensah", applicationDate: "2026-06-10T00:00:00Z", status: "submitted", documents: ["transcript.pdf", "recommendation.pdf"], createdAt: "2026-06-10T00:00:00Z", updatedAt: "2026-06-10T00:00:00Z" },
   { id: "app-2", scholarshipId: "schol-1", tenantId: "tenant-1", memberId: "mem-5", memberName: "Kojo Boateng", applicationDate: "2026-06-12T00:00:00Z", status: "under_review", documents: ["transcript.pdf", "statement.pdf", "letter.pdf"], createdAt: "2026-06-12T00:00:00Z", updatedAt: "2026-06-15T00:00:00Z" },
 ]
 
-let sponsorships: Sponsorship[] = [
+const sponsorships: Sponsorship[] = [
   { id: "spon-1", tenantId: "tenant-1", title: "Annual Conference Sponsor", description: "Sponsorship for the 2026 National Conference", category: "event", sponsorName: "Ghana Tech Hub", sponsorContact: "info@ghanatech.com", amount: 25000, startDate: "2026-01-01T00:00:00Z", endDate: "2026-12-31T00:00:00Z", status: "active", createdAt: "2026-01-01T00:00:00Z", updatedAt: "2026-01-01T00:00:00Z" },
   { id: "spon-2", tenantId: "tenant-1", title: "Member Welfare Fund", description: "Corporate sponsorship for member welfare initiatives", category: "member", sponsorName: "First National Bank", sponsorContact: "corporate@fnb.com", beneficiaryName: "General Membership", amount: 15000, startDate: "2026-03-01T00:00:00Z", endDate: "2026-09-01T00:00:00Z", status: "active", createdAt: "2026-03-01T00:00:00Z", updatedAt: "2026-03-01T00:00:00Z" },
 ]
 
-let programs: SupportProgram[] = [
+const programs: SupportProgram[] = [
   { id: "prog-1", tenantId: "tenant-1", title: "Emergency Financial Assistance", description: "Short-term financial support for members facing emergencies", category: "emergency", provider: "Memsyst Welfare Desk", eligibilityCriteria: ["Active member for 6+ months", "Proof of emergency"], applicationProcess: "Submit application with supporting documents to welfare desk", benefits: ["Up to GHS 2,000 grant", "Counseling support"], fundingSource: "Member Welfare Fund", budget: 100000, budgetSpent: 25000, startDate: "2026-01-01T00:00:00Z", maxBeneficiaries: 50, currentBeneficiaries: 12, status: "active", createdAt: "2026-01-01T00:00:00Z", updatedAt: "2026-01-01T00:00:00Z" },
   { id: "prog-2", tenantId: "tenant-1", title: "Legal Aid Clinic", description: "Free legal consultation for members", category: "legal", provider: "Justice Partners LLP", eligibilityCriteria: ["Active member"], applicationProcess: "Book appointment via member portal", benefits: ["Free 30-min consultation", "Discounted legal services"], fundingSource: "Partnership", budget: 50000, budgetSpent: 12000, startDate: "2026-02-01T00:00:00Z", maxBeneficiaries: 200, currentBeneficiaries: 45, status: "active", createdAt: "2026-02-01T00:00:00Z", updatedAt: "2026-02-01T00:00:00Z" },
 ]
 
-let enrollments: SupportProgramEnrollment[] = [
+const enrollments: SupportProgramEnrollment[] = [
   { id: "enr-1", programId: "prog-1", tenantId: "tenant-1", memberId: "mem-6", memberName: "Adwoa Nyarko", enrollmentDate: "2026-03-15T00:00:00Z", status: "active", benefitsReceived: ["Grant disbursed"], createdAt: "2026-03-15T00:00:00Z", updatedAt: "2026-03-15T00:00:00Z" },
   { id: "enr-2", programId: "prog-2", tenantId: "tenant-1", memberId: "mem-7", memberName: "Kofi Asare", enrollmentDate: "2026-04-01T00:00:00Z", status: "approved", benefitsReceived: [], createdAt: "2026-04-01T00:00:00Z", updatedAt: "2026-04-01T00:00:00Z" },
 ]
 
-let resources: ResourceDirectory[] = [
+const resources: ResourceDirectory[] = [
   { id: "res-1", tenantId: "tenant-1", title: "National Health Insurance Guide", description: "Step-by-step guide to registering for NHIS", category: "health", provider: "Ministry of Health", contactPhone: "+233 30 200 0000", website: "https://nhis.gov.gh", eligibilitySummary: "Open to all Ghanaian residents", isVerified: true, tags: ["health", "insurance", "nhis"], status: "published", createdAt: "2026-01-10T00:00:00Z", updatedAt: "2026-01-10T00:00:00Z" },
   { id: "res-2", tenantId: "tenant-1", title: "Small Business Grants Portal", description: "Directory of available grants for small businesses", category: "financial", provider: "Ghana Enterprise Agency", contactEmail: "grants@gea.gov.gh", website: "https://gea.gov.gh/grants", isVerified: true, tags: ["grants", "business", "funding"], status: "published", createdAt: "2026-02-01T00:00:00Z", updatedAt: "2026-02-01T00:00:00Z" },
 ]
 
-let auditLogs: SupportHubAuditLog[] = [
+const auditLogs: SupportHubAuditLog[] = [
   { id: "audit-1", tenantId: "tenant-1", actor: "John Admin", action: "loan_approved", recordType: "Loan", recordId: "loan-2", newValue: "approved", createdAt: "2026-03-05T00:00:00Z" },
   { id: "audit-2", tenantId: "tenant-1", actor: "System", action: "scholarship_awarded", recordType: "Scholarship", recordId: "schol-2", details: "All slots filled", createdAt: "2026-06-01T00:00:00Z" },
 ]
@@ -58,7 +58,7 @@ let nextSponsorshipId = sponsorships.length + 1
 let nextProgramId = programs.length + 1
 let nextEnrollmentId = enrollments.length + 1
 let nextResourceId = resources.length + 1
-let nextAuditId = auditLogs.length + 1
+const nextAuditId = auditLogs.length + 1
 
 export class MockSupportHubService implements ISupportHubService {
   // ==================== LOANS ====================

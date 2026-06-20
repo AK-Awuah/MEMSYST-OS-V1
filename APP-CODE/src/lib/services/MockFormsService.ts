@@ -3,7 +3,7 @@ import type { FormSubmission, Note, Lead } from "@/types"
 import { mockSubmissions, generateMockForm, mockLeads } from "./mock-data"
 import { pushAuditLog } from "./shared-store"
 
-let submissions = [...mockSubmissions]
+const submissions = [...mockSubmissions]
 
 export class MockFormsService implements IFormsService {
   async listSubmissions(): Promise<FormSubmission[]> {

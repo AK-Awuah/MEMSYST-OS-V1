@@ -2,9 +2,9 @@ import type { IOrganizationStructureService } from "./IOrganizationStructureServ
 import type { OrganizationalUnit, Region, Branch } from "@/types"
 import { mockOrgUnits, mockRegions, mockBranches } from "./mock-data"
 
-let orgUnits = [...mockOrgUnits]
-let regions = [...mockRegions]
-let branches = [...mockBranches]
+const orgUnits = [...mockOrgUnits]
+const regions = [...mockRegions]
+const branches = [...mockBranches]
 
 export class MockOrganizationStructureService implements IOrganizationStructureService {
   async listOrgUnits(tenantId: string): Promise<OrganizationalUnit[]> {

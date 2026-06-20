@@ -2,9 +2,9 @@ import type { ITieringService } from "./ITieringService"
 import type { PremiumAccount, PremiumListing, VisibilityRule, TieringAuditLog, PremiumTier } from "@/types"
 import { delay, pushAuditLog } from "./shared-store"
 
-let accounts: PremiumAccount[] = []
-let listings: PremiumListing[] = []
-let rules: VisibilityRule[] = []
+const accounts: PremiumAccount[] = []
+const listings: PremiumListing[] = []
+const rules: VisibilityRule[] = []
 
 export class MockTieringService implements ITieringService {
   async listAccounts(tenantId: string): Promise<PremiumAccount[]> {

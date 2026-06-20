@@ -3,7 +3,7 @@ import type { Member, MembershipStatus } from "@/types"
 import { mockMembers } from "./mock-data"
 import { delay } from "./shared-store"
 
-let members = [...mockMembers]
+const members = [...mockMembers]
 let nextId = members.length + 1
 
 export class MockMemberService implements IMemberService {

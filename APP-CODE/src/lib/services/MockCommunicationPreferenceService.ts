@@ -13,7 +13,7 @@ export class MockCommunicationPreferenceService implements ICommunicationPrefere
 
   async updatePreferences(tenantId: string, userId: string, data: Partial<CommunicationPreference>): Promise<CommunicationPreference> {
     await delay(200)
-    let pref = this.items.find((p) => p.tenantId === tenantId && p.userId === userId)
+    const pref = this.items.find((p) => p.tenantId === tenantId && p.userId === userId)
     if (pref) {
       Object.assign(pref, data, { updatedAt: new Date().toISOString() })
       return pref

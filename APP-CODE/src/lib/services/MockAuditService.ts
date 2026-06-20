@@ -2,7 +2,7 @@ import type { IAuditService } from "./IAuditService"
 import type { AuditLog } from "@/types"
 import { mockAuditLogs } from "./mock-data"
 
-let logs = [...mockAuditLogs]
+const logs = [...mockAuditLogs]
 
 export class MockAuditService implements IAuditService {
   async listLogs(params?: { module?: string; action?: string; actor?: string; limit?: number }): Promise<AuditLog[]> {

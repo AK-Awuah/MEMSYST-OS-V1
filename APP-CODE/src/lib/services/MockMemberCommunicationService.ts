@@ -3,7 +3,7 @@ import type { MemberCommunication } from "@/types"
 import { mockMemberCommunications } from "./mock-data"
 import { delay } from "./shared-store"
 
-let prefs = [...mockMemberCommunications]
+const prefs = [...mockMemberCommunications]
 
 export class MockMemberCommunicationService implements IMemberCommunicationService {
   async getPreferences(memberId: string): Promise<MemberCommunication | null> {

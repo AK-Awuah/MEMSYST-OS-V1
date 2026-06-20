@@ -2,7 +2,7 @@ import type { IAnalyticsService } from "./IAnalyticsService"
 import type { Report, ReportExecution, CustomDashboard, DashboardWidget, AnalyticsDashboardMetrics, AnalyticsAuditLog } from "@/types"
 import { delay } from "./shared-store"
 
-let reports: Report[] = [
+const reports: Report[] = [
   {
     id: "rpt-1",
     tenantId: "tenant-1",
@@ -21,7 +21,7 @@ let reports: Report[] = [
   },
 ]
 
-let executions: ReportExecution[] = [
+const executions: ReportExecution[] = [
   {
     id: "exec-1",
     reportId: "rpt-1",

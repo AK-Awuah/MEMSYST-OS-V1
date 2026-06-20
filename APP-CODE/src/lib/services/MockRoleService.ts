@@ -2,7 +2,7 @@ import type { IRoleService } from "./IRoleService"
 import type { Role } from "@/types"
 import { mockRoles } from "./mock-data"
 
-let roles = [...mockRoles]
+const roles = [...mockRoles]
 
 export class MockRoleService implements IRoleService {
   async listRoles(tenantId: string): Promise<Role[]> {

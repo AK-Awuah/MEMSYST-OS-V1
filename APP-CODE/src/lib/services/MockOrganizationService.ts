@@ -3,8 +3,8 @@ import type { OrganizationProspect, Tenant } from "@/types"
 import { mockProspects, mockTenants } from "./mock-data"
 import { pushAuditLog } from "./shared-store"
 
-let prospects = [...mockProspects]
-let tenants = [...mockTenants]
+const prospects = [...mockProspects]
+const tenants = [...mockTenants]
 
 export class MockOrganizationService implements IOrganizationService {
   async listProspects(): Promise<OrganizationProspect[]> {

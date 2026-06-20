@@ -3,8 +3,8 @@ import type { CommissionConfig, Commission } from "@/types"
 import { sharedCommissionConfigs, sharedCommissions } from "./shared-store"
 import { delay } from "./shared-store"
 
-let configs = [...sharedCommissionConfigs]
-let commissions = [...sharedCommissions]
+const configs = [...sharedCommissionConfigs]
+const commissions = [...sharedCommissions]
 
 export class MockCommissionService implements ICommissionService {
   async listConfigs(): Promise<CommissionConfig[]> {

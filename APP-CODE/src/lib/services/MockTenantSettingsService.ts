@@ -3,7 +3,7 @@ import type { TenantSettings } from "@/types"
 import { mockTenantSettings } from "./mock-data"
 
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
-let settingsList = [...mockTenantSettings]
+const settingsList = [...mockTenantSettings]
 
 export class MockTenantSettingsService implements ITenantSettingsService {
   async getSettings(tenantId: string): Promise<TenantSettings | null> {
@@ -13,7 +13,7 @@ export class MockTenantSettingsService implements ITenantSettingsService {
 
   async updateSettings(tenantId: string, data: Partial<TenantSettings>): Promise<void> {
     await delay(300)
-    let settings = settingsList.find((s) => s.tenantId === tenantId)
+    const settings = settingsList.find((s) => s.tenantId === tenantId)
     if (settings) Object.assign(settings, data, { updatedAt: new Date().toISOString() })
   }
 

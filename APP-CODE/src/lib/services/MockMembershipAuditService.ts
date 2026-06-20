@@ -3,7 +3,7 @@ import type { MembershipAuditLog } from "@/types"
 import { mockMembershipAuditLogs } from "./mock-data"
 import { delay } from "./shared-store"
 
-let logs = [...mockMembershipAuditLogs]
+const logs = [...mockMembershipAuditLogs]
 
 export class MockMembershipAuditService implements IMembershipAuditService {
   async listEvents(tenantId: string, params?: { memberId?: string; action?: string }): Promise<MembershipAuditLog[]> {

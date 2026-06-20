@@ -2,12 +2,12 @@ import type { IPlatformOpsService } from "./IPlatformOpsService"
 import type { SubscriptionPlan, TenantSubscription, Invoice, SupportTicket, PlatformPartner, PartnerTenant, PlatformOpsAuditLog } from "@/types"
 import { delay, pushAuditLog } from "./shared-store"
 
-let plans: SubscriptionPlan[] = []
-let subscriptions: TenantSubscription[] = []
-let invoices: Invoice[] = []
-let tickets: SupportTicket[] = []
-let partners: PlatformPartner[] = []
-let partnerTenants: PartnerTenant[] = []
+const plans: SubscriptionPlan[] = []
+const subscriptions: TenantSubscription[] = []
+const invoices: Invoice[] = []
+const tickets: SupportTicket[] = []
+const partners: PlatformPartner[] = []
+const partnerTenants: PartnerTenant[] = []
 
 export class MockPlatformOpsService implements IPlatformOpsService {
   async listPlans(): Promise<SubscriptionPlan[]> {

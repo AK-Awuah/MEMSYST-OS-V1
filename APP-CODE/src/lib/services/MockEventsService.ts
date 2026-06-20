@@ -238,11 +238,11 @@ const mockAuditLogsData: EventsAuditLog[] = [
   },
 ]
 
-let events = [...mockEventsData]
-let registrations = [...mockRegistrationsData]
-let certificates = [...mockCertificatesData]
-let workshops = [...mockWorkshopsData]
-let auditLogs = [...mockAuditLogsData]
+const events = [...mockEventsData]
+const registrations = [...mockRegistrationsData]
+const certificates = [...mockCertificatesData]
+const workshops = [...mockWorkshopsData]
+const auditLogs = [...mockAuditLogsData]
 
 export class MockEventsService implements IEventsService {
   async listEvents(tenantId: string, params?: { status?: string; eventType?: string; format?: string; search?: string }): Promise<Event[]> {

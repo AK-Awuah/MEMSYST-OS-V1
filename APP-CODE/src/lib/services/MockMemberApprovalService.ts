@@ -3,7 +3,7 @@ import type { ApprovalRecord, MemberApprovalStatus } from "@/types"
 import { mockApprovalRecords } from "./mock-data"
 import { delay } from "./shared-store"
 
-let approvals = [...mockApprovalRecords]
+const approvals = [...mockApprovalRecords]
 
 export class MockMemberApprovalService implements IMemberApprovalService {
   async getApprovalRecord(memberId: string): Promise<ApprovalRecord | null> {

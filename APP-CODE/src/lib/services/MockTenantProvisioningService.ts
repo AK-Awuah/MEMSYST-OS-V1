@@ -2,7 +2,7 @@ import type { ITenantProvisioningService } from "./ITenantProvisioningService"
 import type { Tenant } from "@/types"
 import { mockTenants } from "./mock-data"
 
-let tenants = [...mockTenants]
+const tenants = [...mockTenants]
 
 export class MockTenantProvisioningService implements ITenantProvisioningService {
   async getTenant(tenantId: string): Promise<Tenant | null> {

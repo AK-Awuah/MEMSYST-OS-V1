@@ -3,10 +3,10 @@ import type { Apprentice, TransferRecord, UpgradeRequest, ApprenticeStatus, Memb
 import { mockApprentices, mockTransferRecords, mockUpgradeRequests, mockMembers } from "./mock-data"
 import { delay } from "./shared-store"
 
-let apprentices = [...mockApprentices]
-let transfers = [...mockTransferRecords]
-let upgrades = [...mockUpgradeRequests]
-let members = [...mockMembers]
+const apprentices = [...mockApprentices]
+const transfers = [...mockTransferRecords]
+const upgrades = [...mockUpgradeRequests]
+const members = [...mockMembers]
 let nextAId = apprentices.length + 1
 let nextTId = transfers.length + 1
 let nextUId = upgrades.length + 1

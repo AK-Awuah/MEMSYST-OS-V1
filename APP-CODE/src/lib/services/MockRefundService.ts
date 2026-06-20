@@ -3,7 +3,7 @@ import type { Refund, RefundStatus } from "@/types"
 import { sharedRefunds, pushAuditLog } from "./shared-store"
 import { delay } from "./shared-store"
 
-let refunds = [...sharedRefunds]
+const refunds = [...sharedRefunds]
 
 export class MockRefundService implements IRefundService {
   async listRefunds(params?: { tenantId?: string; status?: RefundStatus }): Promise<Refund[]> {

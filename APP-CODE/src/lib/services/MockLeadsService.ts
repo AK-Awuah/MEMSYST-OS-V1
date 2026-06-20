@@ -3,7 +3,7 @@ import type { Lead, Activity, LeadStatus } from "@/types"
 import { mockLeads, generateMockLead } from "./mock-data"
 import { pushAuditLog } from "./shared-store"
 
-let leads = [...mockLeads]
+const leads = [...mockLeads]
 
 export class MockLeadsService implements ILeadsService {
   async listLeads(): Promise<Lead[]> {

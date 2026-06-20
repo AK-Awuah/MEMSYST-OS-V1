@@ -3,7 +3,7 @@ import type { Payment, PaymentStatus } from "@/types"
 import { sharedPayments, pushAuditLog } from "./shared-store"
 import { delay } from "./shared-store"
 
-let payments = [...sharedPayments]
+const payments = [...sharedPayments]
 
 export class MockPaymentService implements IPaymentService {
   async listPayments(params?: { tenantId?: string; memberId?: string; status?: PaymentStatus }): Promise<Payment[]> {

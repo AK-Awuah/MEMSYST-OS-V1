@@ -3,7 +3,7 @@ import type { Withdrawal, WithdrawalStatus } from "@/types"
 import { sharedWithdrawals, pushAuditLog } from "./shared-store"
 import { delay } from "./shared-store"
 
-let withdrawals = [...sharedWithdrawals]
+const withdrawals = [...sharedWithdrawals]
 
 export class MockWithdrawalService implements IWithdrawalService {
   async listWithdrawals(params?: { tenantId?: string; walletId?: string; status?: WithdrawalStatus }): Promise<Withdrawal[]> {

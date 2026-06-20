@@ -11,7 +11,7 @@ import type {
 } from "@/types"
 import { delay } from "./shared-store"
 
-let elections: Election[] = [
+const elections: Election[] = [
   {
     id: "elec-1",
     tenantId: "tenant-1",
@@ -62,7 +62,7 @@ let elections: Election[] = [
   },
 ]
 
-let candidates: Candidate[] = [
+const candidates: Candidate[] = [
   {
     id: "can-1",
     electionId: "elec-1",
@@ -97,9 +97,9 @@ let candidates: Candidate[] = [
   },
 ]
 
-let votes: Vote[] = []
+const votes: Vote[] = []
 
-let committees: Committee[] = [
+const committees: Committee[] = [
   {
     id: "com-1",
     tenantId: "tenant-1",
@@ -144,7 +144,7 @@ let committees: Committee[] = [
   },
 ]
 
-let meetings: CommitteeMeeting[] = [
+const meetings: CommitteeMeeting[] = [
   {
     id: "mtg-1",
     committeeId: "com-1",
@@ -170,7 +170,7 @@ let meetings: CommitteeMeeting[] = [
   },
 ]
 
-let resolutions: Resolution[] = [
+const resolutions: Resolution[] = [
   {
     id: "res-1",
     tenantId: "tenant-1",
@@ -207,7 +207,7 @@ let resolutions: Resolution[] = [
   },
 ]
 
-let auditLogs: GovernanceAuditLog[] = [
+const auditLogs: GovernanceAuditLog[] = [
   {
     id: "gal-1",
     tenantId: "tenant-1",

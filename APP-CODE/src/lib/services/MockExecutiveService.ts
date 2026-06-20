@@ -2,8 +2,8 @@ import type { IExecutiveService } from "./IExecutiveService"
 import type { ExecutivePosition, ExecutiveAppointment } from "@/types"
 import { mockExecutivePositions, mockExecutiveAppointments } from "./mock-data"
 
-let positions = [...mockExecutivePositions]
-let appointments = [...mockExecutiveAppointments]
+const positions = [...mockExecutivePositions]
+const appointments = [...mockExecutiveAppointments]
 
 export class MockExecutiveService implements IExecutiveService {
   async listPositions(tenantId: string): Promise<ExecutivePosition[]> {

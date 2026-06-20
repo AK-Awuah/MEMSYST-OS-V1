@@ -2,9 +2,9 @@ import type { IAdvertisingService } from "./IAdvertisingService"
 import type { Advertisement, AdCampaign, SponsorDeal, AdvertisingAuditLog } from "@/types"
 import { delay, pushAuditLog } from "./shared-store"
 
-let ads: Advertisement[] = []
-let campaigns: AdCampaign[] = []
-let sponsors: SponsorDeal[] = []
+const ads: Advertisement[] = []
+const campaigns: AdCampaign[] = []
+const sponsors: SponsorDeal[] = []
 
 export class MockAdvertisingService implements IAdvertisingService {
   async listAds(tenantId: string, params?: { status?: string; placement?: string }): Promise<Advertisement[]> {

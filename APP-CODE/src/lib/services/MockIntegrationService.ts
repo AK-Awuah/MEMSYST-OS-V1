@@ -2,7 +2,7 @@ import type { IIntegrationService } from "./IIntegrationService"
 import type { APIKey, Webhook, WebhookDelivery, ThirdPartyIntegration, IntegrationAuditLog } from "@/types"
 import { delay } from "./shared-store"
 
-let apiKeys: APIKey[] = [
+const apiKeys: APIKey[] = [
   {
     id: "ak-1",
     tenantId: "tenant-1",
@@ -19,7 +19,7 @@ let apiKeys: APIKey[] = [
   },
 ]
 
-let webhooks: Webhook[] = [
+const webhooks: Webhook[] = [
   {
     id: "wh-1",
     tenantId: "tenant-1",
@@ -37,7 +37,7 @@ let webhooks: Webhook[] = [
   },
 ]
 
-let deliveries: WebhookDelivery[] = [
+const deliveries: WebhookDelivery[] = [
   {
     id: "del-1",
     webhookId: "wh-1",
@@ -54,7 +54,7 @@ let deliveries: WebhookDelivery[] = [
   },
 ]
 
-let integrations: ThirdPartyIntegration[] = [
+const integrations: ThirdPartyIntegration[] = [
   {
     id: "int-1",
     tenantId: "tenant-1",
@@ -73,7 +73,7 @@ let integrations: ThirdPartyIntegration[] = [
 
 let nextApiKeyId = apiKeys.length + 1
 let nextWebhookId = webhooks.length + 1
-let nextDeliveryId = deliveries.length + 1
+const nextDeliveryId = deliveries.length + 1
 let nextIntegrationId = integrations.length + 1
 
 export class MockIntegrationService implements IIntegrationService {

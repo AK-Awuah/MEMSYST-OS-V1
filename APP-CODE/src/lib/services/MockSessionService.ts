@@ -1,7 +1,7 @@
 import type { ISessionService } from "./ISessionService"
 import type { Session } from "@/types"
 
-let sessions: Session[] = [
+const sessions: Session[] = [
   {
     id: "sess-1",
     userId: "user-1",

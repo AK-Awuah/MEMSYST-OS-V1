@@ -3,8 +3,8 @@ import type { RevenueDistributionRule, RevenueDistribution } from "@/types"
 import { sharedRevenueRules, sharedRevenueDistributions, pushAuditLog } from "./shared-store"
 import { delay } from "./shared-store"
 
-let rules = [...sharedRevenueRules]
-let distributions = [...sharedRevenueDistributions]
+const rules = [...sharedRevenueRules]
+const distributions = [...sharedRevenueDistributions]
 
 export class MockRevenueDistributionService implements IRevenueDistributionService {
   async listRules(tenantId: string): Promise<RevenueDistributionRule[]> {

@@ -3,7 +3,7 @@ import type { Wallet, WalletType, WalletStatus } from "@/types"
 import { sharedWallets } from "./shared-store"
 import { delay } from "./shared-store"
 
-let wallets = [...sharedWallets]
+const wallets = [...sharedWallets]
 
 export class MockWalletService implements IWalletService {
   async listWallets(params?: { tenantId?: string; type?: WalletType; status?: WalletStatus }): Promise<Wallet[]> {

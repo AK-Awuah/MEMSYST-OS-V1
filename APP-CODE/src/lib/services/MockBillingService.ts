@@ -3,7 +3,7 @@ import type { Bill, BillType, BillStatus } from "@/types"
 import { sharedBills, pushAuditLog } from "./shared-store"
 import { delay } from "./shared-store"
 
-let bills = [...sharedBills]
+const bills = [...sharedBills]
 
 export class MockBillingService implements IBillingService {
   async listBills(params?: { tenantId?: string; memberId?: string; type?: BillType; status?: BillStatus }): Promise<Bill[]> {

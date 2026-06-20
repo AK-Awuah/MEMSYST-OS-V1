@@ -2,10 +2,10 @@ import type { IAIService } from "./IAIService"
 import type { AIAssistant, AIConversation, SmartAnalytic, WorkflowSuggestion, AIAuditLog } from "@/types"
 import { delay, pushAuditLog } from "./shared-store"
 
-let assistants: AIAssistant[] = []
-let conversations: AIConversation[] = []
-let analytics: SmartAnalytic[] = []
-let suggestions: WorkflowSuggestion[] = []
+const assistants: AIAssistant[] = []
+const conversations: AIConversation[] = []
+const analytics: SmartAnalytic[] = []
+const suggestions: WorkflowSuggestion[] = []
 
 export class MockAIService implements IAIService {
   async listAssistants(tenantId: string): Promise<AIAssistant[]> {

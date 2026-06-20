@@ -37,7 +37,7 @@ export class FirebaseEngagementService implements IEngagementService {
 
   async getEngagementMetrics(tenantId: string, filters?: { from?: string; to?: string }): Promise<EngagementMetrics> {
     const col = collection(this.db, COLLECTION)
-    let constraints = [where("tenantId", "==", tenantId)]
+    const constraints = [where("tenantId", "==", tenantId)]
     const snap = await getDocs(query(col, ...constraints))
     let events = snap.docs.map((d) => toEngagementEvent(d.id, d.data() as Record<string, unknown>))
     if (filters?.from) events = events.filter((e) => new Date(e.timestamp) >= new Date(filters.from!))

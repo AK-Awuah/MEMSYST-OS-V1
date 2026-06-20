@@ -2,9 +2,9 @@ import type { IMobileService } from "./IMobileService"
 import type { PWAConfig, OfflineCacheRule, MobileAppVersion, MobileAuditLog } from "@/types"
 import { delay, pushAuditLog } from "./shared-store"
 
-let pwaConfigs: PWAConfig[] = []
-let cacheRules: OfflineCacheRule[] = []
-let versions: MobileAppVersion[] = []
+const pwaConfigs: PWAConfig[] = []
+const cacheRules: OfflineCacheRule[] = []
+const versions: MobileAppVersion[] = []
 
 export class MockMobileService implements IMobileService {
   async getPWAConfig(tenantId: string): Promise<PWAConfig | null> {

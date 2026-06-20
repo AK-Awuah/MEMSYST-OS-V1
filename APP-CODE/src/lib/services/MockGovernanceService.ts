@@ -2,8 +2,8 @@ import type { IGovernanceService } from "./IGovernanceService"
 import type { GovernanceConfig, ApprovalWorkflow } from "@/types"
 import { mockGovernanceConfigs, mockApprovalWorkflows } from "./mock-data"
 
-let configs = [...mockGovernanceConfigs]
-let workflows = [...mockApprovalWorkflows]
+const configs = [...mockGovernanceConfigs]
+const workflows = [...mockApprovalWorkflows]
 
 export class MockGovernanceService implements IGovernanceService {
   async getGovernanceConfig(tenantId: string): Promise<GovernanceConfig | null> {

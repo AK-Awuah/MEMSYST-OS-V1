@@ -3,7 +3,7 @@ import type { TenantAuditLog } from "@/types"
 import { mockTenantAuditLogs } from "./mock-data"
 
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
-let logs = [...mockTenantAuditLogs]
+const logs = [...mockTenantAuditLogs]
 
 export class MockTenantAuditService implements ITenantAuditService {
   async listEvents(tenantId: string, params?: { module?: string; action?: string }): Promise<TenantAuditLog[]> {

@@ -3,7 +3,7 @@ import type { CRMOpportunity, CRMStage, Activity } from "@/types"
 import { mockOpportunities } from "./mock-data"
 import { pushAuditLog } from "./shared-store"
 
-let opportunities = [...mockOpportunities]
+const opportunities = [...mockOpportunities]
 
 export class MockCRMService implements ICRMService {
   async listOpportunities(): Promise<CRMOpportunity[]> {
