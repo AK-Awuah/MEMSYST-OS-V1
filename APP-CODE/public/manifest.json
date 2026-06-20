@@ -1,0 +1,16 @@
+{
+  "name": "MEMSYST OS",
+  "short_name": "MEMSYST",
+  "description": "Multi-Tenant Membership Operating System",
+  "start_url": "/app",
+  "display": "standalone",
+  "background_color": "#011B2B",
+  "theme_color": "#3CA4F9",
+  "icons": [
+    {
+      "src": "/images/Small-logo.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ]
+}

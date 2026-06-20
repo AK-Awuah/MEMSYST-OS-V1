@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import LayoutWrapper from "@/components/layout/LayoutWrapper";
+import GoogleAnalytics from "@/components/GA";
 
 export const metadata: Metadata = {
   title: "MemSyst | Digital Infrastructure & Membership Technology",
@@ -22,7 +23,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="dark">
+      <head>
+        <link rel="manifest" href="/manifest.json" />
+      </head>
       <body className="min-h-screen bg-[var(--background)] font-sans antialiased">
+        <GoogleAnalytics />
         <LayoutWrapper>{children}</LayoutWrapper>
       </body>
     </html>
