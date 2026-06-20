@@ -9,7 +9,13 @@ let authListeners: Array<(user: MemsystUser | null) => void> = []
 export class MockAuthService implements IAuthService {
   async login(email: string, _password: string): Promise<MemsystUser> {
     await delay(800)
-    const user = mockUsers.find((u) => u.email === email)
+    const normalizedInput = email.trim().toLowerCase()
+    const user = mockUsers.find((u) => {
+      const uEmail = u.email.toLowerCase()
+      const uPrefix = uEmail.split("@")[0]
+      const uUsername = u.username ? u.username.toLowerCase() : ""
+      return uEmail === normalizedInput || uUsername === normalizedInput || uPrefix === normalizedInput
+    })
     if (!user) throw new Error("Invalid email or password")
     currentUser = { ...user, lastLogin: new Date().toISOString() }
     notifyListeners(currentUser)

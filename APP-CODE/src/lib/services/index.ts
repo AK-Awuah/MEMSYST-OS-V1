@@ -63,8 +63,14 @@ import type { ICredentialRepositoryService } from "./ICredentialRepositoryServic
 import type { ICredentialAnalyticsService } from "./ICredentialAnalyticsService"
 import type { ICredentialAuditService } from "./ICredentialAuditService"
 import type { ICredentialSettingsService } from "./ICredentialSettingsService"
+import type { IAssessmentService } from "./IAssessmentService"
+import type { IExaminationService } from "./IExaminationService"
+import type { ISkillService } from "./ISkillService"
+import type { ITrainingCertificationService } from "./ITrainingCertificationService"
 import type { IMarketplaceListingService } from "./IMarketplaceListingService"
 import type { IBusinessProfileService } from "./IBusinessProfileService"
+import type { ITrainingCenterService } from "./ITrainingCenterService"
+import type { ICourseService } from "./ICourseService"
 import type { IBusinessCategoryService } from "./IBusinessCategoryService"
 import type { IOpportunityService } from "./IOpportunityService"
 import type { IMarketplaceApprovalService } from "./IMarketplaceApprovalService"
@@ -72,6 +78,26 @@ import type { IDirectorySearchService } from "./IDirectorySearchService"
 import type { IMarketplaceAnalyticsService } from "./IMarketplaceAnalyticsService"
 import type { IMarketplaceComplianceService } from "./IMarketplaceComplianceService"
 import type { IMarketplaceAuditService } from "./IMarketplaceAuditService"
+import type { IProgramService } from "./IProgramService"
+import type { IEnrollmentService } from "./IEnrollmentService"
+import type { IApprenticeshipTrainingService } from "./IApprenticeshipTrainingService"
+import type { IAttendanceService } from "./IAttendanceService"
+import type { IGraduationService } from "./IGraduationService"
+import type { IContentService } from "./IContentService"
+import type { IProfessionalDevelopmentService } from "./IProfessionalDevelopmentService"
+import type { ITrainingAnalyticsService } from "./ITrainingAnalyticsService"
+import type { ITrainingAuditService } from "./ITrainingAuditService"
+import type { ITrainingSettingsService } from "./ITrainingSettingsService"
+import type { ISupportHubService } from "./ISupportHubService"
+import type { IEventsService } from "./IEventsService"
+import type { IGovernanceEnhancedService } from "./IGovernanceEnhancedService"
+import type { IAnalyticsService } from "./IAnalyticsService"
+import type { IIntegrationService } from "./IIntegrationService"
+import type { IMobileService } from "./IMobileService"
+import type { IAIService } from "./IAIService"
+import type { IPlatformOpsService } from "./IPlatformOpsService"
+import type { IAdvertisingService } from "./IAdvertisingService"
+import type { ITieringService } from "./ITieringService"
 
 type ServiceInstance =
   | IAuthService
@@ -138,6 +164,10 @@ type ServiceInstance =
   | ICredentialAnalyticsService
   | ICredentialAuditService
   | ICredentialSettingsService
+  | IAssessmentService
+  | IExaminationService
+  | ISkillService
+  | ITrainingCertificationService
   | IMarketplaceListingService
   | IBusinessProfileService
   | IBusinessCategoryService
@@ -147,6 +177,28 @@ type ServiceInstance =
   | IMarketplaceAnalyticsService
   | IMarketplaceComplianceService
   | IMarketplaceAuditService
+  | ITrainingCenterService
+  | ICourseService
+  | IProgramService
+  | IEnrollmentService
+  | IApprenticeshipTrainingService
+  | IAttendanceService
+  | IGraduationService
+  | IContentService
+  | IProfessionalDevelopmentService
+  | ITrainingAnalyticsService
+  | ITrainingAuditService
+  | ITrainingSettingsService
+  | ISupportHubService
+  | IEventsService
+  | IGovernanceEnhancedService
+  | IAnalyticsService
+  | IIntegrationService
+  | IMobileService
+  | IAIService
+  | IPlatformOpsService
+  | IAdvertisingService
+  | ITieringService
 
 const instances = new Map<string, ServiceInstance>()
 
@@ -733,6 +785,42 @@ export async function getCredentialSettingsService(): Promise<ICredentialSetting
   return createInstance("credentialSettings", new FirebaseCredentialSettingsService())
 }
 
+export async function getAssessmentService(): Promise<IAssessmentService> {
+  if (USE_MOCK_SERVICES) {
+    const { MockAssessmentService } = await import("./MockAssessmentService")
+    return createInstance("assessment", new MockAssessmentService())
+  }
+  const { FirebaseAssessmentService } = await import("./FirebaseAssessmentService")
+  return createInstance("assessment", new FirebaseAssessmentService())
+}
+
+export async function getExaminationService(): Promise<IExaminationService> {
+  if (USE_MOCK_SERVICES) {
+    const { MockExaminationService } = await import("./MockExaminationService")
+    return createInstance("examination", new MockExaminationService())
+  }
+  const { FirebaseExaminationService } = await import("./FirebaseExaminationService")
+  return createInstance("examination", new FirebaseExaminationService())
+}
+
+export async function getSkillService(): Promise<ISkillService> {
+  if (USE_MOCK_SERVICES) {
+    const { MockSkillService } = await import("./MockSkillService")
+    return createInstance("skill", new MockSkillService())
+  }
+  const { FirebaseSkillService } = await import("./FirebaseSkillService")
+  return createInstance("skill", new FirebaseSkillService())
+}
+
+export async function getTrainingCertificationService(): Promise<ITrainingCertificationService> {
+  if (USE_MOCK_SERVICES) {
+    const { MockTrainingCertificationService } = await import("./MockTrainingCertificationService")
+    return createInstance("trainingCertification", new MockTrainingCertificationService())
+  }
+  const { FirebaseTrainingCertificationService } = await import("./FirebaseTrainingCertificationService")
+  return createInstance("trainingCertification", new FirebaseTrainingCertificationService())
+}
+
 export async function getMarketplaceListingService(): Promise<IMarketplaceListingService> {
   if (USE_MOCK_SERVICES) {
     const { MockMarketplaceListingService } = await import("./MockMarketplaceListingService")
@@ -814,6 +902,204 @@ export async function getMarketplaceAuditService(): Promise<IMarketplaceAuditSer
   return createInstance("marketplaceAudit", new FirebaseMarketplaceAuditService())
 }
 
+export async function getTrainingCenterService(): Promise<ITrainingCenterService> {
+  if (USE_MOCK_SERVICES) {
+    const { MockTrainingCenterService } = await import("./MockTrainingCenterService")
+    return createInstance("trainingCenter", new MockTrainingCenterService())
+  }
+  const { FirebaseTrainingCenterService } = await import("./FirebaseTrainingCenterService")
+  return createInstance("trainingCenter", new FirebaseTrainingCenterService())
+}
+
+export async function getCourseService(): Promise<ICourseService> {
+  if (USE_MOCK_SERVICES) {
+    const { MockCourseService } = await import("./MockCourseService")
+    return createInstance("course", new MockCourseService())
+  }
+  const { FirebaseCourseService } = await import("./FirebaseCourseService")
+  return createInstance("course", new FirebaseCourseService())
+}
+
+export async function getProgramService(): Promise<IProgramService> {
+  if (USE_MOCK_SERVICES) {
+    const { MockProgramService } = await import("./MockProgramService")
+    return createInstance("program", new MockProgramService())
+  }
+  const { FirebaseProgramService } = await import("./FirebaseProgramService")
+  return createInstance("program", new FirebaseProgramService())
+}
+
+export async function getEnrollmentService(): Promise<IEnrollmentService> {
+  if (USE_MOCK_SERVICES) {
+    const { MockEnrollmentService } = await import("./MockEnrollmentService")
+    return createInstance("enrollment", new MockEnrollmentService())
+  }
+  const { FirebaseEnrollmentService } = await import("./FirebaseEnrollmentService")
+  return createInstance("enrollment", new FirebaseEnrollmentService())
+}
+
+export async function getApprenticeshipTrainingService(): Promise<IApprenticeshipTrainingService> {
+  if (USE_MOCK_SERVICES) {
+    const { MockApprenticeshipTrainingService } = await import("./MockApprenticeshipTrainingService")
+    return createInstance("apprenticeshipTraining", new MockApprenticeshipTrainingService())
+  }
+  const { FirebaseApprenticeshipTrainingService } = await import("./FirebaseApprenticeshipTrainingService")
+  return createInstance("apprenticeshipTraining", new FirebaseApprenticeshipTrainingService())
+}
+
+export async function getAttendanceService(): Promise<IAttendanceService> {
+  if (USE_MOCK_SERVICES) {
+    const { MockAttendanceService } = await import("./MockAttendanceService")
+    return createInstance("attendance", new MockAttendanceService())
+  }
+  const { FirebaseAttendanceService } = await import("./FirebaseAttendanceService")
+  return createInstance("attendance", new FirebaseAttendanceService())
+}
+
+export async function getGraduationService(): Promise<IGraduationService> {
+  if (USE_MOCK_SERVICES) {
+    const { MockGraduationService } = await import("./MockGraduationService")
+    return createInstance("graduation", new MockGraduationService())
+  }
+  const { FirebaseGraduationService } = await import("./FirebaseGraduationService")
+  return createInstance("graduation", new FirebaseGraduationService())
+}
+
+export async function getContentService(): Promise<IContentService> {
+  if (USE_MOCK_SERVICES) {
+    const { MockContentService } = await import("./MockContentService")
+    return createInstance("content", new MockContentService())
+  }
+  const { FirebaseContentService } = await import("./FirebaseContentService")
+  return createInstance("content", new FirebaseContentService())
+}
+
+export async function getProfessionalDevelopmentService(): Promise<IProfessionalDevelopmentService> {
+  if (USE_MOCK_SERVICES) {
+    const { MockProfessionalDevelopmentService } = await import("./MockProfessionalDevelopmentService")
+    return createInstance("professionalDevelopment", new MockProfessionalDevelopmentService())
+  }
+  const { FirebaseProfessionalDevelopmentService } = await import("./FirebaseProfessionalDevelopmentService")
+  return createInstance("professionalDevelopment", new FirebaseProfessionalDevelopmentService())
+}
+
+export async function getTrainingAnalyticsService(): Promise<ITrainingAnalyticsService> {
+  if (USE_MOCK_SERVICES) {
+    const { MockTrainingAnalyticsService } = await import("./MockTrainingAnalyticsService")
+    return createInstance("trainingAnalytics", new MockTrainingAnalyticsService())
+  }
+  const { FirebaseTrainingAnalyticsService } = await import("./FirebaseTrainingAnalyticsService")
+  return createInstance("trainingAnalytics", new FirebaseTrainingAnalyticsService())
+}
+
+export async function getTrainingAuditService(): Promise<ITrainingAuditService> {
+  if (USE_MOCK_SERVICES) {
+    const { MockTrainingAuditService } = await import("./MockTrainingAuditService")
+    return createInstance("trainingAudit", new MockTrainingAuditService())
+  }
+  const { FirebaseTrainingAuditService } = await import("./FirebaseTrainingAuditService")
+  return createInstance("trainingAudit", new FirebaseTrainingAuditService())
+}
+
+export async function getTrainingSettingsService(): Promise<ITrainingSettingsService> {
+  if (USE_MOCK_SERVICES) {
+    const { MockTrainingSettingsService } = await import("./MockTrainingSettingsService")
+    return createInstance("trainingSettings", new MockTrainingSettingsService())
+  }
+  const { FirebaseTrainingSettingsService } = await import("./FirebaseTrainingSettingsService")
+  return createInstance("trainingSettings", new FirebaseTrainingSettingsService())
+}
+
+export async function getSupportHubService(): Promise<ISupportHubService> {
+  if (USE_MOCK_SERVICES) {
+    const { MockSupportHubService } = await import("./MockSupportHubService")
+    return createInstance("supportHub", new MockSupportHubService())
+  }
+  const { FirebaseSupportHubService } = await import("./FirebaseSupportHubService")
+  return createInstance("supportHub", new FirebaseSupportHubService())
+}
+
+export async function getEventsService(): Promise<IEventsService> {
+  if (USE_MOCK_SERVICES) {
+    const { MockEventsService } = await import("./MockEventsService")
+    return createInstance("events", new MockEventsService())
+  }
+  const { FirebaseEventsService } = await import("./FirebaseEventsService")
+  return createInstance("events", new FirebaseEventsService())
+}
+
+export async function getGovernanceEnhancedService(): Promise<IGovernanceEnhancedService> {
+  if (USE_MOCK_SERVICES) {
+    const { MockGovernanceEnhancedService } = await import("./MockGovernanceEnhancedService")
+    return createInstance("governanceEnhanced", new MockGovernanceEnhancedService())
+  }
+  const { FirebaseGovernanceEnhancedService } = await import("./FirebaseGovernanceEnhancedService")
+  return createInstance("governanceEnhanced", new FirebaseGovernanceEnhancedService())
+}
+
+export async function getAnalyticsService(): Promise<IAnalyticsService> {
+  if (USE_MOCK_SERVICES) {
+    const { MockAnalyticsService } = await import("./MockAnalyticsService")
+    return createInstance("analytics", new MockAnalyticsService())
+  }
+  const { FirebaseAnalyticsService } = await import("./FirebaseAnalyticsService")
+  return createInstance("analytics", new FirebaseAnalyticsService())
+}
+
+export async function getIntegrationService(): Promise<IIntegrationService> {
+  if (USE_MOCK_SERVICES) {
+    const { MockIntegrationService } = await import("./MockIntegrationService")
+    return createInstance("integration", new MockIntegrationService())
+  }
+  const { FirebaseIntegrationService } = await import("./FirebaseIntegrationService")
+  return createInstance("integration", new FirebaseIntegrationService())
+}
+
+export async function getMobileService(): Promise<IMobileService> {
+  if (USE_MOCK_SERVICES) {
+    const { MockMobileService } = await import("./MockMobileService")
+    return createInstance("mobile", new MockMobileService())
+  }
+  const { FirebaseMobileService } = await import("./FirebaseMobileService")
+  return createInstance("mobile", new FirebaseMobileService())
+}
+
+export async function getAIService(): Promise<IAIService> {
+  if (USE_MOCK_SERVICES) {
+    const { MockAIService } = await import("./MockAIService")
+    return createInstance("ai", new MockAIService())
+  }
+  const { FirebaseAIService } = await import("./FirebaseAIService")
+  return createInstance("ai", new FirebaseAIService())
+}
+
+export async function getPlatformOpsService(): Promise<IPlatformOpsService> {
+  if (USE_MOCK_SERVICES) {
+    const { MockPlatformOpsService } = await import("./MockPlatformOpsService")
+    return createInstance("platformOps", new MockPlatformOpsService())
+  }
+  const { FirebasePlatformOpsService } = await import("./FirebasePlatformOpsService")
+  return createInstance("platformOps", new FirebasePlatformOpsService())
+}
+
+export async function getAdvertisingService(): Promise<IAdvertisingService> {
+  if (USE_MOCK_SERVICES) {
+    const { MockAdvertisingService } = await import("./MockAdvertisingService")
+    return createInstance("advertising", new MockAdvertisingService())
+  }
+  const { FirebaseAdvertisingService } = await import("./FirebaseAdvertisingService")
+  return createInstance("advertising", new FirebaseAdvertisingService())
+}
+
+export async function getTieringService(): Promise<ITieringService> {
+  if (USE_MOCK_SERVICES) {
+    const { MockTieringService } = await import("./MockTieringService")
+    return createInstance("tiering", new MockTieringService())
+  }
+  const { FirebaseTieringService } = await import("./FirebaseTieringService")
+  return createInstance("tiering", new FirebaseTieringService())
+}
+
 export type {
   IAuthService,
   IFormsService,
@@ -878,6 +1164,10 @@ export type {
   ICredentialAnalyticsService,
   ICredentialAuditService,
   ICredentialSettingsService,
+  IAssessmentService,
+  IExaminationService,
+  ISkillService,
+  ITrainingCertificationService,
   IMarketplaceListingService,
   IBusinessProfileService,
   IBusinessCategoryService,
@@ -887,5 +1177,27 @@ export type {
   IMarketplaceAnalyticsService,
   IMarketplaceComplianceService,
   IMarketplaceAuditService,
+  ITrainingCenterService,
+  ICourseService,
+  IProgramService,
+  IEnrollmentService,
+  IApprenticeshipTrainingService,
+  IAttendanceService,
+  IGraduationService,
+  IContentService,
+  IProfessionalDevelopmentService,
+  ITrainingAnalyticsService,
+  ITrainingAuditService,
+  ITrainingSettingsService,
+  ISupportHubService,
+  IEventsService,
+  IGovernanceEnhancedService,
+  IAnalyticsService,
+  IIntegrationService,
+  IMobileService,
+  IAIService,
+  IPlatformOpsService,
+  IAdvertisingService,
+  ITieringService,
 }
 export type { AuthState } from "./IAuthService"

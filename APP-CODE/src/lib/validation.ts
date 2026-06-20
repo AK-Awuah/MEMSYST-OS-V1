@@ -4,8 +4,10 @@ export interface ValidationResult {
 }
 
 export function validateEmail(email: string): string | null {
-  if (!email) return "Email is required"
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return "Invalid email format"
+  if (!email || !email.trim()) return "Email or username is required"
+  if (email.includes("@")) {
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return "Invalid email format"
+  }
   return null
 }
 

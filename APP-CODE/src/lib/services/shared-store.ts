@@ -1,5 +1,5 @@
-import type { Lead, FormSubmission, CRMOpportunity, Notification, AuditLog, SecurityEvent, SecurityAction, Wallet, Transaction, Payment, RevenueDistributionRule, RevenueDistribution, CommissionConfig, Commission, Bill, Withdrawal, Refund, Receipt, FinancialSettings } from "@/types"
-import { mockLeads as initialLeads, mockSubmissions, mockOpportunities, mockNotifications as initialNotifications, mockAuditLogs, mockWallets as initialWallets, mockTransactions as initialTransactions, mockPayments as initialPayments, mockRevenueRules as initialRevenueRules, mockCommissions as initialCommissions, mockCommissionConfigs as initialCommissionConfigs, mockBills as initialBills, mockWithdrawals as initialWithdrawals, mockRefunds as initialRefunds, mockReceipts as initialReceipts, mockFinancialSettings as initialFinancialSettings } from "./mock-data"
+import type { Lead, FormSubmission, CRMOpportunity, Notification, AuditLog, SecurityEvent, SecurityAction, Wallet, Transaction, Payment, RevenueDistributionRule, RevenueDistribution, CommissionConfig, Commission, Bill, Withdrawal, Refund, Receipt, FinancialSettings, Assessment, Examination, ExaminationResult, Skill, LearnerSkill, TrainingCertification } from "@/types"
+import { mockLeads as initialLeads, mockSubmissions, mockOpportunities, mockNotifications as initialNotifications, mockAuditLogs, mockWallets as initialWallets, mockTransactions as initialTransactions, mockPayments as initialPayments, mockRevenueRules as initialRevenueRules, mockCommissions as initialCommissions, mockCommissionConfigs as initialCommissionConfigs, mockBills as initialBills, mockWithdrawals as initialWithdrawals, mockRefunds as initialRefunds, mockReceipts as initialReceipts, mockFinancialSettings as initialFinancialSettings, mockAssessments as initialAssessments, mockExaminations as initialExaminations, mockExaminationResults as initialExaminationResults, mockSkills as initialSkills, mockLearnerSkills as initialLearnerSkills, mockTrainingCertifications as initialTrainingCertifications } from "./mock-data"
 
 export const sharedLeads: Lead[] = [...initialLeads]
 export const sharedSubmissions: FormSubmission[] = [...mockSubmissions]
@@ -61,3 +61,10 @@ export const sharedWithdrawals: Withdrawal[] = [...initialWithdrawals]
 export const sharedRefunds: Refund[] = [...initialRefunds]
 export const sharedReceipts: Receipt[] = [...initialReceipts]
 export const sharedFinancialSettings: FinancialSettings = { ...initialFinancialSettings }
+
+export const sharedAssessments: Assessment[] = [...initialAssessments]
+export const sharedExaminations: Examination[] = [...initialExaminations]
+export const sharedExaminationResults: ExaminationResult[] = [...initialExaminationResults]
+export const sharedSkills: Skill[] = [...initialSkills]
+export const sharedLearnerSkills: LearnerSkill[] = [...initialLearnerSkills]
+export const sharedTrainingCertifications: TrainingCertification[] = [...initialTrainingCertifications]

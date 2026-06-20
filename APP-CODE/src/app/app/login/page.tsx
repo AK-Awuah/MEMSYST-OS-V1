@@ -57,14 +57,14 @@ export default function AppLoginPage() {
 
           <form onSubmit={handleSubmit} className="space-y-5" noValidate>
             <div>
-              <label className="form-label" htmlFor="email">Email</label>
+              <label className="form-label" htmlFor="email">Email Address or Username</label>
               <input
                 id="email"
-                type="email"
+                type="text"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className={`form-input ${fieldErrors.email ? "border-red-500/50" : ""}`}
-                placeholder="you@organization.org"
+                placeholder="you@organization.org or username"
                 required
               />
               {fieldErrors.email && <p className="mt-1 text-xs text-red-400">{fieldErrors.email}</p>}
